@@ -1,4 +1,4 @@
-package com.example.springboot.Client;
+package com.example.springboot.User;
 
 public enum PermissionLevel {
     BANNED,

@@ -1,8 +1,8 @@
-package com.example.springboot.Client;
+package com.example.springboot.User;
 
 import java.util.List;
 
-public class Client {
+public class User {
     private int id;
     private String name;
     private String mail;
@@ -11,8 +11,8 @@ public class Client {
     private List<Integer> subscribedEvents;
     private List<Integer> subscribedCategories;
 
-    public Client(int id, String name, String mail, String password, PermissionLevel permissionLevel,
-                  List<Integer> subscribedEvents, List<Integer> subscribedCategories) {
+    public User(int id, String name, String mail, String password, PermissionLevel permissionLevel,
+                List<Integer> subscribedEvents, List<Integer> subscribedCategories) {
         this.id = id;
         this.name = name;
         this.mail = mail;
@@ -21,7 +21,7 @@ public class Client {
         this.subscribedEvents = subscribedEvents;
         this.subscribedCategories = subscribedCategories;
     }
-    public Client() {
+    public User() {
     }
 
     public int getId() {
