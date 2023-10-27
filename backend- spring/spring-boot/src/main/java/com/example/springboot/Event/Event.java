@@ -20,11 +20,12 @@ public class Event {
     private AgeGroup ageGroup;
     private LocalDateTime startDate;
     private LocalDateTime endDate;
+    private EventStatus eventStatus;
 
     public Event() {
     }
 
-    public Event(int id, String name, int organizer, List<Integer> categoryList, List<Integer> clientList, String description, int size, String localisation, boolean isFree, boolean isReservationNecessary, boolean isLive, AgeGroup ageGroup, LocalDateTime startDate, LocalDateTime endDate) {
+    public Event(int id, String name, int organizer, List<Integer> categoryList, List<Integer> clientList, String description, int size, String localisation, boolean isFree, boolean isReservationNecessary, boolean isLive, AgeGroup ageGroup, LocalDateTime startDate, LocalDateTime endDate, EventStatus eventStatus) {
         this.id = id;
         this.name = name;
         this.organizer = organizer;
@@ -39,6 +40,7 @@ public class Event {
         this.ageGroup = ageGroup;
         this.startDate = startDate;
         this.endDate = endDate;
+        this.eventStatus = eventStatus;
     }
 
     public int getId() {
@@ -57,19 +59,19 @@ public class Event {
         this.name = name;
     }
 
-    public int getorganizer() {
+    public int getOrganizer() {
         return organizer;
     }
 
-    public void setorganizer(int organizer) {
+    public void setOrganizer(int organizer) {
         this.organizer = organizer;
     }
 
-    public List<Integer> getcategoryList() {
+    public List<Integer> getCategoryList() {
         return categoryList;
     }
 
-    public void setcategoryList(List<Integer> categoryList) {
+    public void setCategoryList(List<Integer> categoryList) {
         this.categoryList = categoryList;
     }
 
@@ -151,5 +153,13 @@ public class Event {
 
     public void setEndDate(LocalDateTime endDate) {
         this.endDate = endDate;
+    }
+
+    public EventStatus getEventStatus() {
+        return eventStatus;
+    }
+
+    public void setEventStatus(EventStatus eventStatus) {
+        this.eventStatus = eventStatus;
     }
 }
