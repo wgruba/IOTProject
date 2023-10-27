@@ -1,0 +1,101 @@
+header {
+    background-color: #FF9505;
+    color: #494949;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+}
+
+.left-section, .right-section {
+    display: flex;
+    align-items: center;
+}
+
+.left-section img {
+    width: 100px;
+    height: auto;
+    margin-right: 20px;
+}
+
+.logout-button, .login-button {
+    background-color: transparent;
+    border: none;
+    color: #494949;
+    font-weight: bold;
+    font-size: 18px;
+    cursor: pointer;
+    display: block;
+    align-items: center;
+    margin: 5px 0;
+}
+
+.logout-button i, .login-button i {
+    margin-right: 10px;
+}
+
+.logout-button:hover, .login-button:hover {
+    text-decoration: underline;
+}
+
+.center-section {
+    text-align: center;
+}
+
+.navigation-list {
+    list-style: none;
+    padding: 0;
+}
+
+.navigation-list li {
+    display: inline;
+    margin: 0 20px;
+}
+
+.navigation-list a {
+    text-decoration: none;
+    color: #494949;
+    font-size: 18px;
+}
+
+.navigation-list a:hover {
+    text-decoration: underline;
+}
+
+/* content.component.css */
+.content {
+    background-color: #F5B18F;
+    padding: 20px;
+    border-radius: 10px;
+}
+
+.search-bar {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+input[type="text"] {
+    flex: 1;
+    padding: 10px;
+}
+
+.search-button, .category-button, .location-button, .date-button {
+    background-color: #E66E24;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-weight: bold;
+    cursor: pointer;
+    margin-right: 10px;
+}
+
+.search-button:hover, .category-button:hover, .location-button:hover, .date-button:hover {
+    background-color: #F28D35;
+}
+
+
+
+
+
+
