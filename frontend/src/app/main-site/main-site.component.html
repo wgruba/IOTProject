@@ -1,33 +1,41 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Moja Strona w Stylu Netflix</title>
-</head>
+
 <body>
-    
-
-    <div class="container">
-        <div class="content">
-            <h2>Nowości</h2>
-            <div class="movie-list">
-                <div class="movie">
-                    <img src="movie1.jpg" alt="Film 1">
-                </div>
-                <div class="movie">
-                    <img src="movie2.jpg" alt="Film 2">
-                </div>
-                <div class="movie">
-                    <img src="movie3.jpg" alt="Film 3">
-                </div>
-                <!-- Dodaj więcej filmów tutaj -->
-            </div>
-        </div>
+<div class="container-fluid">
+    <div class="row">
+      <main class="col-8 px-0">
+  
+        <!-- image -->
+        <swiper-container appSwiper #swiper [config]="swiperConfig" thumbs-swiper=".mySwiper2" (slidechange)="slideChange($event)">
+          <swiper-slide *ngFor="let item of contents">
+            <h3 [textContent]="item.title"></h3>
+            <p [textContent]="item.description"></p>
+            <div class="ratio ratio-4x3"><img [src]=item.url></div>
+          </swiper-slide>
+        </swiper-container>
+        <!-- /image -->
+  
+        <!-- thumbnails -->
+        <swiper-container appSwiper #swiperThumbs [config]="swiperThumbsConfig" class="mySwiper2" *ngIf="contents.length > 1">
+          <swiper-slide *ngFor="let item of contents">
+            <h3 [textContent]="item.title"></h3>
+            <p [textContent]="item.description"></p>
+            <div class="ratio ratio-4x3" role="button"><img [src]=item.url></div>
+          </swiper-slide>
+        </swiper-container>
+        <!-- /thumbnails -->
+  
+      </main>
+  
+      <!-- description -->
+      <aside class="col-4 p-4">
+  
+        <h3 [textContent]="contents[index].title"></h3>
+        <p [textContent]="contents[index].description"></p>
+  
+      </aside>
+      <!-- /description -->
+  
     </div>
+</div>
 
-    <footer>
-        &copy; Main site
-    </footer>
-</body>
-</html>
+  

@@ -1,33 +1,57 @@
 header {
     background-color: #FF9505;
-    color: #494949;
+    filter: brightness(104%);
+    color: #4A4A4A;
     display: flex;
-    justify-content: space-between;
-    align-items: center;
+    flex-direction: column; /* Ustawia komponenty w kolumnie */
+    align-items: center; /* Centruje w poziomie */
     padding: 10px;
+    border-radius: 10px;
 }
 
-.left-section, .right-section {
+.upper-section, .lower-section {
+    width: 100%; /* Wypełnij dostępną szerokość */
     display: flex;
-    align-items: center;
+    justify-content: space-between; /* Oddziela lewy, środkowy i prawy blok */
+    align-items: center; /* Centruje w pionie */
 }
 
 .left-section img {
-    width: 100px;
-    height: auto;
-    margin-right: 20px;
+    max-width: 150px; /* Maksymalna szerokość loga */
+}
+
+.navigation-list {
+    list-style: none;
+    padding: 0;
+    display: flex;
+}
+
+.navigation-list li {
+    margin: 20px 50px;
+}
+
+.navigation-list a {
+    text-decoration: none;
+    color: #4A4A4A;
+    font-size: 25px;
+    font-weight: bolder;
+}
+
+.navigation-list a:hover {
+    text-decoration: underline;
 }
 
 .logout-button, .login-button {
     background-color: transparent;
     border: none;
-    color: #494949;
+    color: #4A4A4A;
     font-weight: bold;
-    font-size: 18px;
+    font-size: 25px;
     cursor: pointer;
-    display: block;
+    display: flex;
     align-items: center;
-    margin: 5px 0;
+    margin: 20px 20px;
+    border-radius: 5px;
 }
 
 .logout-button i, .login-button i {
@@ -38,64 +62,30 @@ header {
     text-decoration: underline;
 }
 
-.center-section {
-    text-align: center;
-}
-
-.navigation-list {
-    list-style: none;
-    padding: 0;
-}
-
-.navigation-list li {
-    display: inline;
-    margin: 0 20px;
-}
-
-.navigation-list a {
-    text-decoration: none;
-    color: #494949;
-    font-size: 18px;
-}
-
-.navigation-list a:hover {
-    text-decoration: underline;
-}
-
-/* content.component.css */
-.content {
-    background-color: #F5B18F;
-    padding: 20px;
-    border-radius: 10px;
-}
-
-.search-bar {
+.search-content {
     display: flex;
     align-items: center;
-    margin-bottom: 20px;
 }
 
 input[type="text"] {
-    flex: 1;
+    background-color: #FFC971;
     padding: 10px;
+    border-radius: 20px;
+    border: none;
 }
 
-.search-button, .category-button, .location-button, .date-button {
-    background-color: #E66E24;
-    color: white;
+.category-button, .location-button, .date-button, .search-button {
+    background-color: #F1F7EA;
+    color: #4A4A4A;
     border: none;
-    padding: 10px 20px;
+    padding: 10px 40px;
     font-weight: bold;
     cursor: pointer;
-    margin-right: 10px;
+    margin: 30px;
+    border-radius: 20px;
 }
 
-.search-button:hover, .category-button:hover, .location-button:hover, .date-button:hover {
-    background-color: #F28D35;
+.search-button{
+    background-color: #8684F9;
 }
-
-
-
-
-
 
