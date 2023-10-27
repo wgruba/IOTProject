@@ -14,7 +14,7 @@ public class Event {
 
 //    todo localisation as localisation
     private String localisation;
-    private boolean isFree;
+    private boolean isFree; //not paid
     private boolean isReservationNecessary;
     private boolean isLive; //not online
     private AgeGroup ageGroup;
