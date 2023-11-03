@@ -1,5 +1,7 @@
 package com.example.springboot.User;
 
+import com.example.springboot.Category.Exceptions.CategoryNotFoundEx;
+import com.example.springboot.Event.Exceptions.EventNotFoundEx;
 import com.example.springboot.User.Exceptions.UserExistsEx;
 import com.example.springboot.User.Exceptions.UserNotFoundEx;
 import com.example.springboot.Event.Event;
@@ -9,6 +11,7 @@ import java.util.List;
 
 public interface UserRepository {
     List<User> getAllUsers();
+    List<User> getUsersSubscribedToEvent(List<Integer> ids);
 
     //CRUD
     User getUser(int id) throws UserNotFoundEx;
@@ -38,7 +41,7 @@ public interface UserRepository {
 
 
     //Account management
-    boolean login(int id, String password);
-    void remindPassword(String name, String mail);
-    boolean changePermissionLevel(int adminId, int userId, PermissionLevel permissionLevel) throws UserNotFoundEx;
+    boolean login(String nameOrMail, String password) throws UserNotFoundEx;
+    boolean remindPassword(String nameOrMail) throws UserNotFoundEx;
+    boolean changePermissionLevel(int id, PermissionLevel permissionLevel) throws UserNotFoundEx;
 }

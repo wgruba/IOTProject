@@ -10,9 +10,19 @@ import org.springframework.web.bind.annotation.RestController;
 @CrossOrigin
 @RestController
 public class UserController {
-    //todo rest api for users
     private final UserRepository impl = new UserRepositoryImpl();
-    
+
+//    pokaż jakieś wydarzenia(na stronie głównej)
+//		- Event R Random
+//	- pokaż wydarzenie i jego szczegóły(na stronie konkretnego wydarzenia)
+//		- Event R filtr
+//	- przycisk logowania
+//		- User R
+//	- przycisk rejestracji
+//		- User C
+//	- wyszukiwanie wydarzeń(wyszukiwarka, filtry zależne od zaznaczonych rzeczy)
+//		- Event R Filtrowane
+
     @GetMapping("/users/{id}")
     public EntityModel<User> getUser(@PathVariable int id){
         try {

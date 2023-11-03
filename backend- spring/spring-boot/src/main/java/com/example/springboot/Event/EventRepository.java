@@ -13,6 +13,9 @@ import java.util.List;
 
 public interface EventRepository {
     List<Event> getAllEvents();
+    List<Event> getEventsByOrganiser(int organiserId);
+    List<Event> getUsersSubscribedEvents(List<Integer> ids);
+    List<Event> getEditedEvents();
 
     //CRUD
     Event getEvent(int id) throws EventNotFoundEx;
@@ -31,7 +34,7 @@ public interface EventRepository {
 
 
     //manage events' updates
-    boolean changeEventStatus(int adminId, int eventId, EventStatus eventStatus) throws UserNotFoundEx, NotEnoughHighPermissionLevel;
-
+    boolean changeEventStatus(int adminId, int eventId, EventStatus eventStatus) throws UserNotFoundEx, NotEnoughHighPermissionLevel, EventNotFoundEx;
+    boolean verifyEditedEvent(int adminId, int eventId, int event2Id) throws UserNotFoundEx, NotEnoughHighPermissionLevel, EventNotFoundEx;
 
 }

@@ -11,6 +11,7 @@ public interface CategoryRepository {
     List<Category> getAllCategories();
     List<Category> getAllParentCategories();
     List<Category> getAllSubCategoriesofParentCategory(int id) throws CategoryNotFoundEx, CategoryIsNotParentCategory;
+    List<Category> getSubscribedCategories(List<Integer> ids) throws CategoryNotFoundEx;
 
     //CRUD
     Category getCategory(int id) throws CategoryNotFoundEx;
