@@ -1,13 +1,8 @@
 package com.example.springboot.User;
 
-import com.example.springboot.Category.Category;
-import com.example.springboot.Category.Exceptions.CategoryNotFoundEx;
-import com.example.springboot.Event.Exceptions.EventNotFoundEx;
 import com.example.springboot.User.Exceptions.UserExistsEx;
 import com.example.springboot.User.Exceptions.UserNotFoundEx;
-import com.example.springboot.Event.Event;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class UserRepositoryImpl implements UserRepository {
