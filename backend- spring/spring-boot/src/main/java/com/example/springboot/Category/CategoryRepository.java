@@ -12,6 +12,7 @@ public interface CategoryRepository {
     List<Category> getAllParentCategories();
     List<Category> getAllSubCategoriesofParentCategory(int id) throws CategoryNotFoundEx, CategoryIsNotParentCategory;
     List<Category> getSubscribedCategories(List<Integer> ids) throws CategoryNotFoundEx;
+    List<Category> getEventCategories(List<Integer> ids) throws CategoryNotFoundEx;
 
     //CRUD
     Category getCategory(int id) throws CategoryNotFoundEx;
@@ -25,7 +26,6 @@ public interface CategoryRepository {
     //sub category and parent category management
     boolean isCategoryAParentCategory(int id) throws CategoryNotFoundEx;
     boolean makeNewCategoryConnection(int parentCategoryId, int subCategoryId) throws CategoryNotFoundEx, CategoryIsNotParentCategory;
-    boolean deleteCategoryConnection(int parentCategoryId, int subCategoryId) throws CategoryIsNotSubcategoryEx;
-
+    boolean deleteCategoryConnection(int parentCategoryId, int subCategoryId) throws CategoryIsNotSubcategoryEx, CategoryNotFoundEx;
 
 }

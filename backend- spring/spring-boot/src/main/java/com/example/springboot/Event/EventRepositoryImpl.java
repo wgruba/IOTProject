@@ -2,12 +2,12 @@ package com.example.springboot.Event;
 
 import com.example.springboot.Event.Exceptions.EventExistsEx;
 import com.example.springboot.Event.Exceptions.EventNotFoundEx;
-import com.example.springboot.User.User;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
 public class EventRepositoryImpl implements EventRepository{
+    public EventRepositoryImpl(){}
     @Override
     public List<Event> getAllEvents() {
         //todo podlinkować do funkcji Agaty: Events Read bez_filtra
@@ -55,8 +55,10 @@ public class EventRepositoryImpl implements EventRepository{
                              String name,
                              int organizer,
                              List<Integer> categoryList,
-                             List<Integer> clientList, String description,
-                             int size, String localisation,
+                             List<Integer> clientList,
+                             String description,
+                             int size,
+                             String localisation,
                              boolean isFree,
                              boolean isReservationNecessary,
                              boolean isLive,
@@ -79,8 +81,10 @@ public class EventRepositoryImpl implements EventRepository{
                           String name,
                           int organizer,
                           List<Integer> categoryList,
-                          List<Integer> clientList, String description,
-                          int size, String localisation,
+                          List<Integer> clientList,
+                          String description,
+                          int size,
+                          String localisation,
                           boolean isFree,
                           boolean isReservationNecessary,
                           boolean isLive,
@@ -94,7 +98,6 @@ public class EventRepositoryImpl implements EventRepository{
 
     @Override
     public Event addEvent(Event event) throws EventExistsEx {
-
         //todo podlinkować do funkcji Agaty: Event Create
         return null;
     }
@@ -104,9 +107,23 @@ public class EventRepositoryImpl implements EventRepository{
         Event tempEvent = getEvent(eventId);
         List<Integer> tempList = tempEvent.getClientList();
         tempList.add(userId);
-        tempEvent.setClientList(tempList);
-        //todo podlinkować do funkcji Agaty: Users Update filtr(id = id)
-        return false;
+
+        updateEvent(eventId,
+                tempEvent.getName(),
+                tempEvent.getOrganizer(),
+                tempEvent.getCategoryList(),
+                tempList,
+                tempEvent.getDescription(),
+                tempEvent.getSize(),
+                tempEvent.getLocalisation(),
+                tempEvent.isFree(),
+                tempEvent.isReservationNecessary(),
+                tempEvent.isLive(),
+                tempEvent.getAgeGroup(),
+                tempEvent.getStartDate(),
+                tempEvent.getEndDate(),
+                tempEvent.getEventStatus());
+        return true;
     }
 
     @Override
@@ -114,9 +131,23 @@ public class EventRepositoryImpl implements EventRepository{
         Event tempEvent = getEvent(eventId);
         List<Integer> tempList = tempEvent.getCategoryList();
         tempList.add(categoryId);
-        tempEvent.setCategoryList(tempList);
-        //todo podlinkować do funkcji Agaty: Users Update filtr(id = id)
-        return false;
+
+        updateEvent(eventId,
+                tempEvent.getName(),
+                tempEvent.getOrganizer(),
+                tempList,
+                tempEvent.getClientList(),
+                tempEvent.getDescription(),
+                tempEvent.getSize(),
+                tempEvent.getLocalisation(),
+                tempEvent.isFree(),
+                tempEvent.isReservationNecessary(),
+                tempEvent.isLive(),
+                tempEvent.getAgeGroup(),
+                tempEvent.getStartDate(),
+                tempEvent.getEndDate(),
+                tempEvent.getEventStatus());
+        return true;
     }
 
     @Override
@@ -124,9 +155,23 @@ public class EventRepositoryImpl implements EventRepository{
         Event tempEvent = getEvent(eventId);
         List<Integer> tempList = tempEvent.getClientList();
         tempList.remove(userId);
-        tempEvent.setClientList(tempList);
-        //todo podlinkować do funkcji Agaty: Users Update filtr(id = id)
-        return false;
+
+        updateEvent(eventId,
+                tempEvent.getName(),
+                tempEvent.getOrganizer(),
+                tempEvent.getCategoryList(),
+                tempList,
+                tempEvent.getDescription(),
+                tempEvent.getSize(),
+                tempEvent.getLocalisation(),
+                tempEvent.isFree(),
+                tempEvent.isReservationNecessary(),
+                tempEvent.isLive(),
+                tempEvent.getAgeGroup(),
+                tempEvent.getStartDate(),
+                tempEvent.getEndDate(),
+                tempEvent.getEventStatus());
+        return true;
     }
 
     @Override
@@ -134,16 +179,44 @@ public class EventRepositoryImpl implements EventRepository{
         Event tempEvent = getEvent(eventId);
         List<Integer> tempList = tempEvent.getCategoryList();
         tempList.remove(categoryId);
-        tempEvent.setCategoryList(tempList);
-        //todo podlinkować do funkcji Agaty: Users Update filtr(id = id)
+
+        updateEvent(eventId,
+                tempEvent.getName(),
+                tempEvent.getOrganizer(),
+                tempList,
+                tempEvent.getClientList(),
+                tempEvent.getDescription(),
+                tempEvent.getSize(),
+                tempEvent.getLocalisation(),
+                tempEvent.isFree(),
+                tempEvent.isReservationNecessary(),
+                tempEvent.isLive(),
+                tempEvent.getAgeGroup(),
+                tempEvent.getStartDate(),
+                tempEvent.getEndDate(),
+                tempEvent.getEventStatus());
         return false;
     }
 
     @Override
     public boolean changeEventStatus(int eventId, EventStatus eventStatus) throws EventNotFoundEx {
         Event tempEvent = getEvent(eventId);
-        tempEvent.setEventStatus(eventStatus);
-        //todo podlinkować do funkcji Agaty: Users Update filtr(id = id)
+
+        updateEvent(eventId,
+                tempEvent.getName(),
+                tempEvent.getOrganizer(),
+                tempEvent.getCategoryList(),
+                tempEvent.getClientList(),
+                tempEvent.getDescription(),
+                tempEvent.getSize(),
+                tempEvent.getLocalisation(),
+                tempEvent.isFree(),
+                tempEvent.isReservationNecessary(),
+                tempEvent.isLive(),
+                tempEvent.getAgeGroup(),
+                tempEvent.getStartDate(),
+                tempEvent.getEndDate(),
+                eventStatus);
         return true;
     }
 

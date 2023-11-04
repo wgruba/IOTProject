@@ -24,14 +24,12 @@ public class UserRepositoryImpl implements UserRepository {
     public User getUser(int id) throws UserNotFoundEx {
         //todo podlinkować do funkcji Agaty: Users Read filtr(id = id)
         return null;
-//        throw new UserNotFoundEx(id);
     }
 
     @Override
     public User getUser(String nameOrMail) throws UserNotFoundEx {
         //todo podlinkować do funkcji Agaty: Users Read filtr(mail = nameOrMail || name = nameOrMail)
         return null;
-//        throw new UserNotFoundEx(nameOrMail);
     }
 
     @Override
@@ -45,14 +43,12 @@ public class UserRepositoryImpl implements UserRepository {
             throws UserNotFoundEx {
         //todo podlinkować do funkcji Agaty: Users Update filtr(id = id)
         return null;
-//        throw new UserNotFoundEx(id);
     }
 
     @Override
     public boolean deleteUser(int id) throws UserNotFoundEx {
         //todo podlinkować do funkcji Agaty: Users Delete filtr(id = id)
         return true;
-//        throw new UserNotFoundEx(id);
     }
 
     @Override
@@ -66,14 +62,12 @@ public class UserRepositoryImpl implements UserRepository {
             throws UserExistsEx {
         //todo podlinkować do funkcji Agaty: Users Create
         return null;
-//        throw new UserExistsEx(id);
     }
 
     @Override
     public User addUser(User user) throws UserExistsEx {
         //todo podlinkować do funkcji Agaty: Users Create
         return null;
-//        throw new UserExistsEx();
     }
 
     @Override
@@ -84,7 +78,6 @@ public class UserRepositoryImpl implements UserRepository {
     @Override
     public PermissionLevel getPermissionLevel(int id) throws UserNotFoundEx {
         return getUser(id).getPermissionLevel();
-//        throw new UserNotFoundEx(id);
     }
 
     @Override
@@ -92,9 +85,16 @@ public class UserRepositoryImpl implements UserRepository {
         User tempUser = getUser(userId);
         List<Integer> tempList = tempUser.getSubscribedEvents();
         tempList.add(eventId);
-        tempUser.setSubscribedEvents(tempList);
-        //todo podlinkować do funkcji Agaty: Users Update filtr(id = id)
-        return false;
+
+        updateUser(userId,
+                tempUser.getName(),
+                tempUser.getMail(),
+                tempUser.getPassword(),
+                tempUser.getPermissionLevel(),
+                tempList,
+                tempUser.getSubscribedCategories());
+
+        return true;
     }
 
     @Override
@@ -102,9 +102,15 @@ public class UserRepositoryImpl implements UserRepository {
         User tempUser = getUser(userId);
         List<Integer> tempList = tempUser.getSubscribedCategories();
         tempList.add(categoryId);
-        tempUser.setSubscribedCategories(tempList);
-        //todo podlinkować do funkcji Agaty: Users Update filtr(id = id)
-        return false;
+
+        updateUser(userId,
+                tempUser.getName(),
+                tempUser.getMail(),
+                tempUser.getPassword(),
+                tempUser.getPermissionLevel(),
+                tempUser.getSubscribedEvents(),
+                tempList);
+        return true;
     }
 
     @Override
@@ -112,9 +118,15 @@ public class UserRepositoryImpl implements UserRepository {
         User tempUser = getUser(userId);
         List<Integer> tempList = tempUser.getSubscribedEvents();
         tempList.remove(eventId);
-        tempUser.setSubscribedEvents(tempList);
-        //todo podlinkować do funkcji Agaty: Users Update filtr(id = id)
-        return false;
+
+        updateUser(userId,
+                tempUser.getName(),
+                tempUser.getMail(),
+                tempUser.getPassword(),
+                tempUser.getPermissionLevel(),
+                tempList,
+                tempUser.getSubscribedCategories());
+        return true;
     }
 
     @Override
@@ -122,9 +134,15 @@ public class UserRepositoryImpl implements UserRepository {
         User tempUser = getUser(userId);
         List<Integer> tempList = tempUser.getSubscribedCategories();
         tempList.remove(categoryId);
-        tempUser.setSubscribedCategories(tempList);
-        //todo podlinkować do funkcji Agaty: Users Update filtr(id = id)
-        return false;
+
+        updateUser(userId,
+                tempUser.getName(),
+                tempUser.getMail(),
+                tempUser.getPassword(),
+                tempUser.getPermissionLevel(),
+                tempUser.getSubscribedEvents(),
+                tempList);
+        return true;
     }
 
     @Override
@@ -172,7 +190,14 @@ public class UserRepositoryImpl implements UserRepository {
     @Override
     public boolean changePermissionLevel(int id, PermissionLevel permissionLevel) throws UserNotFoundEx {
         User tempUser = getUser(id);
-        tempUser.setPermissionLevel(permissionLevel);
+
+        updateUser(id,
+                tempUser.getName(),
+                tempUser.getMail(),
+                tempUser.getPassword(),
+                permissionLevel,
+                tempUser.getSubscribedEvents(),
+                tempUser.getSubscribedCategories());
         return true;
     }
 
