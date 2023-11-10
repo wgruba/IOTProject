@@ -51,4 +51,12 @@ public class EventController {
             throw new RuntimeException(e);
         }
     }
+
+    public List<Event> getUsersSubscribedEvents(List<Integer> usersEventList) {
+        return impl.getUsersSubscribedEvents(usersEventList);
+    }
+
+    public Object getEventsByOrganiser(int id) {
+        return impl.getEventsByOrganiser(id);
+    }
 }

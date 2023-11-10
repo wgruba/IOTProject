@@ -1,6 +1,8 @@
 package com.example.springboot.User;
 
+import com.example.springboot.Category.Category;
 import com.example.springboot.Category.CategoryController;
+import com.example.springboot.Category.Exceptions.CategoryNotFoundEx;
 import com.example.springboot.Event.AgeGroup;
 import com.example.springboot.Event.Event;
 import com.example.springboot.Event.EventController;
@@ -84,10 +86,29 @@ public class UserController {
         }
     }
 
-    @GetMapping("users/{userId}")
-    public EntityModel<List<Event>> getClientEvents(@PathVariable int userId){
-        return null;
+    @GetMapping("users/{userId}/myEvents")
+    public EntityModel<List<Event>> getEventsOrganisedByUser(@PathVariable int userId){
+        return EntityModel.of((List<Event>) eventController.getEventsByOrganiser(userId));
     }
-    
+
+    @GetMapping("users/{userId}/subscribedEvents")
+    public EntityModel<List<Event>> getClientEvents(@PathVariable int userId){
+        try {
+            return EntityModel.of(eventController.getUsersSubscribedEvents(impl.getUsersEventList(userId)));
+        } catch (UserNotFoundEx e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @GetMapping("users/{userId}/subscribedCategories")
+    public EntityModel<List<Category>> getClientCategories(@PathVariable int userId){
+        try {
+            return EntityModel.of(categoryController.getUsersSubscribedCategories(impl.getUsersEventList(userId)));
+        } catch (UserNotFoundEx e) {
+            throw new RuntimeException(e);
+        } catch (CategoryNotFoundEx e) {
+            throw new RuntimeException(e);
+        }
+    }
 
 }
