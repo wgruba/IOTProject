@@ -17,25 +17,25 @@ public class CategoryRepositoryImpl implements CategoryRepository{
 
     @Override
     public List<Category> getAllParentCategories() {
-        //todo podlinkować do funkcji Agaty: Categories Read filtr (isParentCategory = true)
+        //todo podlinkować do funkcji Agaty: Categories Read filtr eq("isParentCategory" = true)
         return null;
     }
 
     @Override
     public List<Category> getAllSubCategoriesofParentCategory(int id) throws CategoryNotFoundEx, CategoryIsNotParentCategory {
-        //todo podlinkować do funkcji Agaty: Categories Read filtr (parentCategory = id)
+        //todo podlinkować do funkcji Agaty: Categories Read filtr eq("parentCategory" = id)
         return null;
     }
 
     @Override
     public List<Category> getSubscribedCategories(List<Integer> ids) throws CategoryNotFoundEx {
-        //todo podlinkować do funkcji Agaty: Categories Read filtr ?
+        //todo podlinkować do funkcji Agaty: Categories Read filtr in("id", ids)
         return null;
     }
 
     @Override
     public List<Category> getEventCategories(List<Integer> ids) throws CategoryNotFoundEx {
-        //todo podlinkować do funkcji Agaty: Categories Read filtr ?
+        //todo podlinkować do funkcji Agaty: Categories Read filtr in("id", ids)
         return null;
     }
 
@@ -57,13 +57,13 @@ public class CategoryRepositoryImpl implements CategoryRepository{
                                    boolean isParentCategory,
                                    List<Integer> subcategories,
                                    int parentId) throws CategoryNotFoundEx {
-        //todo podlinkować do funkcji Agaty: Categories Update filtr (id = id)
+        //todo podlinkować do funkcji Agaty: Categories Update filtr eq("id" = id)
         return null;
     }
 
     @Override
     public boolean deleteCategory(int id) throws CategoryNotFoundEx {
-        //todo podlinkować do funkcji Agaty: Categories Delete filtr (id = id)
+        //todo podlinkować do funkcji Agaty: Categories Delete filtr eq("id" = id)
         return false;
     }
 
@@ -95,7 +95,7 @@ public class CategoryRepositoryImpl implements CategoryRepository{
         List<Integer> tempList = tempCategory.getSubcategories();
         tempList.add(subCategoryId);
 
-        updateCategory(tempCategory.getId(),
+        updateCategory(tempCategory.get_id(),
                 tempCategory.getName(),
                 tempCategory.isParentCategory(),
                 tempList,
@@ -104,7 +104,7 @@ public class CategoryRepositoryImpl implements CategoryRepository{
 
         tempCategory = getCategory(subCategoryId);
 
-        updateCategory(tempCategory.getId(),
+        updateCategory(tempCategory.get_id(),
                 tempCategory.getName(),
                 false,
                 tempCategory.getSubcategories(),
@@ -119,7 +119,7 @@ public class CategoryRepositoryImpl implements CategoryRepository{
         List<Integer> tempList = tempCategory.getSubcategories();
         tempList.remove(subCategoryId);
 
-        updateCategory(tempCategory.getId(),
+        updateCategory(tempCategory.get_id(),
                 tempCategory.getName(),
                 tempCategory.isParentCategory(),
                 tempList,
@@ -128,7 +128,7 @@ public class CategoryRepositoryImpl implements CategoryRepository{
 
         tempCategory = getCategory(subCategoryId);
 
-        updateCategory(tempCategory.getId(),
+        updateCategory(tempCategory.get_id(),
                 tempCategory.getName(),
                 true,
                 tempCategory.getSubcategories(),

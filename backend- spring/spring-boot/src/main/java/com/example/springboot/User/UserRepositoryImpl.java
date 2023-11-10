@@ -16,19 +16,19 @@ public class UserRepositoryImpl implements UserRepository {
 
     @Override
     public List<User> getUsersSubscribedToEvent(List<Integer> ids) {
-        //todo podlinkować do funkcji Agaty: Users Read filtr ?
+        //todo podlinkować do funkcji Agaty: Users Read filtr in("id", ids)
         return null;
     }
 
     @Override
     public User getUser(int id) throws UserNotFoundEx {
-        //todo podlinkować do funkcji Agaty: Users Read filtr(id = id)
+        //todo podlinkować do funkcji Agaty: Users Read filtr eq("id" = id)
         return null;
     }
 
     @Override
     public User getUser(String nameOrMail) throws UserNotFoundEx {
-        //todo podlinkować do funkcji Agaty: Users Read filtr(mail = nameOrMail || name = nameOrMail)
+        //todo podlinkować do funkcji Agaty: Users Read filtr or(eq("mail" = nameOrMail), eq("name" = nameOrMail)
         return null;
     }
 
@@ -41,33 +41,33 @@ public class UserRepositoryImpl implements UserRepository {
                              List<Integer> subscribedEvents,
                              List<Integer> subscribedCategories)
             throws UserNotFoundEx {
-        //todo podlinkować do funkcji Agaty: Users Update filtr(id = id)
+        //todo podlinkować do funkcji Agaty: Users Update filtr eq("id" = id)
         return null;
     }
 
     @Override
     public boolean deleteUser(int id) throws UserNotFoundEx {
-        //todo podlinkować do funkcji Agaty: Users Delete filtr(id = id)
+        //todo podlinkować do funkcji Agaty: Users Delete filtr eq("id" = id)
         return true;
     }
 
     @Override
-    public User addUser(int id,
-                          String name,
-                          String mail,
-                          String password,
-                          PermissionLevel permissionLevel,
-                          List<Integer> subscribedEvents,
-                          List<Integer> subscribedCategories)
+    public boolean addUser(int id,
+                           String name,
+                           String mail,
+                           String password,
+                           PermissionLevel permissionLevel,
+                           List<Integer> subscribedEvents,
+                           List<Integer> subscribedCategories)
             throws UserExistsEx {
         //todo podlinkować do funkcji Agaty: Users Create
-        return null;
+        return false;
     }
 
     @Override
-    public User addUser(User user) throws UserExistsEx {
+    public boolean addUser(User user) throws UserExistsEx {
         //todo podlinkować do funkcji Agaty: Users Create
-        return null;
+        return false;
     }
 
     @Override

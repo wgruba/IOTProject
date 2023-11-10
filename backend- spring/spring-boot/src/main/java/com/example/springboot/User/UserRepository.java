@@ -14,8 +14,8 @@ public interface UserRepository {
     User getUser(String nameOrMail) throws UserNotFoundEx;
     User updateUser(int id, String name, String mail, String password, PermissionLevel permissionLevel, List<Integer> subscribedEvents, List<Integer> subscribedCategories) throws UserNotFoundEx;
     boolean deleteUser(int id) throws UserNotFoundEx;
-    User addUser(int id, String name, String mail, String password, PermissionLevel permissionLevel, List<Integer> subscribedEvents, List<Integer> subscribedCategories) throws UserExistsEx;
-    User addUser(User user) throws UserExistsEx;
+    boolean addUser(int id, String name, String mail, String password, PermissionLevel permissionLevel, List<Integer> subscribedEvents, List<Integer> subscribedCategories) throws UserExistsEx;
+    boolean addUser(User user) throws UserExistsEx;
 
 
     int countUsers();

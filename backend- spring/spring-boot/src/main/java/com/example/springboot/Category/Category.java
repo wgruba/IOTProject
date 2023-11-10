@@ -3,7 +3,7 @@ package com.example.springboot.Category;
 
 import java.util.List;
 public class Category {
-    private int id;
+    private int _id;
     private String name;
     private boolean isParentCategory;
     private List<Integer> subcategories;
@@ -12,20 +12,20 @@ public class Category {
     public Category() {
     }
 
-    public Category(int id, String name, boolean isParentCategory, List<Integer> subcategories, int parentId) {
-        this.id = id;
+    public Category(int _id, String name, boolean isParentCategory, List<Integer> subcategories, int parentId) {
+        this._id = _id;
         this.name = name;
         this.isParentCategory = isParentCategory;
         this.subcategories = subcategories;
         this.parentId = parentId;
     }
 
-    public int getId() {
-        return id;
+    public int get_id() {
+        return _id;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void set_id(int _id) {
+        this._id = _id;
     }
 
     public String getName() {

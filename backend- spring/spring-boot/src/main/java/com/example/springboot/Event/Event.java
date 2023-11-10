@@ -4,7 +4,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 public class Event {
-    private int id;
+    private int _id;
     private String name;
     private int organizer;
     private List<Integer> categoryList;
@@ -25,8 +25,8 @@ public class Event {
     public Event() {
     }
 
-    public Event(int id, String name, int organizer, List<Integer> categoryList, List<Integer> clientList, String description, int size, String localisation, boolean isFree, boolean isReservationNecessary, boolean isLive, AgeGroup ageGroup, LocalDateTime startDate, LocalDateTime endDate, EventStatus eventStatus) {
-        this.id = id;
+    public Event(int _id, String name, int organizer, List<Integer> categoryList, List<Integer> clientList, String description, int size, String localisation, boolean isFree, boolean isReservationNecessary, boolean isLive, AgeGroup ageGroup, LocalDateTime startDate, LocalDateTime endDate, EventStatus eventStatus) {
+        this._id = _id;
         this.name = name;
         this.organizer = organizer;
         this.categoryList = categoryList;
@@ -43,12 +43,12 @@ public class Event {
         this.eventStatus = eventStatus;
     }
 
-    public int getId() {
-        return id;
+    public int get_id() {
+        return _id;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void set_id(int _id) {
+        this._id = _id;
     }
 
     public String getName() {

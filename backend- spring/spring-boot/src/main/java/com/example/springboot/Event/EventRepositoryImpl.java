@@ -22,19 +22,19 @@ public class EventRepositoryImpl implements EventRepository{
 
     @Override
     public List<Event> getUsersSubscribedEvents(List<Integer> ids) {
-        //todo podlinkować do funkcji Agaty: Events Read filtr ?
+        //todo podlinkować do funkcji Agaty: Events Read filtr in("id", ids)
         return null;
     }
 
     @Override
     public List<Event> getEditedEvents() {
-        //todo podlinkować do funkcji Agaty: Events Read filtr (status = EDITED)
+        //todo podlinkować do funkcji Agaty: Events Read filtr eq("status" = EventStatus.EDITED)
         return null;
     }
 
     @Override
     public List<Event> getEventsFromCategory(int id) {
-        //todo podlinkować do funkcji Agaty: Events Read filtr ?
+        //todo podlinkować do funkcji Agaty: Events Read filtr elemMatch("categoryList", Bson eq(id))
         return null;
     }
 
@@ -72,34 +72,34 @@ public class EventRepositoryImpl implements EventRepository{
 
     @Override
     public boolean deleteEvent(int id) throws EventNotFoundEx {
-        //todo podlinkować do funkcji Agaty: Event Delete filtr (name = name)
+        //todo podlinkować do funkcji Agaty: Event Delete filtr eq("name" = name)
         return false;
     }
 
     @Override
-    public Event addEvent(int id,
-                          String name,
-                          int organizer,
-                          List<Integer> categoryList,
-                          List<Integer> clientList,
-                          String description,
-                          int size,
-                          String localisation,
-                          boolean isFree,
-                          boolean isReservationNecessary,
-                          boolean isLive,
-                          AgeGroup ageGroup,
-                          LocalDateTime startDate,
-                          LocalDateTime endDate,
-                          EventStatus eventStatus) throws EventExistsEx {
+    public boolean addEvent(int id,
+                            String name,
+                            int organizer,
+                            List<Integer> categoryList,
+                            List<Integer> clientList,
+                            String description,
+                            int size,
+                            String localisation,
+                            boolean isFree,
+                            boolean isReservationNecessary,
+                            boolean isLive,
+                            AgeGroup ageGroup,
+                            LocalDateTime startDate,
+                            LocalDateTime endDate,
+                            EventStatus eventStatus) throws EventExistsEx {
         //todo podlinkować do funkcji Agaty: Event Create
-        return null;
+        return false;
     }
 
     @Override
-    public Event addEvent(Event event) throws EventExistsEx {
+    public boolean addEvent(Event event) throws EventExistsEx {
         //todo podlinkować do funkcji Agaty: Event Create
-        return null;
+        return false;
     }
 
     @Override
@@ -240,5 +240,23 @@ public class EventRepositoryImpl implements EventRepository{
                 tempEventEdited.getEndDate(),
                 EventStatus.ACCEPTED);
         return false;
+    }
+
+    @Override
+    public List<Event> getFilteredEvents(String name,
+                                         int categoryId,
+                                         int sizeMin,
+                                         int sizeMax,
+                                         String localisation,
+                                         int optionalBooleanValues,
+                                         boolean isFree,
+                                         boolean isReservationNecessary,
+                                         boolean isLive,
+                                         AgeGroup ageGroupMin,
+                                         AgeGroup ageGroupMax,
+                                         LocalDateTime startDate,
+                                         LocalDateTime endDate){
+        //todo podlinkować funkcję Agaty; Event R w zależności czy jakieś wartości nie są puste odpowiedni filtr
+        return null;
     }
 }
