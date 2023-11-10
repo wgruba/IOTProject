@@ -16,9 +16,9 @@ public interface EventRepository {
     //CRUD
     Event getEvent(int id) throws EventNotFoundEx;
     Event getEvent(String name) throws EventNotFoundEx;
-    Event updateEvent(int id, String name, int organizer, List<Integer> categoryList, List<Integer> clientList, String description, int size, String localisation, boolean isFree, boolean isReservationNecessary, boolean isLive, AgeGroup ageGroup, LocalDateTime startDate, LocalDateTime endDate, EventStatus eventStatus) throws EventNotFoundEx;
+    Event updateEvent(int id, String name, int organizer, List<Integer> categoryList, List<Integer> clientList, String description, int size, String localisation, boolean isFree, boolean isReservationNecessary, AgeGroup ageGroup, LocalDateTime startDate, LocalDateTime endDate, EventStatus eventStatus) throws EventNotFoundEx;
     boolean deleteEvent(int id) throws EventNotFoundEx;
-    boolean addEvent(int id, String name, int organizer, List<Integer> categoryList, List<Integer> clientList, String description, int size, String localisation, boolean isFree, boolean isReservationNecessary, boolean isLive, AgeGroup ageGroup, LocalDateTime startDate, LocalDateTime endDate, EventStatus eventStatus) throws EventExistsEx;
+    boolean addEvent(int id, String name, int organizer, List<Integer> categoryList, List<Integer> clientList, String description, int size, String localisation, boolean isFree, boolean isReservationNecessary, AgeGroup ageGroup, LocalDateTime startDate, LocalDateTime endDate, EventStatus eventStatus) throws EventExistsEx;
     boolean addEvent(Event event) throws EventExistsEx;
 
 
@@ -38,14 +38,14 @@ public interface EventRepository {
                                   int sizeMin,
                                   int sizeMax,
                                   String localisation,
-                                  int optionalBooleanValues,
-                                  boolean isFree,
-                                  boolean isReservationNecessary,
-                                  boolean isLive,
+                                  int isFree,
+                                  int isReservationNecessary,
                                   AgeGroup ageGroupMin,
-                                  AgeGroup ageGroupMax,
                                   LocalDateTime startDate,
-                                  LocalDateTime endDate);
+                                  LocalDateTime endDate,
+                                  boolean isFullEventIncludedInDate);
 
+    boolean isEventActive(int id) throws EventNotFoundEx;
 
+    boolean isFullEventIncludedInDate(int id, LocalDateTime startDate, LocalDateTime endDate) throws EventNotFoundEx;
 }

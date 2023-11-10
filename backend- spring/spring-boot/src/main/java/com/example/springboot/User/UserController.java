@@ -2,8 +2,8 @@ package com.example.springboot.User;
 
 import com.example.springboot.Category.CategoryController;
 import com.example.springboot.Event.AgeGroup;
+import com.example.springboot.Event.Event;
 import com.example.springboot.Event.EventController;
-import com.example.springboot.Event.EventStatus;
 import com.example.springboot.User.Exceptions.UserExistsEx;
 import com.example.springboot.User.Exceptions.UserNotFoundEx;
 import org.springframework.hateoas.EntityModel;
@@ -30,6 +30,11 @@ public class UserController {
 //        }
 //    }
 
+    @GetMapping
+    public EntityModel<List<Event>> getRandomEvents(){
+        //todo
+        return null;
+    }
     @GetMapping("users/login")
     public EntityModel<Boolean> tryToLoginUser(String loginOrMail, String password){
         try {
@@ -42,7 +47,7 @@ public class UserController {
     @GetMapping("users/register")
     public EntityModel<Boolean> tryToRegisterUser(int id, String name, String mail, String password){
         try {
-            return EntityModel.of(impl.addUser(id, name, mail, password, PermissionLevel.UNVERIFIED_USER, new ArrayList<Integer>(), new ArrayList<Integer>()));
+            return EntityModel.of(impl.addUser(id, name, mail, password, PermissionLevel.UNVERIFIED_USER, new ArrayList<>(), new ArrayList<>()));
         } catch (UserExistsEx e) {
             throw new RuntimeException(e);
         }
@@ -58,12 +63,11 @@ public class UserController {
                                             String localisation,
                                             boolean isFree,
                                             boolean isReservationNecessary,
-                                            boolean isLive,
                                             AgeGroup ageGroup,
                                             LocalDateTime startDate,
                                             LocalDateTime endDate){
         try {
-            return EntityModel.of(eventController.createEvent(id,
+            return EntityModel.of(Boolean.TRUE.equals(eventController.createEvent(id,
                     name,
                     userId,
                     categoryList,
@@ -72,48 +76,18 @@ public class UserController {
                     localisation,
                     isFree,
                     isReservationNecessary,
-                    isLive,
                     ageGroup,
                     startDate,
-                    endDate).getContent() && impl.subscribeEvent(userId, id));
+                    endDate).getContent()) && impl.subscribeEvent(userId, id));
         } catch (UserNotFoundEx e) {
             throw new RuntimeException(e);
         }
     }
 
-    @GetMapping("users/{sea}")
-    public EntityModel<Boolean> get(@PathVariable int userId,
-                                            int id,
-                                            String name,
-                                            List<Integer> categoryList,
-                                            String description,
-                                            int size,
-                                            String localisation,
-                                            boolean isFree,
-                                            boolean isReservationNecessary,
-                                            boolean isLive,
-                                            AgeGroup ageGroup,
-                                            LocalDateTime startDate,
-                                            LocalDateTime endDate){
-        try {
-            return EntityModel.of(eventController.createEvent(id,
-                    name,
-                    userId,
-                    categoryList,
-                    description,
-                    size,
-                    localisation,
-                    isFree,
-                    isReservationNecessary,
-                    isLive,
-                    ageGroup,
-                    startDate,
-                    endDate).getContent() && impl.subscribeEvent(userId, id));
-        } catch (UserNotFoundEx e) {
-            throw new RuntimeException(e);
-        }
+    @GetMapping("users/{userId}")
+    public EntityModel<List<Event>> getClientEvents(@PathVariable int userId){
+        return null;
     }
-
-
+    
 
 }

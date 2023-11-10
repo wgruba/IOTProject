@@ -61,7 +61,6 @@ public class EventRepositoryImpl implements EventRepository{
                              String localisation,
                              boolean isFree,
                              boolean isReservationNecessary,
-                             boolean isLive,
                              AgeGroup ageGroup,
                              LocalDateTime startDate,
                              LocalDateTime endDate,
@@ -87,7 +86,6 @@ public class EventRepositoryImpl implements EventRepository{
                             String localisation,
                             boolean isFree,
                             boolean isReservationNecessary,
-                            boolean isLive,
                             AgeGroup ageGroup,
                             LocalDateTime startDate,
                             LocalDateTime endDate,
@@ -118,7 +116,6 @@ public class EventRepositoryImpl implements EventRepository{
                 tempEvent.getLocalisation(),
                 tempEvent.isFree(),
                 tempEvent.isReservationNecessary(),
-                tempEvent.isLive(),
                 tempEvent.getAgeGroup(),
                 tempEvent.getStartDate(),
                 tempEvent.getEndDate(),
@@ -142,7 +139,6 @@ public class EventRepositoryImpl implements EventRepository{
                 tempEvent.getLocalisation(),
                 tempEvent.isFree(),
                 tempEvent.isReservationNecessary(),
-                tempEvent.isLive(),
                 tempEvent.getAgeGroup(),
                 tempEvent.getStartDate(),
                 tempEvent.getEndDate(),
@@ -166,7 +162,6 @@ public class EventRepositoryImpl implements EventRepository{
                 tempEvent.getLocalisation(),
                 tempEvent.isFree(),
                 tempEvent.isReservationNecessary(),
-                tempEvent.isLive(),
                 tempEvent.getAgeGroup(),
                 tempEvent.getStartDate(),
                 tempEvent.getEndDate(),
@@ -190,7 +185,6 @@ public class EventRepositoryImpl implements EventRepository{
                 tempEvent.getLocalisation(),
                 tempEvent.isFree(),
                 tempEvent.isReservationNecessary(),
-                tempEvent.isLive(),
                 tempEvent.getAgeGroup(),
                 tempEvent.getStartDate(),
                 tempEvent.getEndDate(),
@@ -212,7 +206,6 @@ public class EventRepositoryImpl implements EventRepository{
                 tempEvent.getLocalisation(),
                 tempEvent.isFree(),
                 tempEvent.isReservationNecessary(),
-                tempEvent.isLive(),
                 tempEvent.getAgeGroup(),
                 tempEvent.getStartDate(),
                 tempEvent.getEndDate(),
@@ -234,7 +227,6 @@ public class EventRepositoryImpl implements EventRepository{
                 tempEventEdited.getLocalisation(),
                 tempEventEdited.isFree(),
                 tempEventEdited.isReservationNecessary(),
-                tempEventEdited.isLive(),
                 tempEventEdited.getAgeGroup(),
                 tempEventEdited.getStartDate(),
                 tempEventEdited.getEndDate(),
@@ -248,15 +240,25 @@ public class EventRepositoryImpl implements EventRepository{
                                          int sizeMin,
                                          int sizeMax,
                                          String localisation,
-                                         int optionalBooleanValues,
-                                         boolean isFree,
-                                         boolean isReservationNecessary,
-                                         boolean isLive,
+                                         int isFree,
+                                         int isReservationNecessary,
                                          AgeGroup ageGroupMin,
-                                         AgeGroup ageGroupMax,
                                          LocalDateTime startDate,
-                                         LocalDateTime endDate){
+                                         LocalDateTime endDate,
+                                         boolean isFullEventIncludedInDate){
         //todo podlinkować funkcję Agaty; Event R w zależności czy jakieś wartości nie są puste odpowiedni filtr
         return null;
+    }
+
+    @Override
+    public boolean isEventActive(int id) throws EventNotFoundEx {
+        Event tempEvent = getEvent(id);
+        LocalDateTime now = LocalDateTime.now();
+        return now.isAfter(tempEvent.getStartDate()) && now.isBefore(tempEvent.getEndDate());
+    }
+
+    public boolean isFullEventIncludedInDate(int id, LocalDateTime startDate, LocalDateTime endDate) throws EventNotFoundEx {
+        Event tempEvent = getEvent(id);
+        return startDate.isAfter(tempEvent.getStartDate()) && endDate.isBefore(tempEvent.getEndDate());
     }
 }

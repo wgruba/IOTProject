@@ -16,7 +16,6 @@ public class Event {
     private String localisation;
     private boolean isFree; //not paid
     private boolean isReservationNecessary;
-    private boolean isLive; //not online
     private AgeGroup ageGroup;
     private LocalDateTime startDate;
     private LocalDateTime endDate;
@@ -25,7 +24,7 @@ public class Event {
     public Event() {
     }
 
-    public Event(int _id, String name, int organizer, List<Integer> categoryList, List<Integer> clientList, String description, int size, String localisation, boolean isFree, boolean isReservationNecessary, boolean isLive, AgeGroup ageGroup, LocalDateTime startDate, LocalDateTime endDate, EventStatus eventStatus) {
+    public Event(int _id, String name, int organizer, List<Integer> categoryList, List<Integer> clientList, String description, int size, String localisation, boolean isFree, boolean isReservationNecessary, AgeGroup ageGroup, LocalDateTime startDate, LocalDateTime endDate, EventStatus eventStatus) {
         this._id = _id;
         this.name = name;
         this.organizer = organizer;
@@ -36,7 +35,6 @@ public class Event {
         this.localisation = localisation;
         this.isFree = isFree;
         this.isReservationNecessary = isReservationNecessary;
-        this.isLive = isLive;
         this.ageGroup = ageGroup;
         this.startDate = startDate;
         this.endDate = endDate;
@@ -121,14 +119,6 @@ public class Event {
 
     public void setReservationNecessary(boolean reservationNecessary) {
         isReservationNecessary = reservationNecessary;
-    }
-
-    public boolean isLive() {
-        return isLive;
-    }
-
-    public void setLive(boolean live) {
-        isLive = live;
     }
 
     public AgeGroup getAgeGroup() {

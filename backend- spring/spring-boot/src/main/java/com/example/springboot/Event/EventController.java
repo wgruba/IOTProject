@@ -26,7 +26,6 @@ public class EventController {
                                                             String localisation,
                                                             boolean isFree,
                                                             boolean isReservationNecessary,
-                                                            boolean isLive,
                                                             AgeGroup ageGroup,
                                                             LocalDateTime startDate,
                                                             LocalDateTime endDate)
@@ -42,7 +41,6 @@ public class EventController {
                     localisation,
                     isFree,
                     isReservationNecessary,
-                    isLive,
                     ageGroup,
                     startDate,
                     endDate,
