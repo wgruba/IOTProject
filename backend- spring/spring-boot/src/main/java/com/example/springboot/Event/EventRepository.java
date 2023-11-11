@@ -12,13 +12,50 @@ public interface EventRepository {
     List<Event> getUsersSubscribedEvents(List<Integer> ids);
     List<Event> getEditedEvents();
     List<Event> getEventsFromCategory(int id);
+    List<Event> getFilteredEvents(String name,
+                                  int categoryId,
+                                  int sizeMin,
+                                  int sizeMax,
+                                  String localisation,
+                                  int isFree,
+                                  int isReservationNecessary,
+                                  String ageGroupMin,
+                                  LocalDateTime startDate,
+                                  LocalDateTime endDate,
+                                  boolean isFullEventIncludedInDate);
 
     //CRUD
     Event getEvent(int id) throws EventNotFoundEx;
     Event getEvent(String name) throws EventNotFoundEx;
-    Event updateEvent(int id, String name, int organizer, List<Integer> categoryList, List<Integer> clientList, String description, int size, String localisation, boolean isFree, boolean isReservationNecessary, AgeGroup ageGroup, LocalDateTime startDate, LocalDateTime endDate, EventStatus eventStatus) throws EventNotFoundEx;
+    Event updateEvent(int id,
+                      String name,
+                      int organizer,
+                      List<Integer> categoryList,
+                      List<Integer> clientList,
+                      String description,
+                      int size,
+                      String localisation,
+                      boolean isFree,
+                      boolean isReservationNecessary,
+                      AgeGroup ageGroup,
+                      LocalDateTime startDate,
+                      LocalDateTime endDate,
+                      EventStatus eventStatus) throws EventNotFoundEx;
     boolean deleteEvent(int id) throws EventNotFoundEx;
-    boolean addEvent(int id, String name, int organizer, List<Integer> categoryList, List<Integer> clientList, String description, int size, String localisation, boolean isFree, boolean isReservationNecessary, AgeGroup ageGroup, LocalDateTime startDate, LocalDateTime endDate, EventStatus eventStatus) throws EventExistsEx;
+    boolean addEvent(int id,
+                     String name,
+                     int organizer,
+                     List<Integer> categoryList,
+                     List<Integer> clientList,
+                     String description,
+                     int size,
+                     String localisation,
+                     boolean isFree,
+                     boolean isReservationNecessary,
+                     AgeGroup ageGroup,
+                     LocalDateTime startDate,
+                     LocalDateTime endDate,
+                     EventStatus eventStatus) throws EventExistsEx;
     boolean addEvent(Event event) throws EventExistsEx;
 
 
@@ -32,19 +69,6 @@ public interface EventRepository {
     //manage events' updates
     boolean changeEventStatus(int eventId, EventStatus eventStatus) throws EventNotFoundEx;
     boolean verifyEditedEvent(int eventId, int event2Id) throws EventNotFoundEx;
-
-    List<Event> getFilteredEvents(String name,
-                                  int categoryId,
-                                  int sizeMin,
-                                  int sizeMax,
-                                  String localisation,
-                                  int isFree,
-                                  int isReservationNecessary,
-                                  AgeGroup ageGroupMin,
-                                  LocalDateTime startDate,
-                                  LocalDateTime endDate,
-                                  boolean isFullEventIncludedInDate);
-
     boolean isEventActive(int id) throws EventNotFoundEx;
 
     boolean isFullEventIncludedInDate(int id, LocalDateTime startDate, LocalDateTime endDate) throws EventNotFoundEx;

@@ -56,7 +56,21 @@ public class EventController {
         return impl.getUsersSubscribedEvents(usersEventList);
     }
 
-    public Object getEventsByOrganiser(int id) {
+    public List<Event> getEventsByOrganiser(int id) {
         return impl.getEventsByOrganiser(id);
+    }
+
+    public EntityModel<List<Event>> getSearchedEvents(String name,
+                                                                   int categoryId,
+                                                                   int sizeMin,
+                                                                   int sizeMax,
+                                                                   String localisation,
+                                                                   int isFree,
+                                                                   int isReservationNecessary,
+                                                                   AgeGroup ageGroupMin,
+                                                                   LocalDateTime startDate,
+                                                                   LocalDateTime endDate,
+                                                                   boolean isFullEventIncludedInDate){
+
     }
 }

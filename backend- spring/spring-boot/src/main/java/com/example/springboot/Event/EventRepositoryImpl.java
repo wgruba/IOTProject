@@ -39,6 +39,39 @@ public class EventRepositoryImpl implements EventRepository{
     }
 
     @Override
+    public List<Event> getFilteredEvents(String name,
+                                         int categoryId,
+                                         int sizeMin,
+                                         int sizeMax,
+                                         String localisation,
+                                         int isFree,                // 0-false; 1-true; 2- both
+                                         int isReservationNecessary,// 0-false; 1-true; 2- both
+                                         String ageGroupMin,
+                                         LocalDateTime startDate,
+                                         LocalDateTime endDate,
+                                         boolean isFullEventIncludedInDate){
+        //todo podlinkować funkcję Agaty; Event R filtr:
+        //and(
+        // or(name.equals(""), eq("name", name)),
+        // gte("size", sizeMin),
+        // lte("size", sizeMax),
+        // or(localisation.equals(""), eq("localisation", localisation)),
+        // or(isFree == 2, and(isFree != 2, eq("isFree", isFree))),
+        // or(isReservationNecessary == 2, and(isReservationNecessary != 2, eq("isReservationNecessary", isReservationNecessary))),
+
+        //  gte("ageGroup", ageGroupMin),
+        //  or(
+        //    ageGroupMin.equals("FAMILY_FRIENDLY"),
+        //    and(ageGroupMin.equals("OVER12"), ne("ageGroup", "FAMILY_FRIENDLY")),
+        //    and(ageGroupMin.equals("OVER16"), and(ne("ageGroup", "FAMILY_FRIENDLY"), ne("ageGroup", "OVER12"))),
+        //    and(ageGroupMin.equals("OVER18"), eq("ageGroup", "OVER18")))
+        //  or(
+        //    and(isFullEventIncludedInDate, gte("startDate", startDate), lte("startDate", endDate), gte("endDate", startDate), lte("endDate", endDate)),
+        //    and(!isFullEventIncludedInDate, or(and(gte("startDate", startDate), lte("startDate", endDate)), and(gte("endDate", startDate), lte("endDate", endDate)), and(lte("startDate", startDate), gte("endDate", endDate))))))
+        return null;
+    }
+
+    @Override
     public Event getEvent(int id) throws EventNotFoundEx {
         //todo podlinkować do funkcji Agaty: Event Read (id = id)
         return null;
@@ -232,22 +265,6 @@ public class EventRepositoryImpl implements EventRepository{
                 tempEventEdited.getEndDate(),
                 EventStatus.ACCEPTED);
         return false;
-    }
-
-    @Override
-    public List<Event> getFilteredEvents(String name,
-                                         int categoryId,
-                                         int sizeMin,
-                                         int sizeMax,
-                                         String localisation,
-                                         int isFree,
-                                         int isReservationNecessary,
-                                         AgeGroup ageGroupMin,
-                                         LocalDateTime startDate,
-                                         LocalDateTime endDate,
-                                         boolean isFullEventIncludedInDate){
-        //todo podlinkować funkcję Agaty; Event R w zależności czy jakieś wartości nie są puste odpowiedni filtr
-        return null;
     }
 
     @Override
