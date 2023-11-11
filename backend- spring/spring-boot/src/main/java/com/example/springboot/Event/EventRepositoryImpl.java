@@ -10,31 +10,36 @@ public class EventRepositoryImpl implements EventRepository{
     public EventRepositoryImpl(){}
     @Override
     public List<Event> getAllEvents() {
-        //todo podlinkować do funkcji Agaty: Events Read bez_filtra
+        System.out.println("getAllEvents");
+        //todo link to Agata's function: Events Read bez_filtra
         return null;
     }
 
     @Override
     public List<Event> getEventsByOrganiser(int organiserId) {
-        //todo podlinkować do funkcji Agaty: Events Read filrt (idOrganizatora = id)
+        System.out.println("getEventsByOrganiser: " + organiserId);
+        //todo link to Agata's function: Events Read filrt (idOrganizatora = id)
         return null;
     }
 
     @Override
     public List<Event> getUsersSubscribedEvents(List<Integer> ids) {
-        //todo podlinkować do funkcji Agaty: Events Read filtr in("id", ids)
+        System.out.println("getUsersSubscribedEvents: " + ids);
+        //todo link to Agata's function: Events Read filtr in("id", ids)
         return null;
     }
 
     @Override
     public List<Event> getEditedEvents() {
-        //todo podlinkować do funkcji Agaty: Events Read filtr eq("status" = EventStatus.EDITED)
+        System.out.println("getEditedEvents");
+        //todo link to Agata's function: Events Read filtr eq("status" = EventStatus.EDITED)
         return null;
     }
 
     @Override
     public List<Event> getEventsFromCategory(int id) {
-        //todo podlinkować do funkcji Agaty: Events Read filtr elemMatch("categoryList", Bson eq(id))
+        System.out.println("getEventsFromCategory: " + id);
+        //todo link to Agata's function: Events Read filtr elemMatch("categoryList", Bson eq(id))
         return null;
     }
 
@@ -50,6 +55,7 @@ public class EventRepositoryImpl implements EventRepository{
                                          LocalDateTime startDate,
                                          LocalDateTime endDate,
                                          boolean isFullEventIncludedInDate){
+        System.out.println("getFilteredEvents: " + name + " " + categoryId + " " + sizeMin + " " + sizeMax + " " + localisation + " " + isFree + " " + isReservationNecessary + " " + ageGroupMin + " " + startDate + " " + endDate + " " + isFullEventIncludedInDate);
         //todo podlinkować funkcję Agaty; Event R filtr:
         //and(
         // or(name.equals(""), eq("name", name)),
@@ -73,13 +79,15 @@ public class EventRepositoryImpl implements EventRepository{
 
     @Override
     public Event getEvent(int id) throws EventNotFoundEx {
-        //todo podlinkować do funkcji Agaty: Event Read (id = id)
+        System.out.println("getEvent: " + id);
+        //todo link to Agata's function: Event Read (id = id)
         return null;
     }
 
     @Override
     public Event getEvent(String name) throws EventNotFoundEx {
-        //todo podlinkować do funkcji Agaty: Event Read (name = name)
+        System.out.println("getEvent: " + name);
+        //todo link to Agata's function: Event Read (name = name)
         return null;
     }
 
@@ -98,13 +106,15 @@ public class EventRepositoryImpl implements EventRepository{
                              LocalDateTime startDate,
                              LocalDateTime endDate,
                              EventStatus eventStatus) throws EventNotFoundEx {
-        //todo podlinkować do funkcji Agaty: Events Update (id = id)
+        System.out.println("updateEvent: " + id + " " + name + " " + categoryList + " " + clientList + " " + description + " " + size + " " + localisation + " " + isFree + " " + isReservationNecessary + " " + ageGroup + " " + startDate + " " + endDate + " " + eventStatus);
+        //todo link to Agata's function: Events Update (id = id)
         return null;
     }
 
     @Override
     public boolean deleteEvent(int id) throws EventNotFoundEx {
-        //todo podlinkować do funkcji Agaty: Event Delete filtr eq("name" = name)
+        System.out.println("deleteEvent: " + id);
+        //todo link to Agata's function: Event Delete filtr eq("name" = name)
         return false;
     }
 
@@ -123,18 +133,21 @@ public class EventRepositoryImpl implements EventRepository{
                             LocalDateTime startDate,
                             LocalDateTime endDate,
                             EventStatus eventStatus) throws EventExistsEx {
-        //todo podlinkować do funkcji Agaty: Event Create
+        System.out.println("addEvent: " + id + " " + name + " " + categoryList + " " + clientList + " " + description + " " + size + " " + localisation + " " + isFree + " " + isReservationNecessary + " " + ageGroup + " " + startDate + " " + endDate + " " + eventStatus);
+        //todo link to Agata's function: Event Create
         return false;
     }
 
     @Override
     public boolean addEvent(Event event) throws EventExistsEx {
-        //todo podlinkować do funkcji Agaty: Event Create
+        System.out.println("addEvent: " + event);
+        //todo link to Agata's function: Event Create
         return false;
     }
 
     @Override
     public boolean subscribeUser(int eventId, int userId) throws EventNotFoundEx {
+        System.out.println("subscribeUser: " + " " + eventId + " " + userId);
         Event tempEvent = getEvent(eventId);
         List<Integer> tempList = tempEvent.getClientList();
         tempList.add(userId);
@@ -158,6 +171,7 @@ public class EventRepositoryImpl implements EventRepository{
 
     @Override
     public boolean subscribeCategory(int eventId, int categoryId) throws EventNotFoundEx {
+        System.out.println("subscribeCategory: " + eventId + " " + categoryId);
         Event tempEvent = getEvent(eventId);
         List<Integer> tempList = tempEvent.getCategoryList();
         tempList.add(categoryId);
@@ -181,6 +195,7 @@ public class EventRepositoryImpl implements EventRepository{
 
     @Override
     public boolean unsubscribeUser(int eventId, int userId) throws EventNotFoundEx {
+        System.out.println("unsubscribeUser: " + eventId + " " + userId);
         Event tempEvent = getEvent(eventId);
         List<Integer> tempList = tempEvent.getClientList();
         tempList.remove(userId);
@@ -204,6 +219,7 @@ public class EventRepositoryImpl implements EventRepository{
 
     @Override
     public boolean unsubscribeCategory(int eventId, int categoryId) throws EventNotFoundEx {
+        System.out.println("unsubscribeCategory: " + " " + eventId + " " + categoryId);
         Event tempEvent = getEvent(eventId);
         List<Integer> tempList = tempEvent.getCategoryList();
         tempList.remove(categoryId);
@@ -227,6 +243,7 @@ public class EventRepositoryImpl implements EventRepository{
 
     @Override
     public boolean changeEventStatus(int eventId, EventStatus eventStatus) throws EventNotFoundEx {
+        System.out.println("changeEventStatus: " + eventId + " " + eventStatus);
         Event tempEvent = getEvent(eventId);
 
         updateEvent(eventId,
@@ -248,6 +265,7 @@ public class EventRepositoryImpl implements EventRepository{
 
     @Override
     public boolean verifyEditedEvent(int eventId, int event2Id) throws EventNotFoundEx {
+        System.out.println("verifyEditedEvent: " + eventId + " " + event2Id);
         Event tempEventEdited = getEvent(event2Id);
 
         updateEvent(eventId,
@@ -269,12 +287,14 @@ public class EventRepositoryImpl implements EventRepository{
 
     @Override
     public boolean isEventActive(int id) throws EventNotFoundEx {
+        System.out.println("isEventActive: " + id);
         Event tempEvent = getEvent(id);
         LocalDateTime now = LocalDateTime.now();
         return now.isAfter(tempEvent.getStartDate()) && now.isBefore(tempEvent.getEndDate());
     }
 
     public boolean isFullEventIncludedInDate(int id, LocalDateTime startDate, LocalDateTime endDate) throws EventNotFoundEx {
+        System.out.println("isFullEventIncludedInDate: " + id + " " + startDate + " " + endDate);
         Event tempEvent = getEvent(id);
         return startDate.isAfter(tempEvent.getStartDate()) && endDate.isBefore(tempEvent.getEndDate());
     }

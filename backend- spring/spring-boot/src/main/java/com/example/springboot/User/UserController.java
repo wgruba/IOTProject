@@ -32,11 +32,19 @@ public class UserController {
 //        }
 //    }
 
+    @GetMapping("getall")
+    public EntityModel<List<User>> getAllUsers(){
+        return EntityModel.of(impl.getAllUsers());
+    }
+
     @GetMapping
     public EntityModel<List<Event>> getRandomEvents(){
         //todo
         return null;
     }
+
+
+
     @GetMapping("users/login")
     public EntityModel<Boolean> tryToLoginUser(String loginOrMail, String password){
         try {
@@ -45,7 +53,6 @@ public class UserController {
             throw new RuntimeException(e);
         }
     }
-
     @GetMapping("users/register")
     public EntityModel<Boolean> tryToRegisterUser(int id, String name, String mail, String password){
         try {
@@ -55,7 +62,10 @@ public class UserController {
         }
     }
 
-    @GetMapping("users/{userId}")
+
+
+    // Events organised by me
+    @PatchMapping("users/{userId}/createEvent")
     public EntityModel<Boolean> createEvent(@PathVariable int userId,
                                             int id,
                                             String name,
@@ -85,21 +95,66 @@ public class UserController {
             throw new RuntimeException(e);
         }
     }
-
+    @PatchMapping("users/{userId}/{eventId}/deleteEvent")
+    public EntityModel<Boolean> deleteEvent(@PathVariable int userId, @PathVariable int eventId){
+        try {
+            List<Integer> ids = eventController.deleteEvent(eventId);
+            for(int id:ids){
+                unsubscribeEvent(id, eventId);
+            }
+            return EntityModel.of(impl.unsubscribeEvent(userId, eventId));
+        } catch (UserNotFoundEx e) {
+            throw new RuntimeException(e);
+        }
+    }
     @GetMapping("users/{userId}/myEvents")
     public EntityModel<List<Event>> getEventsOrganisedByUser(@PathVariable int userId){
         return EntityModel.of((List<Event>) eventController.getEventsByOrganiser(userId));
     }
 
-    @GetMapping("users/{userId}/subscribedEvents")
-    public EntityModel<List<Event>> getClientEvents(@PathVariable int userId){
+
+
+    // Subscription management
+    @PatchMapping("users/{userId}/subscribeEvent/{eventId}")
+    public EntityModel<Boolean> subscribeEvent(@PathVariable int userId, @PathVariable int eventId){
+        try {
+            return EntityModel.of(impl.subscribeEvent(userId, eventId) && eventController.subscribeUser(userId, eventId));
+        } catch (UserNotFoundEx e) {
+            throw new RuntimeException(e);
+        }
+    }
+    @PatchMapping("users/{userId}/subscribeCategory/{eventId}")
+    public EntityModel<Boolean> subscribeCategory(@PathVariable int userId, @PathVariable int categoryId){
+        try {
+            return EntityModel.of(impl.unsubscribeCategory(userId, categoryId));
+        } catch (UserNotFoundEx e) {
+            throw new RuntimeException(e);
+        }
+    }
+    @PatchMapping("users/{userId}/unsubscribeEvent/{eventId}")
+    public EntityModel<Boolean> unsubscribeEvent(@PathVariable int userId, @PathVariable int eventId){
+        try {
+            return EntityModel.of(impl.unsubscribeEvent(userId, eventId) && eventController.unsubscribeUser(userId, eventId));
+        } catch (UserNotFoundEx e) {
+            throw new RuntimeException(e);
+        }
+    }
+    @PatchMapping("users/{userId}/unsubscribeCategory/{eventId}")
+    public EntityModel<Boolean> unsubscribeCategory(@PathVariable int userId, @PathVariable int categoryId){
+        try {
+            return EntityModel.of(impl.unsubscribeCategory(userId, categoryId));
+        } catch (UserNotFoundEx e) {
+            throw new RuntimeException(e);
+        }
+    }
+    @GetMapping("users/{userId}/getEvents")
+    public EntityModel<List<Event>> getSubscribedEvents(@PathVariable int userId){
         try {
             return EntityModel.of(eventController.getUsersSubscribedEvents(impl.getUsersEventList(userId)));
         } catch (UserNotFoundEx e) {
             throw new RuntimeException(e);
         }
     }
-
     @GetMapping("users/{userId}/subscribedCategories")
     public EntityModel<List<Category>> getClientCategories(@PathVariable int userId){
         try {
