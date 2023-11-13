@@ -96,7 +96,7 @@ public class EventRepositoryImpl implements EventRepository{
                              String name,
                              int organizer,
                              List<Integer> categoryList,
-                             List<Integer> clientList,
+                             List<Integer> userList,
                              String description,
                              int size,
                              String localisation,
@@ -106,7 +106,7 @@ public class EventRepositoryImpl implements EventRepository{
                              LocalDateTime startDate,
                              LocalDateTime endDate,
                              EventStatus eventStatus) throws EventNotFoundEx {
-        System.out.println("updateEvent: " + id + " " + name + " " + categoryList + " " + clientList + " " + description + " " + size + " " + localisation + " " + isFree + " " + isReservationNecessary + " " + ageGroup + " " + startDate + " " + endDate + " " + eventStatus);
+        System.out.println("updateEvent: " + id + " " + name + " " + categoryList + " " + userList + " " + description + " " + size + " " + localisation + " " + isFree + " " + isReservationNecessary + " " + ageGroup + " " + startDate + " " + endDate + " " + eventStatus);
         //todo link to Agata's function: Events Update (id = id)
         return null;
     }
@@ -123,7 +123,7 @@ public class EventRepositoryImpl implements EventRepository{
                             String name,
                             int organizer,
                             List<Integer> categoryList,
-                            List<Integer> clientList,
+                            List<Integer> userList,
                             String description,
                             int size,
                             String localisation,
@@ -133,7 +133,7 @@ public class EventRepositoryImpl implements EventRepository{
                             LocalDateTime startDate,
                             LocalDateTime endDate,
                             EventStatus eventStatus) throws EventExistsEx {
-        System.out.println("addEvent: " + id + " " + name + " " + categoryList + " " + clientList + " " + description + " " + size + " " + localisation + " " + isFree + " " + isReservationNecessary + " " + ageGroup + " " + startDate + " " + endDate + " " + eventStatus);
+        System.out.println("addEvent: " + id + " " + name + " " + categoryList + " " + userList + " " + description + " " + size + " " + localisation + " " + isFree + " " + isReservationNecessary + " " + ageGroup + " " + startDate + " " + endDate + " " + eventStatus);
         //todo link to Agata's function: Event Create
         return false;
     }
@@ -149,7 +149,7 @@ public class EventRepositoryImpl implements EventRepository{
     public boolean subscribeUser(int eventId, int userId) throws EventNotFoundEx {
         System.out.println("subscribeUser: " + " " + eventId + " " + userId);
         Event tempEvent = getEvent(eventId);
-        List<Integer> tempList = tempEvent.getClientList();
+        List<Integer> tempList = tempEvent.getUserList();
         tempList.add(userId);
 
         updateEvent(eventId,
@@ -180,7 +180,7 @@ public class EventRepositoryImpl implements EventRepository{
                 tempEvent.getName(),
                 tempEvent.getOrganizer(),
                 tempList,
-                tempEvent.getClientList(),
+                tempEvent.getUserList(),
                 tempEvent.getDescription(),
                 tempEvent.getSize(),
                 tempEvent.getLocalisation(),
@@ -197,7 +197,7 @@ public class EventRepositoryImpl implements EventRepository{
     public boolean unsubscribeUser(int eventId, int userId) throws EventNotFoundEx {
         System.out.println("unsubscribeUser: " + eventId + " " + userId);
         Event tempEvent = getEvent(eventId);
-        List<Integer> tempList = tempEvent.getClientList();
+        List<Integer> tempList = tempEvent.getUserList();
         tempList.remove(userId);
 
         updateEvent(eventId,
@@ -228,7 +228,7 @@ public class EventRepositoryImpl implements EventRepository{
                 tempEvent.getName(),
                 tempEvent.getOrganizer(),
                 tempList,
-                tempEvent.getClientList(),
+                tempEvent.getUserList(),
                 tempEvent.getDescription(),
                 tempEvent.getSize(),
                 tempEvent.getLocalisation(),
@@ -250,7 +250,7 @@ public class EventRepositoryImpl implements EventRepository{
                 tempEvent.getName(),
                 tempEvent.getOrganizer(),
                 tempEvent.getCategoryList(),
-                tempEvent.getClientList(),
+                tempEvent.getUserList(),
                 tempEvent.getDescription(),
                 tempEvent.getSize(),
                 tempEvent.getLocalisation(),
@@ -272,7 +272,7 @@ public class EventRepositoryImpl implements EventRepository{
                 tempEventEdited.getName(),
                 tempEventEdited.getOrganizer(),
                 tempEventEdited.getCategoryList(),
-                tempEventEdited.getClientList(),
+                tempEventEdited.getUserList(),
                 tempEventEdited.getDescription(),
                 tempEventEdited.getSize(),
                 tempEventEdited.getLocalisation(),

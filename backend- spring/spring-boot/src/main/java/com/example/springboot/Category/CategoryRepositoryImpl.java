@@ -58,14 +58,14 @@ public class CategoryRepositoryImpl implements CategoryRepository{
     }
 
     @Override
-    public Category updateCategory(int id,
-                                   String name,
-                                   boolean isParentCategory,
-                                   List<Integer> subcategories,
-                                   int parentId) throws CategoryNotFoundEx {
+    public boolean updateCategory(int id,
+                                  String name,
+                                  boolean isParentCategory,
+                                  List<Integer> subcategories,
+                                  int parentId) throws CategoryNotFoundEx {
         System.out.println("updateCategory: " + id + " " + name + " " + isParentCategory + " " + subcategories + " " + parentId);
         //todo link to Agata's function: Categories Update filtr eq("id" = id)
-        return null;
+        return false;
     }
 
     @Override
@@ -76,14 +76,14 @@ public class CategoryRepositoryImpl implements CategoryRepository{
     }
 
     @Override
-    public Category addCategory(int id,
-                                String name,
-                                boolean isParentCategory,
-                                List<Integer> subcategories,
-                                int parentId) throws CategoryExistsEx {
+    public boolean addCategory(int id,
+                               String name,
+                               boolean isParentCategory,
+                               List<Integer> subcategories,
+                               int parentId) throws CategoryExistsEx {
         System.out.println("addCategory: " + id + " " + name + " " + isParentCategory + " " + subcategories + " " + parentId);
         //todo link to Agata's function: Categories Create bez_filtra
-        return null;
+        return false;
     }
 
     @Override

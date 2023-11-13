@@ -14,10 +14,11 @@ import java.util.List;
 public class EventController {
     private final EventRepository impl = new EventRepositoryImpl();
 
-    @GetMapping("getall")
+    @GetMapping("events")
     public EntityModel<List<Event>> getAllEvents(){
         return EntityModel.of(impl.getAllEvents());
     }
+
 
     @GetMapping("users/{userId}")
     public EntityModel<Boolean> createEvent(int id,
@@ -55,6 +56,12 @@ public class EventController {
         }
     }
 
+    /***
+     * getUsersSubscribedEvents- returns list of events, that user has subscribed to
+     *
+     * @param usersEventList
+     * @return
+     */
     public List<Event> getUsersSubscribedEvents(List<Integer> usersEventList) {
         return impl.getUsersSubscribedEvents(usersEventList);
     }
@@ -101,7 +108,7 @@ public class EventController {
     public List<Integer> deleteEvent(@PathVariable int eventId) {
         try {
             Event tempEvent = impl.getEvent(eventId);
-            List<Integer> tempList = tempEvent.getClientList();
+            List<Integer> tempList = tempEvent.getUserList();
             impl.deleteEvent(eventId);
             return tempList;
         } catch (EventNotFoundEx e) {
@@ -110,8 +117,21 @@ public class EventController {
     }
 
     public boolean subscribeUser(int userId, int eventId) {
+        try {
+            return impl.subscribeUser(userId, eventId);
+        } catch (EventNotFoundEx e) {
+            throw new RuntimeException(e);
+        }
+    }
+    public boolean unsubscribeUser(int userId, int eventId) {
+        try {
+            return impl.unsubscribeUser(userId, eventId);
+        } catch (EventNotFoundEx e) {
+            throw new RuntimeException(e);
+        }
     }
 
-    public boolean unsubscribeUser(int userId, int eventId) {
+    public List<Event> getEditedEvents() {
+        return impl.getEditedEvents();
     }
 }

@@ -2,10 +2,10 @@ package com.example.springboot.User;
 
 import com.example.springboot.Category.Category;
 import com.example.springboot.Category.CategoryController;
-import com.example.springboot.Category.Exceptions.CategoryNotFoundEx;
 import com.example.springboot.Event.AgeGroup;
 import com.example.springboot.Event.Event;
 import com.example.springboot.Event.EventController;
+import com.example.springboot.User.Exceptions.NotEnoughHighPermissionLevel;
 import com.example.springboot.User.Exceptions.UserExistsEx;
 import com.example.springboot.User.Exceptions.UserNotFoundEx;
 import org.springframework.hateoas.EntityModel;
@@ -32,11 +32,19 @@ public class UserController {
 //        }
 //    }
 
-    @GetMapping("getall")
+    /***
+     * usage: testing
+     * @return list of all users
+     */
+    @GetMapping("users")
     public EntityModel<List<User>> getAllUsers(){
         return EntityModel.of(impl.getAllUsers());
     }
 
+    /***
+     * usage: main page; giving list of random events
+     * @return list of some events for user
+     */
     @GetMapping
     public EntityModel<List<Event>> getRandomEvents(){
         //todo
@@ -56,6 +64,7 @@ public class UserController {
     @GetMapping("users/register")
     public EntityModel<Boolean> tryToRegisterUser(int id, String name, String mail, String password){
         try {
+            //todo weryfikaja czy dane są odpowiednie
             return EntityModel.of(impl.addUser(id, name, mail, password, PermissionLevel.UNVERIFIED_USER, new ArrayList<>(), new ArrayList<>()));
         } catch (UserExistsEx e) {
             throw new RuntimeException(e);
@@ -109,7 +118,7 @@ public class UserController {
     }
     @GetMapping("users/{userId}/myEvents")
     public EntityModel<List<Event>> getEventsOrganisedByUser(@PathVariable int userId){
-        return EntityModel.of((List<Event>) eventController.getEventsByOrganiser(userId));
+        return EntityModel.of(eventController.getEventsByOrganiser(userId));
     }
 
 
@@ -161,7 +170,45 @@ public class UserController {
             return EntityModel.of(categoryController.getUsersSubscribedCategories(impl.getUsersEventList(userId)));
         } catch (UserNotFoundEx e) {
             throw new RuntimeException(e);
-        } catch (CategoryNotFoundEx e) {
+        }
+    }
+
+
+    // moderator operations
+    @GetMapping("users/{userId}/editedEvents")
+    public EntityModel<List<Event>> getEditedEvents(@PathVariable int userId){
+        try {
+            PermissionLevel tempPermission = impl.getPermissionLevel(userId);
+            if(tempPermission == PermissionLevel.ADMIN || tempPermission == PermissionLevel.MODERATOR){
+                return EntityModel.of(eventController.getEditedEvents());
+            }else{
+                throw new NotEnoughHighPermissionLevel(tempPermission);
+            }
+
+        } catch (UserNotFoundEx e) {
+            throw new RuntimeException(e);
+        } catch (NotEnoughHighPermissionLevel e) {
+            throw new RuntimeException(e);
+        }
+    }
+    @GetMapping("users/{userId}/createCategory")
+    public EntityModel<Boolean> createCategory(@PathVariable int userId,
+                                               int id,
+                                               String name,
+                                               boolean isParentCategory,
+                                               List<Integer> subcategories,
+                                               int parentId){
+        try {
+            PermissionLevel tempPermission = impl.getPermissionLevel(userId);
+            if(tempPermission == PermissionLevel.ADMIN || tempPermission == PermissionLevel.MODERATOR){
+                return EntityModel.of(categoryController.createCategory(id, name, isParentCategory, subcategories, parentId));
+            }else{
+                throw new NotEnoughHighPermissionLevel(tempPermission);
+            }
+
+        } catch (UserNotFoundEx e) {
+            throw new RuntimeException(e);
+        } catch (NotEnoughHighPermissionLevel e) {
             throw new RuntimeException(e);
         }
     }

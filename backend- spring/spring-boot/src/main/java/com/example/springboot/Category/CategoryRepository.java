@@ -17,9 +17,9 @@ public interface CategoryRepository {
     //CRUD
     Category getCategory(int id) throws CategoryNotFoundEx;
     Category getCategory(String name) throws CategoryNotFoundEx;
-    Category updateCategory(int id, String name, boolean isParentCategory, List<Integer> subcategories, int parentId) throws CategoryNotFoundEx;
+    boolean updateCategory(int id, String name, boolean isParentCategory, List<Integer> subcategories, int parentId) throws CategoryNotFoundEx;
     boolean deleteCategory(int id) throws CategoryNotFoundEx;
-    Category addCategory(int id, String name, boolean isParentCategory, List<Integer> subcategories, int parentId) throws CategoryExistsEx;
+    boolean addCategory(int id, String name, boolean isParentCategory, List<Integer> subcategories, int parentId) throws CategoryExistsEx;
     Category addCategory(Category category) throws CategoryExistsEx;
 
 

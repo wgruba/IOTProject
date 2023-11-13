@@ -8,7 +8,7 @@ public class Event {
     private String name;
     private int organizer;
     private List<Integer> categoryList;
-    private List<Integer> clientList;
+    private List<Integer> userList;
     private String description;
     private int size;
 
@@ -24,12 +24,12 @@ public class Event {
     public Event() {
     }
 
-    public Event(int _id, String name, int organizer, List<Integer> categoryList, List<Integer> clientList, String description, int size, String localisation, boolean isFree, boolean isReservationNecessary, AgeGroup ageGroup, LocalDateTime startDate, LocalDateTime endDate, EventStatus eventStatus) {
+    public Event(int _id, String name, int organizer, List<Integer> categoryList, List<Integer> userList, String description, int size, String localisation, boolean isFree, boolean isReservationNecessary, AgeGroup ageGroup, LocalDateTime startDate, LocalDateTime endDate, EventStatus eventStatus) {
         this._id = _id;
         this.name = name;
         this.organizer = organizer;
         this.categoryList = categoryList;
-        this.clientList = clientList;
+        this.userList = userList;
         this.description = description;
         this.size = size;
         this.localisation = localisation;
@@ -73,12 +73,12 @@ public class Event {
         this.categoryList = categoryList;
     }
 
-    public List<Integer> getClientList() {
-        return clientList;
+    public List<Integer> getUserList() {
+        return userList;
     }
 
-    public void setClientList(List<Integer> clientList) {
-        this.clientList = clientList;
+    public void setUserList(List<Integer> userList) {
+        this.userList = userList;
     }
 
     public String getDescription() {
