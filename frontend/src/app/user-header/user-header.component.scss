@@ -1,0 +1,91 @@
+header {
+    background-color: #FF9505;
+    filter: brightness(104%);
+    color: #4A4A4A;
+    display: flex;
+    flex-direction: column; /* Ustawia komponenty w kolumnie */
+    align-items: center; /* Centruje w poziomie */
+    padding: 10px;
+    border-radius: 10px;
+}
+
+.upper-section, .lower-section {
+    width: 100%; /* Wypełnij dostępną szerokość */
+    display: flex;
+    justify-content: space-between; /* Oddziela lewy, środkowy i prawy blok */
+    align-items: center; /* Centruje w pionie */
+}
+
+.left-section img {
+    max-width: 150px; /* Maksymalna szerokość loga */
+}
+
+.navigation-list {
+    list-style: none;
+    padding: 0;
+    display: flex;
+}
+
+.navigation-list li {
+    margin: 20px 50px;
+}
+
+.navigation-list a {
+    text-decoration: none;
+    color: #4A4A4A;
+    font-size: 25px;
+    font-weight: bolder;
+}
+
+.navigation-list a:hover {
+    text-decoration: underline;
+}
+
+.logout-button, .login-button {
+    background-color: transparent;
+    border: none;
+    color: #4A4A4A;
+    font-weight: bold;
+    font-size: 25px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    margin: 20px 20px;
+    border-radius: 5px;
+}
+
+.logout-button i, .login-button i {
+    margin-right: 10px;
+}
+
+.logout-button:hover, .login-button:hover {
+    text-decoration: underline;
+}
+
+.search-content {
+    display: flex;
+    align-items: center;
+}
+
+input[type="text"] {
+    background-color: #FFC971;
+    padding: 10px;
+    border-radius: 20px;
+    border: none;
+}
+
+.category-button, .location-button, .date-button, .search-button {
+    background-color: #F1F7EA;
+    color: #4A4A4A;
+    border: none;
+    padding: 10px 40px;
+    font-weight: bold;
+    cursor: pointer;
+    margin: 30px;
+    border-radius: 20px;
+}
+
+.search-button{
+    background-color: #8684F9;
+}
+
