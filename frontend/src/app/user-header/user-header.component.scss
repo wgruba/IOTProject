@@ -1,12 +1,14 @@
 header {
     background-color: #FF9505;
-    filter: brightness(104%);
+    filter: brightness(110%);
+    height: auto;
     color: #4A4A4A;
     display: flex;
     flex-direction: column; /* Ustawia komponenty w kolumnie */
     align-items: center; /* Centruje w poziomie */
     padding: 10px;
     border-radius: 10px;
+    font-family: 'Inter';
 }
 
 .upper-section, .lower-section {
@@ -33,7 +35,7 @@ header {
 .navigation-list a {
     text-decoration: none;
     color: #4A4A4A;
-    font-size: 25px;
+    font-size: 22px;
     font-weight: bolder;
 }
 
@@ -46,11 +48,11 @@ header {
     border: none;
     color: #4A4A4A;
     font-weight: bold;
-    font-size: 25px;
+    font-size: 22px;
     cursor: pointer;
     display: flex;
     align-items: center;
-    margin: 20px 20px;
+    margin: 2px 20px;
     border-radius: 5px;
 }
 
@@ -81,7 +83,7 @@ input[type="text"] {
     padding: 10px 40px;
     font-weight: bold;
     cursor: pointer;
-    margin: 30px;
+    margin: 5px 30px;
     border-radius: 20px;
 }
 

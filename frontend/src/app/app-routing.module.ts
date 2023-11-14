@@ -5,7 +5,7 @@ import { LoginSiteComponent } from './login-site/login-site.component';
 import { RegisterSiteComponent } from './register-site/register-site.component';
 
 const routes: Routes = [
-  { path: '', component: MainSiteComponent }, // Default route
+  { path: 'home', component: MainSiteComponent },
   { path: 'login-site', component:LoginSiteComponent},
   { path: 'register-site', component:RegisterSiteComponent}
 ];

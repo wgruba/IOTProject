@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
+import { Title } from '@angular/platform-browser';
+
 
 @Component({
   selector: 'app-root',
@@ -7,7 +9,9 @@ import { Router } from '@angular/router';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  title = 'frontend';
-  constructor(public router: Router) { }
-
+  title = 'IwentHub';
+  constructor(public router: Router, private titleService: Title) {
+    this.titleService.setTitle('IwentHub');
+    
+  }
 }
