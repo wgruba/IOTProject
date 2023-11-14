@@ -11,13 +11,15 @@ import { Card } from '../models/card.model';
 })
 export class DescriptionPageComponent {
   event !: Card;
-  address: string;
+  latitude: number;
+  longitude: number;
 
   constructor(
     private route: ActivatedRoute, 
     private eventService: EventService
   ) {
-    this.address = 'Ciechockinek, Hala Kapcia 12a';
+    this.latitude = 50.4300934;
+    this.longitude = 22.236453;
   }
 
   ngOnInit(): void {

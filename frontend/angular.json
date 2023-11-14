@@ -31,7 +31,6 @@
             ],
             "styles": [
               "node_modules/leaflet/dist/leaflet.css",
-              "node_modules/leaflet-control-geocoder/dist/Control.Geocoder.css",
               "src/styles.scss"
             ],
             "scripts": []
@@ -96,12 +95,10 @@
             ],
             "styles": [
               "node_modules/bootstrap/dist/css/bootstrap.min.css",
-              "node_modules/ngx-owl-carousel-o/lib/styles/prebuilt-themes/owl.carousel.min.css",
-              "node_modules/ngx-owl-carousel-o/lib/styles/prebuilt-themes/owl.theme.default.min.css",
+              "node_modules/leaflet/dist/leaflet.css",
               "src/styles.scss"
             ],
             "scripts": [
-              "node_modules/ngx-owl-carousel-o/lib/carousel.js"
             ]
           }
         }

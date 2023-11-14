@@ -1,25 +1,32 @@
-import { Component, OnInit, Input } from '@angular/core';
-
+import { Component, OnInit, Input, AfterViewInit } from '@angular/core';
+import * as L from 'leaflet';
 
 @Component({
   selector: 'app-map',
   templateUrl: './map.component.html',
   styleUrls: ['./map.component.scss']
 })
-export class MapComponent  implements OnInit{
-  center: google.maps.LatLngLiteral = {lat: 37.4221, lng: -122.0841};
-  zoom = 15;
-  mapOptions: google.maps.MapOptions = {
-    mapTypeId: 'roadmap',
-    scrollwheel: true,
-    disableDoubleClickZoom: true,
-    maxZoom: 18,
-    minZoom: 8,
-  };
+export class MapComponent implements AfterViewInit{
+  @Input() latitude!: number;
+  @Input() longitude!: number;
 
-  constructor() { }
+  private map!: L.Map;
 
-  ngOnInit(): void {
-    // Optionally, fetch the location dynamically and update the center
+  constructor() {}
+
+  ngAfterViewInit(): void {
+    this.initMap();
+  }
+
+  private initMap(): void {
+    var map = L.map('map').setView([this.latitude, this.longitude], 13);
+
+    L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+    }).addTo(map);
+
+    L.marker([this.latitude, this.longitude]).addTo(map)
+    .bindPopup('Tutaj znajduje sie wydarzenie!!!')
+    .openPopup();
   }
 }

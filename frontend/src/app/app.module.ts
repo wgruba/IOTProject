@@ -13,6 +13,7 @@ import { LoginSiteComponent } from './login-site/login-site.component';
 import { DescriptionPageComponent } from './description-page/description-page.component';
 import { EventService } from './event.service';
 import { MapComponent } from './map/map.component';
+import { GoogleMapsModule } from '@angular/google-maps';
 
 
 register();
@@ -27,13 +28,13 @@ register();
     UserFooterComponent,
     SwiperDirective,
     DescriptionPageComponent,
-    MapComponent
+    MapComponent,
   ],
   imports: [
     BrowserModule,
     FormsModule,
     AppRoutingModule,
-    
+    GoogleMapsModule,
   ],
   providers: [EventService],
   bootstrap: [AppComponent],
