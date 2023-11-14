@@ -11,6 +11,9 @@ import { SwiperDirective } from './swiper.directive';
 import { RegisterSiteComponent } from './register-site/register-site.component';
 import { LoginSiteComponent } from './login-site/login-site.component';
 import { DescriptionPageComponent } from './description-page/description-page.component';
+import { EventService } from './event.service';
+import { MapComponent } from './map/map.component';
+
 
 register();
 
@@ -23,7 +26,8 @@ register();
     UserHeaderComponent,
     UserFooterComponent,
     SwiperDirective,
-    DescriptionPageComponent
+    DescriptionPageComponent,
+    MapComponent
   ],
   imports: [
     BrowserModule,
@@ -31,7 +35,7 @@ register();
     AppRoutingModule,
     
   ],
-  providers: [],
+  providers: [EventService],
   bootstrap: [AppComponent],
   schemas: [
     CUSTOM_ELEMENTS_SCHEMA

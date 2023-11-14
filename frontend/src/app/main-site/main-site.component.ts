@@ -3,6 +3,8 @@ import { SwiperContainer } from 'swiper/element';
 import { SwiperOptions } from 'swiper/types';
 import { Card } from '../models/card.model';
 import { Router } from '@angular/router';
+import { EventService } from '../event.service';
+
 
 @Component({
   selector: 'app-main-site',
@@ -156,7 +158,7 @@ export class MainSiteComponent {
   ];
 
 
-  constructor(private router: Router) {}
+  constructor(private router: Router, private eventService: EventService) {}
   
 
   index = 0;
@@ -192,6 +194,7 @@ export class MainSiteComponent {
   }
 
   navigateToDescriptionSite(card: Card): void {
-    this.router.navigate(['/description', card.id]);
+    this.eventService.setCurrentEvent(card);
+    this.router.navigate(['/event-details', card.id]);
   }
 }

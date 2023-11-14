@@ -1,1 +1,35 @@
-<p>description-page works!</p>
+<!-- description-page.component.html -->
+<div class="description-page-container">
+
+    <div class="event-content">
+
+        <div class="event-details-header">
+            <div class="event-image">
+                <img [src]="event.url"  alt="Event Image">
+            </div>
+        
+            <div class="event-details">
+                <h1>{{ event.title }}</h1>
+                <p class="event-time">12.02.2024 18:30 - 23:20</p>
+                <p class="event-location">Ciechockinek | Hala Kapcia 12a</p>
+                <p class="event-participants">566 osób</p>
+                <p class="event-organizer">Utworzone przez: HalaKapciaOfficial</p>
+            </div>
+
+            <div class="event-actions">
+                <button type="button"> + Obserwuj</button>
+                <button type="button" class="event-page-button">Strona eventu</button>
+                <button type="button" (click)="addToGoogleCalendar(event)">Importuj</button>
+            </div>
+        </div>
+
+        <div class="event-details-body">
+            <h2>Wielki Koncert grupy Jana w Ciechockinu Sprawdź sam !!!!</h2>
+            <p class="event-description">Świetna muzyka grana przez legendy rocku!</p>
+            <p class="event-atmosphere">Wyjątkowa atmosfera!</p>
+            <p class="event-price">Bilety już od 139,00 zł!</p>
+        </div>
+
+        <app-map [address]="this.address"></app-map>
+    </div>
+  
