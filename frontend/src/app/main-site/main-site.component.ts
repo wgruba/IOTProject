@@ -158,7 +158,9 @@ export class MainSiteComponent {
   ];
 
 
-  constructor(private router: Router, private eventService: EventService) {}
+  constructor(private router: Router, private eventService: EventService) {
+    
+  }
   
 
   index = 0;

@@ -2,9 +2,7 @@ import { Component } from '@angular/core';
 import { Category } from '../models/Category.model';
 import { SelectedItem } from '../models/selectedItem.model';
 import { FormGroup, FormBuilder } from '@angular/forms';
-
-
-
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-user-header',
@@ -56,7 +54,7 @@ export class UserHeaderComponent {
 
 
 
-  constructor(private formBuilder: FormBuilder) {
+  constructor(private router: Router, private formBuilder: FormBuilder) {
     this.searchForm = this.formBuilder.group({
       searchQuery: [''],
       location: [''],
@@ -91,5 +89,6 @@ export class UserHeaderComponent {
   onSearch(): void {
     console.log('Form Values:', this.searchForm.value);
     console.log(this.selectedItems)
+    this.router.navigate(['/event-searching']);
   }
 }

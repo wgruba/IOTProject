@@ -5,6 +5,8 @@ import { LoginSiteComponent } from './login-site/login-site.component';
 import { RegisterSiteComponent } from './register-site/register-site.component';
 import { DescriptionPageComponent } from './description-page/description-page.component';
 import { AddEventSiteComponent } from './add-event-site/add-event-site.component';
+import { UserSearchingPageComponent } from './user-searching-page/user-searching-page.component';
+
 
 
 const routes: Routes = [
@@ -13,6 +15,7 @@ const routes: Routes = [
   { path: 'register-site', component:RegisterSiteComponent},
   { path: 'event-details/:id', component: DescriptionPageComponent },
   { path: 'add-event', component: AddEventSiteComponent },
+  { path: 'event-searching', component: UserSearchingPageComponent },
 ];
 
 @NgModule({
