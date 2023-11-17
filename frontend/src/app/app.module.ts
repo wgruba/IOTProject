@@ -15,6 +15,8 @@ import { DescriptionPageComponent } from './description-page/description-page.co
 import { EventService } from './event.service';
 import { MapComponent } from './map/map.component';
 import { GoogleMapsModule } from '@angular/google-maps';
+import { AboutUsComponent } from './about-us/about-us.component';
+import { UserHelpComponent } from './user-help/user-help.component';
 
 register();
 
@@ -27,9 +29,11 @@ register();
     UserHeaderComponent,
     UserFooterComponent,
     SwiperDirective,
-    UserSidebarSearchComponent
+    UserSidebarSearchComponent,
     DescriptionPageComponent,
     MapComponent,
+    AboutUsComponent,
+    UserHelpComponent,
   ],
   imports: [
     BrowserModule,
