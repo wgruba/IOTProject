@@ -1,0 +1,23 @@
+
+<body>
+<div class="main-page">
+    <aside class="filters">
+        <h2>Filtry</h2>
+        <!-- Add checkboxes and other filter options -->
+        <button (click)="applyFilters()">Filtruj</button>
+      </aside>
+
+    <div class="event-list">
+        <div *ngFor="let event of events">
+            <div class="card">
+                <img [src]="event.url" alt="Event image">
+                <div>
+                  <h3>{{ event.title }}</h3>
+                  <p>{{ event.description }}</p>
+                </div>
+                <button (click)="showDetails(event)">Pokaż</button>
+              </div>              
+        </div>
+      </div>  
+</div>
+</body>
