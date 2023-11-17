@@ -12,10 +12,18 @@
             </ul>
         </div>
         <div class="right-section">
-            <button  routerLink="login-site" class="logout-button"><i class="fas fa-sign-out-alt"></i> Zaloguj</button>
-            <button routerLink="register-site" class="login-button"><i class="fas fa-sign-in-alt"></i> Zarejestruj</button>
+            <ng-container *ngIf="authService.isLoggedIn$ | async; else loggedOutTemplate">
+              <button (click)="logout()" class="logout-button"><i class="fas fa-sign-out-alt"></i> Wyloguj</button>
+              <button routerLink="/user-profile" class="profile-button"><i class="fas fa-user"></i> Profil</button>
+            </ng-container>
+          
+            <ng-template #loggedOutTemplate>
+              <button routerLink="/login-site" class="login-button"><i class="fas fa-sign-in-alt"></i> Zaloguj</button>
+              <button routerLink="/register-site" class="register-button"><i class="fas fa-user-plus"></i> Zarejestruj</button>
+            </ng-template>
         </div>
     </div>
+    
     <div class="lower-section">
         <div class="search-content" [formGroup]="searchForm">            
             <input type="text" placeholder="Wpisz nazwę ..." formControlName="searchQuery">

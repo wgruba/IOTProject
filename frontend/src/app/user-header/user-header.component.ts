@@ -3,6 +3,8 @@ import { Category } from '../models/Category.model';
 import { SelectedItem } from '../models/selectedItem.model';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { Router } from '@angular/router';
+import { AuthenticationService } from '../authentication.service'; // Import AuthenticationService
+
 
 @Component({
   selector: 'app-user-header',
@@ -54,7 +56,7 @@ export class UserHeaderComponent {
 
 
 
-  constructor(private router: Router, private formBuilder: FormBuilder) {
+  constructor(private router: Router, private formBuilder: FormBuilder,public authService: AuthenticationService  ) {
     this.searchForm = this.formBuilder.group({
       searchQuery: [''],
       location: [''],
@@ -84,7 +86,11 @@ export class UserHeaderComponent {
   togglePopup(): void {
     this.showPopup = !this.showPopup;
   }
-  
+
+  logout(): void {
+    this.authService.logout();
+    this.router.navigate(['/login-site']);
+  }
 
   onSearch(): void {
     console.log('Form Values:', this.searchForm.value);
