@@ -1,8 +1,9 @@
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" rel="stylesheet">
+
 <div>
   <!-- Controlling header -->
   <app-user-header *ngIf="router.url !== '/login-site' && router.url !== '/register-site'"></app-user-header>
-  <!-- Controlling sidebar for search -->
-  <app-user-sidebar-search></app-user-sidebar-search>
-  <!-- Controlling sidebar for my account -->
-  <router-outlet></router-outlet>
+  <div class="content">
+    <router-outlet></router-outlet>
+  </div>
 </div>

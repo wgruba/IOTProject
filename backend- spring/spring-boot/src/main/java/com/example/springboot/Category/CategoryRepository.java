@@ -20,7 +20,7 @@ public interface CategoryRepository {
     boolean updateCategory(int id, String name, boolean isParentCategory, List<Integer> subcategories, int parentId) throws CategoryNotFoundEx;
     boolean deleteCategory(int id) throws CategoryNotFoundEx;
     boolean addCategory(int id, String name, boolean isParentCategory, List<Integer> subcategories, int parentId) throws CategoryExistsEx;
-    Category addCategory(Category category) throws CategoryExistsEx;
+    boolean addCategory(Category category) throws CategoryExistsEx;
 
 
     //sub category and parent category management

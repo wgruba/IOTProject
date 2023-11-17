@@ -1,0 +1,67 @@
+<body>
+    <app-user-profile-aside></app-user-profile-aside>
+    <div class="container">
+        <main class="main-content">
+            <h1>Dodaj Wydarzenie</h1>
+           <div [formGroup]="eventForm" >
+                  <div class="form-group">
+                    <label for="eventName">Nazwa Wydarzenia:</label>
+                    <input type="text" id="eventName" formControlName="eventName">
+                  </div>
+              
+                    <div class="form-group">
+                        <label for="participants">Maksymalna liczba uczestników:</label>
+                        <input type="number" id="participants" formControlName="participants">
+                    </div>
+
+                    <div class="form-group">
+                        <div class="form-check form-switch">
+                            <input class="form-check-input" formControlName="isPaid" type="checkbox" id="flexSwitchCheckChecked" unchecked>
+                            <label class="form-check-label" for="flexSwitchCheckChecked">Czy wydarzenie jest płatne?</label>
+                          </div>                    
+                    </div>
+                    
+                    <div class="form-group">
+                        <div class="form-check form-switch">
+                            <input class="form-check-input" formControlName="isOnline" type="checkbox" id="flexSwitchCheckChecked" unchecked>
+                            <label class="form-check-label" for="flexSwitchCheckChecked">Czy wydarzenie jest online?</label>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <div class="form-check form-switch">
+                            <input class="form-check-input" formControlName="isReservationRequired" type="checkbox" id="flexSwitchCheckChecked" unchecked>
+                            <label class="form-check-label" for="flexSwitchCheckChecked">Czy wymagana jest rezerwacja?</label>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="ageRequirement">Wymagany wiek:</label>
+                        <label><input formControlName="ageRequirement" type="radio" value="all"> Rodzinne</label>
+                        <label><input formControlName="ageRequirement" type="radio" value="13"> 13+</label>
+                        <label><input formControlName="ageRequirement" type="radio" value="16"> 16+</label>
+                        <label><input formControlName="ageRequirement" type="radio" value="18"> 18+</label>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="startTime">Czas rozpoczęcia:</label>
+                        <input formControlName="startTime" type="datetime-local" id="startTime" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="endTime">Czas zakończenia:</label>
+                        <input formControlName="endTime" type="datetime-local" id="endTime" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="description">Opis:</label>
+                        <textarea formControlName="description" id="description" rows="4"></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <button type="submit" (click)="onSubmit()" >Zapisz</button>
+                    </div>
+            </div>
+        </main>
+    </div>
+</body>

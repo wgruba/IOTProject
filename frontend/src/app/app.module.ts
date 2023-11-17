@@ -1,7 +1,7 @@
 import { CUSTOM_ELEMENTS_SCHEMA,NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { register } from 'swiper/element/bundle';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { MainSiteComponent } from './main-site/main-site.component';
@@ -17,6 +17,11 @@ import { MapComponent } from './map/map.component';
 import { GoogleMapsModule } from '@angular/google-maps';
 import { AboutUsComponent } from './about-us/about-us.component';
 import { UserHelpComponent } from './user-help/user-help.component';
+import { AddEventSiteComponent } from './add-event-site/add-event-site.component';
+import { UserProfileAsideComponent } from './user-profile-aside/user-profile-aside.component';
+import { UserSearchingPageComponent } from './user-searching-page/user-searching-page.component';
+import { UserProfileComponent } from './user-profile/user-profile.component';
+import { UserEventsComponent } from './user-events/user-events.component';
 
 register();
 
@@ -34,12 +39,18 @@ register();
     MapComponent,
     AboutUsComponent,
     UserHelpComponent,
+    AddEventSiteComponent,
+    UserProfileAsideComponent,
+    UserSearchingPageComponent,
+    UserProfileComponent,
+    UserEventsComponent,
   ],
   imports: [
     BrowserModule,
     FormsModule,
     AppRoutingModule,
     GoogleMapsModule,
+    ReactiveFormsModule,
   ],
   providers: [EventService],
   bootstrap: [AppComponent],

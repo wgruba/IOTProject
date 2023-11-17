@@ -1,19 +1,41 @@
 package com.example.springboot.User;
 
+import org.bson.BsonType;
+import org.bson.codecs.pojo.annotations.*;
+
 import java.util.List;
 
 public class User {
-    private int _id;
+    @BsonId
+    @BsonRepresentation(BsonType.OBJECT_ID)
+    private int id;
+    @BsonProperty
     private String name;
+    @BsonProperty
     private String mail;
+    @BsonProperty
     private String password;
+    @BsonProperty
+    @BsonRepresentation(BsonType.STRING)
     private PermissionLevel permissionLevel;
+    @BsonProperty
     private List<Integer> subscribedEvents;
+    @BsonProperty
     private List<Integer> subscribedCategories;
 
-    public User(int _id, String name, String mail, String password, PermissionLevel permissionLevel,
-                List<Integer> subscribedEvents, List<Integer> subscribedCategories) {
-        this._id = _id;
+    public User() {
+
+    }
+
+    @BsonCreator
+    public User(@BsonId int id,
+                @BsonProperty String name,
+                @BsonProperty String mail,
+                @BsonProperty String password,
+                @BsonProperty PermissionLevel permissionLevel,
+                @BsonProperty List<Integer> subscribedEvents,
+                @BsonProperty List<Integer> subscribedCategories) {
+        this.id = id;
         this.name = name;
         this.mail = mail;
         this.password = password;
@@ -21,15 +43,13 @@ public class User {
         this.subscribedEvents = subscribedEvents;
         this.subscribedCategories = subscribedCategories;
     }
-    public User() {
+
+    public int getId() {
+        return id;
     }
 
-    public int get_id() {
-        return _id;
-    }
-
-    public void set_id(int _id) {
-        this._id = _id;
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getName() {

@@ -2,45 +2,65 @@ package com.example.springboot.Event;
 
 import com.example.springboot.Event.Exceptions.EventExistsEx;
 import com.example.springboot.Event.Exceptions.EventNotFoundEx;
+import com.example.springboot.Database.DatabaseConnection;
+import com.example.springboot.Database.DatabaseFilters;
+import com.example.springboot.Database.DatabaseUpdater;
+import org.bson.conversions.Bson;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
-public class EventRepositoryImpl implements EventRepository{
-    public EventRepositoryImpl(){}
+public class EventRepositoryImpl implements EventRepository {
+    private final String USERNAME = "Agata";
+    private final String PASSWORD = "haslo";
+    private final String DATABASE = "bazadanych";
+
+    public EventRepositoryImpl() {
+    }
+
     @Override
     public List<Event> getAllEvents() {
         System.out.println("getAllEvents");
-        //todo link to Agata's function: Events Read bez_filtra
-        return null;
+
+        DatabaseConnection dc = new DatabaseConnection(USERNAME, PASSWORD, DATABASE);
+        DatabaseFilters df = new DatabaseFilters();
+        return dc.EventRead(df.allEntries());
     }
 
     @Override
     public List<Event> getEventsByOrganiser(int organiserId) {
         System.out.println("getEventsByOrganiser: " + organiserId);
-        //todo link to Agata's function: Events Read filrt (idOrganizatora = id)
-        return null;
+
+        DatabaseConnection dc = new DatabaseConnection(USERNAME, PASSWORD, DATABASE);
+        DatabaseFilters df = new DatabaseFilters();
+        return dc.EventRead(df.findThroughOrganizerId(organiserId));
     }
 
     @Override
     public List<Event> getUsersSubscribedEvents(List<Integer> ids) {
         System.out.println("getUsersSubscribedEvents: " + ids);
-        //todo link to Agata's function: Events Read filtr in("id", ids)
-        return null;
+
+        DatabaseConnection dc = new DatabaseConnection(USERNAME, PASSWORD, DATABASE);
+        DatabaseFilters df = new DatabaseFilters();
+        return dc.EventRead(df.findAllIds(ids));
     }
 
     @Override
     public List<Event> getEditedEvents() {
         System.out.println("getEditedEvents");
-        //todo link to Agata's function: Events Read filtr eq("status" = EventStatus.EDITED)
-        return null;
+
+        DatabaseConnection dc = new DatabaseConnection(USERNAME, PASSWORD, DATABASE);
+        DatabaseFilters df = new DatabaseFilters();
+        return dc.EventRead(df.findSpecificStatus(EventStatus.EDITED));
     }
 
     @Override
     public List<Event> getEventsFromCategory(int id) {
         System.out.println("getEventsFromCategory: " + id);
-        //todo link to Agata's function: Events Read filtr elemMatch("categoryList", Bson eq(id))
-        return null;
+
+        DatabaseConnection dc = new DatabaseConnection(USERNAME, PASSWORD, DATABASE);
+        DatabaseFilters df = new DatabaseFilters();
+        return dc.EventRead(df.findAllInCategory(id));
     }
 
     @Override
@@ -54,68 +74,79 @@ public class EventRepositoryImpl implements EventRepository{
                                          String ageGroupMin,
                                          LocalDateTime startDate,
                                          LocalDateTime endDate,
-                                         boolean isFullEventIncludedInDate){
+                                         boolean isFullEventIncludedInDate) {
         System.out.println("getFilteredEvents: " + name + " " + categoryId + " " + sizeMin + " " + sizeMax + " " + localisation + " " + isFree + " " + isReservationNecessary + " " + ageGroupMin + " " + startDate + " " + endDate + " " + isFullEventIncludedInDate);
-        //todo podlinkować funkcję Agaty; Event R filtr:
-        //and(
-        // or(name.equals(""), eq("name", name)),
-        // gte("size", sizeMin),
-        // lte("size", sizeMax),
-        // or(localisation.equals(""), eq("localisation", localisation)),
-        // or(isFree == 2, and(isFree != 2, eq("isFree", isFree))),
-        // or(isReservationNecessary == 2, and(isReservationNecessary != 2, eq("isReservationNecessary", isReservationNecessary))),
 
-        //  gte("ageGroup", ageGroupMin),
-        //  or(
-        //    ageGroupMin.equals("FAMILY_FRIENDLY"),
-        //    and(ageGroupMin.equals("OVER12"), ne("ageGroup", "FAMILY_FRIENDLY")),
-        //    and(ageGroupMin.equals("OVER16"), and(ne("ageGroup", "FAMILY_FRIENDLY"), ne("ageGroup", "OVER12"))),
-        //    and(ageGroupMin.equals("OVER18"), eq("ageGroup", "OVER18")))
-        //  or(
-        //    and(isFullEventIncludedInDate, gte("startDate", startDate), lte("startDate", endDate), gte("endDate", startDate), lte("endDate", endDate)),
-        //    and(!isFullEventIncludedInDate, or(and(gte("startDate", startDate), lte("startDate", endDate)), and(gte("endDate", startDate), lte("endDate", endDate)), and(lte("startDate", startDate), gte("endDate", endDate))))))
+        DatabaseConnection dc = new DatabaseConnection(USERNAME, PASSWORD, DATABASE);
+        DatabaseFilters df = new DatabaseFilters();
+
+        //todo podlinkować funkcję Agaty
+
         return null;
     }
 
     @Override
     public Event getEvent(int id) throws EventNotFoundEx {
         System.out.println("getEvent: " + id);
-        //todo link to Agata's function: Event Read (id = id)
-        return null;
+
+        DatabaseConnection dc = new DatabaseConnection(USERNAME, PASSWORD, DATABASE);
+        DatabaseFilters df = new DatabaseFilters();
+        return dc.EventRead(df.findById(id)).get(0);
     }
 
     @Override
     public Event getEvent(String name) throws EventNotFoundEx {
         System.out.println("getEvent: " + name);
-        //todo link to Agata's function: Event Read (name = name)
-        return null;
+        DatabaseConnection dc = new DatabaseConnection(USERNAME, PASSWORD, DATABASE);
+        DatabaseFilters df = new DatabaseFilters();
+        return dc.EventRead(df.findByName(name)).get(0);
     }
 
     @Override
-    public Event updateEvent(int id,
-                             String name,
-                             int organizer,
-                             List<Integer> categoryList,
-                             List<Integer> userList,
-                             String description,
-                             int size,
-                             String localisation,
-                             boolean isFree,
-                             boolean isReservationNecessary,
-                             AgeGroup ageGroup,
-                             LocalDateTime startDate,
-                             LocalDateTime endDate,
-                             EventStatus eventStatus) throws EventNotFoundEx {
+    public boolean updateEvent(int id,
+                               String name,
+                               int organizer,
+                               List<Integer> categoryList,
+                               List<Integer> userList,
+                               String description,
+                               int size,
+                               String localisation,
+                               boolean isFree,
+                               boolean isReservationNecessary,
+                               AgeGroup ageGroup,
+                               LocalDateTime startDate,
+                               LocalDateTime endDate,
+                               EventStatus eventStatus) throws EventNotFoundEx {
         System.out.println("updateEvent: " + id + " " + name + " " + categoryList + " " + userList + " " + description + " " + size + " " + localisation + " " + isFree + " " + isReservationNecessary + " " + ageGroup + " " + startDate + " " + endDate + " " + eventStatus);
-        //todo link to Agata's function: Events Update (id = id)
-        return null;
+
+        DatabaseConnection dc = new DatabaseConnection(USERNAME, PASSWORD, DATABASE);
+        DatabaseFilters df = new DatabaseFilters();
+        DatabaseUpdater du = new DatabaseUpdater();
+
+        Bson update_fields = du.combineUpdates(
+                du.updateName(name),
+                du.updateDescription(description),
+                du.updateCategoryList(categoryList),
+                du.updateUserSubscription(userList),
+                du.updateSize(size),
+                du.updateLocalisation(localisation),
+                du.updateIsFree(isFree),
+                du.updateIsReservationNecessary(isReservationNecessary),
+                du.updateAgeGroup(ageGroup),
+                du.updateStartDate(startDate),
+                du.updateEndDate(endDate),
+                du.updateEventStatus(eventStatus)
+        );
+        return dc.EventCUD(new Bson[]{df.findById(id)}, new Bson[]{update_fields});
     }
 
     @Override
     public boolean deleteEvent(int id) throws EventNotFoundEx {
         System.out.println("deleteEvent: " + id);
-        //todo link to Agata's function: Event Delete filtr eq("name" = name)
-        return false;
+
+        DatabaseConnection dc = new DatabaseConnection(USERNAME, PASSWORD, DATABASE);
+        DatabaseFilters df = new DatabaseFilters();
+        return dc.EventCUD(new Bson[]{df.findById(id)});
     }
 
     @Override
@@ -134,155 +165,85 @@ public class EventRepositoryImpl implements EventRepository{
                             LocalDateTime endDate,
                             EventStatus eventStatus) throws EventExistsEx {
         System.out.println("addEvent: " + id + " " + name + " " + categoryList + " " + userList + " " + description + " " + size + " " + localisation + " " + isFree + " " + isReservationNecessary + " " + ageGroup + " " + startDate + " " + endDate + " " + eventStatus);
-        //todo link to Agata's function: Event Create
-        return false;
+
+        DatabaseConnection dc = new DatabaseConnection(USERNAME, PASSWORD, DATABASE);
+
+        Event event = new Event(id, name, organizer, categoryList, userList, description, size, localisation,
+                isFree, isReservationNecessary, ageGroup, startDate, endDate, eventStatus);
+        return dc.EventCUD(new Event[]{event});
     }
 
     @Override
     public boolean addEvent(Event event) throws EventExistsEx {
         System.out.println("addEvent: " + event);
-        //todo link to Agata's function: Event Create
-        return false;
+
+        DatabaseConnection dc = new DatabaseConnection(USERNAME, PASSWORD, DATABASE);
+        return dc.EventCUD(new Event[]{event});
     }
 
     @Override
     public boolean subscribeUser(int eventId, int userId) throws EventNotFoundEx {
         System.out.println("subscribeUser: " + " " + eventId + " " + userId);
-        Event tempEvent = getEvent(eventId);
-        List<Integer> tempList = tempEvent.getUserList();
-        tempList.add(userId);
 
-        updateEvent(eventId,
-                tempEvent.getName(),
-                tempEvent.getOrganizer(),
-                tempEvent.getCategoryList(),
-                tempList,
-                tempEvent.getDescription(),
-                tempEvent.getSize(),
-                tempEvent.getLocalisation(),
-                tempEvent.isFree(),
-                tempEvent.isReservationNecessary(),
-                tempEvent.getAgeGroup(),
-                tempEvent.getStartDate(),
-                tempEvent.getEndDate(),
-                tempEvent.getEventStatus());
-        return true;
+        DatabaseConnection dc = new DatabaseConnection(USERNAME, PASSWORD, DATABASE);
+        DatabaseFilters df = new DatabaseFilters();
+        DatabaseUpdater du = new DatabaseUpdater();
+
+        return dc.EventCUD(new Bson[]{df.findById(eventId)}, new Bson[]{du.addUserSubscription(userId)});
     }
 
     @Override
     public boolean subscribeCategory(int eventId, int categoryId) throws EventNotFoundEx {
         System.out.println("subscribeCategory: " + eventId + " " + categoryId);
-        Event tempEvent = getEvent(eventId);
-        List<Integer> tempList = tempEvent.getCategoryList();
-        tempList.add(categoryId);
 
-        updateEvent(eventId,
-                tempEvent.getName(),
-                tempEvent.getOrganizer(),
-                tempList,
-                tempEvent.getUserList(),
-                tempEvent.getDescription(),
-                tempEvent.getSize(),
-                tempEvent.getLocalisation(),
-                tempEvent.isFree(),
-                tempEvent.isReservationNecessary(),
-                tempEvent.getAgeGroup(),
-                tempEvent.getStartDate(),
-                tempEvent.getEndDate(),
-                tempEvent.getEventStatus());
-        return true;
+        DatabaseConnection dc = new DatabaseConnection(USERNAME, PASSWORD, DATABASE);
+        DatabaseFilters df = new DatabaseFilters();
+        DatabaseUpdater du = new DatabaseUpdater();
+
+        return dc.EventCUD(new Bson[]{df.findById(eventId)}, new Bson[]{du.addToCategory(categoryId)});
     }
 
     @Override
     public boolean unsubscribeUser(int eventId, int userId) throws EventNotFoundEx {
         System.out.println("unsubscribeUser: " + eventId + " " + userId);
-        Event tempEvent = getEvent(eventId);
-        List<Integer> tempList = tempEvent.getUserList();
-        tempList.remove(userId);
+        DatabaseConnection dc = new DatabaseConnection(USERNAME, PASSWORD, DATABASE);
+        DatabaseFilters df = new DatabaseFilters();
+        DatabaseUpdater du = new DatabaseUpdater();
 
-        updateEvent(eventId,
-                tempEvent.getName(),
-                tempEvent.getOrganizer(),
-                tempEvent.getCategoryList(),
-                tempList,
-                tempEvent.getDescription(),
-                tempEvent.getSize(),
-                tempEvent.getLocalisation(),
-                tempEvent.isFree(),
-                tempEvent.isReservationNecessary(),
-                tempEvent.getAgeGroup(),
-                tempEvent.getStartDate(),
-                tempEvent.getEndDate(),
-                tempEvent.getEventStatus());
-        return true;
+        return dc.EventCUD(new Bson[]{df.findById(eventId)}, new Bson[]{du.removeUserSubscription(userId)});
     }
 
     @Override
     public boolean unsubscribeCategory(int eventId, int categoryId) throws EventNotFoundEx {
         System.out.println("unsubscribeCategory: " + " " + eventId + " " + categoryId);
-        Event tempEvent = getEvent(eventId);
-        List<Integer> tempList = tempEvent.getCategoryList();
-        tempList.remove(categoryId);
+        DatabaseConnection dc = new DatabaseConnection(USERNAME, PASSWORD, DATABASE);
+        DatabaseFilters df = new DatabaseFilters();
+        DatabaseUpdater du = new DatabaseUpdater();
 
-        updateEvent(eventId,
-                tempEvent.getName(),
-                tempEvent.getOrganizer(),
-                tempList,
-                tempEvent.getUserList(),
-                tempEvent.getDescription(),
-                tempEvent.getSize(),
-                tempEvent.getLocalisation(),
-                tempEvent.isFree(),
-                tempEvent.isReservationNecessary(),
-                tempEvent.getAgeGroup(),
-                tempEvent.getStartDate(),
-                tempEvent.getEndDate(),
-                tempEvent.getEventStatus());
-        return false;
+        return dc.EventCUD(new Bson[]{df.findById(eventId)}, new Bson[]{du.removeFromCategory(categoryId)});
     }
 
     @Override
     public boolean changeEventStatus(int eventId, EventStatus eventStatus) throws EventNotFoundEx {
         System.out.println("changeEventStatus: " + eventId + " " + eventStatus);
-        Event tempEvent = getEvent(eventId);
+        DatabaseConnection dc = new DatabaseConnection(USERNAME, PASSWORD, DATABASE);
+        DatabaseFilters df = new DatabaseFilters();
+        DatabaseUpdater du = new DatabaseUpdater();
 
-        updateEvent(eventId,
-                tempEvent.getName(),
-                tempEvent.getOrganizer(),
-                tempEvent.getCategoryList(),
-                tempEvent.getUserList(),
-                tempEvent.getDescription(),
-                tempEvent.getSize(),
-                tempEvent.getLocalisation(),
-                tempEvent.isFree(),
-                tempEvent.isReservationNecessary(),
-                tempEvent.getAgeGroup(),
-                tempEvent.getStartDate(),
-                tempEvent.getEndDate(),
-                eventStatus);
-        return true;
+        return dc.EventCUD(new Bson[]{df.findById(eventId)}, new Bson[]{du.updateEventStatus(eventStatus)});
     }
 
     @Override
     public boolean verifyEditedEvent(int eventId, int event2Id) throws EventNotFoundEx {
         System.out.println("verifyEditedEvent: " + eventId + " " + event2Id);
-        Event tempEventEdited = getEvent(event2Id);
+        DatabaseConnection dc = new DatabaseConnection(USERNAME, PASSWORD, DATABASE);
+        DatabaseFilters df = new DatabaseFilters();
+        DatabaseUpdater du = new DatabaseUpdater();
 
-        updateEvent(eventId,
-                tempEventEdited.getName(),
-                tempEventEdited.getOrganizer(),
-                tempEventEdited.getCategoryList(),
-                tempEventEdited.getUserList(),
-                tempEventEdited.getDescription(),
-                tempEventEdited.getSize(),
-                tempEventEdited.getLocalisation(),
-                tempEventEdited.isFree(),
-                tempEventEdited.isReservationNecessary(),
-                tempEventEdited.getAgeGroup(),
-                tempEventEdited.getStartDate(),
-                tempEventEdited.getEndDate(),
-                EventStatus.ACCEPTED);
-        return false;
+        // klaryfikacja - jak ma dokladnie dzialac
+
+        return dc.EventCUD(new Bson[]{df.findById(eventId)}, new Bson[]{du.updateEventStatus(EventStatus.ACCEPTED)}) &&
+                dc.EventCUD(new Bson[]{df.findById(event2Id)});
     }
 
     @Override
