@@ -18,19 +18,19 @@ export class AuthenticationService {
   }
 
   login(username: string, password: string): void {
-    const loginUrl = 'http://localhost:8080/user/login';
-    this.http.post(loginUrl, { username, password }).subscribe(
-      (response: any) => {
-        const token = response.token;
-        localStorage.setItem('userToken', token);
-        this.isLoggedIn.next(true);
-      },
-      (error) => {
-          console.error(error);
-          // Handle error
-      });
-    // localStorage.setItem('userToken', token);
-    // this.isLoggedIn.next(true);
+    // const loginUrl = 'http://localhost:8080/user/login';
+    // this.http.post(loginUrl, { username, password }).subscribe(
+    //   (response: any) => {
+    //     const token = response.token;
+    //     localStorage.setItem('userToken', token);
+    //     this.isLoggedIn.next(true);
+    //   },
+    //   (error) => {
+    //       console.error(error);
+    //       // Handle error
+    //   });
+    localStorage.setItem('userToken', username);
+    this.isLoggedIn.next(true);
   }
 
   logout(): void {

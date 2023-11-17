@@ -1,9 +1,11 @@
-import { AfterViewInit, Component, ElementRef, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, ViewChild, OnInit } from '@angular/core';
 import { SwiperContainer } from 'swiper/element';
 import { SwiperOptions } from 'swiper/types';
 import { Event } from '../models/event.model';
 import { Router } from '@angular/router';
 import { EventService } from '../event.service';
+import { HttpClient } from '@angular/common/http';
+
 
 
 @Component({
@@ -158,7 +160,7 @@ export class MainSiteComponent {
   ];
 
 
-  constructor(private router: Router, private eventService: EventService) {
+  constructor(private router: Router, private eventService: EventService,private http: HttpClient) {
     
   }
   
@@ -177,6 +179,18 @@ export class MainSiteComponent {
     freeMode: true,
     watchSlidesProgress: true,
     navigation: true,
+  }
+
+  OnInit(){
+    const loginUrl = 'http://localhost:8080/event/';
+    this.http.post(loginUrl, {}).subscribe(
+      (response: any) => {
+        const token = response.token;
+      },
+      (error) => {
+          console.error(error);
+          // Handle error
+      });
   }
 
   ngAfterViewInit() {

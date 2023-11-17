@@ -13,7 +13,8 @@ export class UserService {
     password: "sadas",
     name: 'Adam',
     email: 'adam.nowak@gmail.com',
-    isVerified: true
+    isVerified: true,
+    permissonLevel: "User", 
   });
 
   constructor() { }
