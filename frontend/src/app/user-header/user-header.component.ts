@@ -3,7 +3,7 @@ import { Category } from '../models/Category.model';
 import { SelectedItem } from '../models/selectedItem.model';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { Router } from '@angular/router';
-import { AuthenticationService } from '../authentication.service'; // Import AuthenticationService
+import { AuthenticationService } from '../authentication.service';
 
 
 @Component({

@@ -33,7 +33,7 @@ register();
     UserHeaderComponent,
     UserFooterComponent,
     SwiperDirective,
-    UserSidebarSearchComponent
+    UserSidebarSearchComponent,
     DescriptionPageComponent,
     MapComponent,
     AddEventSiteComponent,
