@@ -1,0 +1,34 @@
+
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" rel="stylesheet">
+
+<body>
+<app-user-profile-aside></app-user-profile-aside>
+
+<div class="user-profile-container">
+    <div class="profile-content">
+      <div class="username-and-picture">
+        <div class="profile-picture">
+          <img src="../assets/Logo.png" alt="User Profile Picture">
+        </div>
+        <div class="username">{{ user.username }}</div>
+      </div>
+      
+      <div class="verified-user">
+        Użytkownik Zweryfikowany
+      </div>
+      
+      <div class="user-details">
+        <div class="detail">
+          <span>Imię: {{ user.name }}</span>
+          <i class="fas fa-edit" (click)="editName()"></i>
+        </div>
+        <div class="detail">
+          <span>Email: {{ user.email }}</span>
+          <i class="fas fa-edit" (click)="editEmail()"></i>
+        </div>
+      </div>
+      
+      <button (click)="changePassword()" class="change-password-button">Zmień hasło</button>
+    </div>
+  </div>
+</body>

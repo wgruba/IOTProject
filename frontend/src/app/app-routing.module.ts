@@ -7,6 +7,8 @@ import { DescriptionPageComponent } from './description-page/description-page.co
 import { AddEventSiteComponent } from './add-event-site/add-event-site.component';
 import { UserSearchingPageComponent } from './user-searching-page/user-searching-page.component';
 import { AuthGuard } from './auth.guard';
+import { UserProfileComponent } from './user-profile/user-profile.component';
+
 
 
 const routes: Routes = [
@@ -14,8 +16,9 @@ const routes: Routes = [
   { path: 'login-site', component:LoginSiteComponent},
   { path: 'register-site', component:RegisterSiteComponent},
   { path: 'event-details/:id', component: DescriptionPageComponent },
-  { path: 'add-event', component: AddEventSiteComponent, canActivate: [AuthGuard] }, // Securing this route
+  { path: 'add-event', component: AddEventSiteComponent, canActivate: [AuthGuard] },
   { path: 'event-searching', component: UserSearchingPageComponent },
+  { path: 'user-profile', component: UserProfileComponent, canActivate: [AuthGuard]},
 ];
 
 @NgModule({

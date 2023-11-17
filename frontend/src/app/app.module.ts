@@ -17,6 +17,7 @@ import { GoogleMapsModule } from '@angular/google-maps';
 import { AddEventSiteComponent } from './add-event-site/add-event-site.component';
 import { UserProfileAsideComponent } from './user-profile-aside/user-profile-aside.component';
 import { UserSearchingPageComponent } from './user-searching-page/user-searching-page.component';
+import { UserProfileComponent } from './user-profile/user-profile.component';
 
 register();
 
@@ -34,6 +35,7 @@ register();
     AddEventSiteComponent,
     UserProfileAsideComponent,
     UserSearchingPageComponent,
+    UserProfileComponent,
   ],
   imports: [
     BrowserModule,
