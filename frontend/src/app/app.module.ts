@@ -11,6 +11,10 @@ import { SwiperDirective } from './swiper.directive';
 import { RegisterSiteComponent } from './register-site/register-site.component';
 import { LoginSiteComponent } from './login-site/login-site.component';
 import { UserSidebarSearchComponent } from './user-sidebar-search/user-sidebar-search.component';
+import { DescriptionPageComponent } from './description-page/description-page.component';
+import { EventService } from './event.service';
+import { MapComponent } from './map/map.component';
+import { GoogleMapsModule } from '@angular/google-maps';
 
 register();
 
@@ -24,14 +28,16 @@ register();
     UserFooterComponent,
     SwiperDirective,
     UserSidebarSearchComponent
+    DescriptionPageComponent,
+    MapComponent,
   ],
   imports: [
     BrowserModule,
     FormsModule,
     AppRoutingModule,
-    
+    GoogleMapsModule,
   ],
-  providers: [],
+  providers: [EventService],
   bootstrap: [AppComponent],
   schemas: [
     CUSTOM_ELEMENTS_SCHEMA

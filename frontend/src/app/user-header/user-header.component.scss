@@ -1,12 +1,14 @@
 header {
     background-color: #FF9505;
-    filter: brightness(104%);
+    filter: brightness(110%);
+    height: auto;
     color: #4A4A4A;
     display: flex;
     flex-direction: column; /* Ustawia komponenty w kolumnie */
     align-items: center; /* Centruje w poziomie */
     padding: 10px;
     border-radius: 10px;
+    font-family: 'Inter';
 }
 
 .upper-section, .lower-section {
@@ -16,8 +18,23 @@ header {
     align-items: center; /* Centruje w pionie */
 }
 
+.lower-section {
+    margin-left: 20%;
+}
+
 .left-section img {
     max-width: 150px; /* Maksymalna szerokość loga */
+    border-radius: 20px;
+    margin-left: 7%;
+}
+
+.center-section{
+    width: 80%;
+    height: 70px;
+    border-radius: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
 .navigation-list {
@@ -27,13 +44,13 @@ header {
 }
 
 .navigation-list li {
-    margin: 20px 50px;
+    margin: 20px 80px;
 }
 
 .navigation-list a {
     text-decoration: none;
     color: #4A4A4A;
-    font-size: 25px;
+    font-size: 22px;
     font-weight: bolder;
 }
 
@@ -46,11 +63,11 @@ header {
     border: none;
     color: #4A4A4A;
     font-weight: bold;
-    font-size: 25px;
+    font-size: 22px;
     cursor: pointer;
     display: flex;
     align-items: center;
-    margin: 20px 20px;
+    margin: 15px 30px;
     border-radius: 5px;
 }
 
@@ -69,24 +86,38 @@ header {
 
 input[type="text"] {
     background-color: #FFC971;
-    padding: 10px 40px;
     margin: 30px;
+    padding: 10px 70px;
     border-radius: 20px;
     border: none;
 }
 
 .category-button, .location-button, .date-button, .search-button {
     background-color: #F1F7EA;
-    color: #4A4A4A;
+    color: #000000;
     border: none;
     padding: 10px 40px;
     font-weight: bold;
     cursor: pointer;
-    margin: 30px;
+    margin: 10px 30px;
     border-radius: 20px;
 }
 
 .search-button{
     background-color: #8684F9;
 }
+
+@media (max-width: 768px) {
+    header
+     {
+      flex-direction: column; 
+      align-items: center;
+      font-size: 10px;
+      padding: 0;
+    }
+
+    input[type="text"] {
+        padding: 10px 5px;
+    }
+  }
 

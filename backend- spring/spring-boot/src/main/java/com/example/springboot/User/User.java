@@ -3,7 +3,7 @@ package com.example.springboot.User;
 import java.util.List;
 
 public class User {
-    private int id;
+    private int _id;
     private String name;
     private String mail;
     private String password;
@@ -11,9 +11,9 @@ public class User {
     private List<Integer> subscribedEvents;
     private List<Integer> subscribedCategories;
 
-    public User(int id, String name, String mail, String password, PermissionLevel permissionLevel,
+    public User(int _id, String name, String mail, String password, PermissionLevel permissionLevel,
                 List<Integer> subscribedEvents, List<Integer> subscribedCategories) {
-        this.id = id;
+        this._id = _id;
         this.name = name;
         this.mail = mail;
         this.password = password;
@@ -24,12 +24,12 @@ public class User {
     public User() {
     }
 
-    public int getId() {
-        return id;
+    public int get_id() {
+        return _id;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void set_id(int _id) {
+        this._id = _id;
     }
 
     public String getName() {

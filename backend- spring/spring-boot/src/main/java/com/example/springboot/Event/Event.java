@@ -4,49 +4,49 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 public class Event {
-    private int id;
+    private int _id;
     private String name;
     private int organizer;
     private List<Integer> categoryList;
-    private List<Integer> clientList;
+    private List<Integer> userList;
     private String description;
     private int size;
 
 //    todo localisation as localisation
     private String localisation;
-    private boolean isFree;
+    private boolean isFree; //not paid
     private boolean isReservationNecessary;
-    private boolean isLive; //not online
     private AgeGroup ageGroup;
     private LocalDateTime startDate;
     private LocalDateTime endDate;
+    private EventStatus eventStatus;
 
     public Event() {
     }
 
-    public Event(int id, String name, int organizer, List<Integer> categoryList, List<Integer> clientList, String description, int size, String localisation, boolean isFree, boolean isReservationNecessary, boolean isLive, AgeGroup ageGroup, LocalDateTime startDate, LocalDateTime endDate) {
-        this.id = id;
+    public Event(int _id, String name, int organizer, List<Integer> categoryList, List<Integer> userList, String description, int size, String localisation, boolean isFree, boolean isReservationNecessary, AgeGroup ageGroup, LocalDateTime startDate, LocalDateTime endDate, EventStatus eventStatus) {
+        this._id = _id;
         this.name = name;
         this.organizer = organizer;
         this.categoryList = categoryList;
-        this.clientList = clientList;
+        this.userList = userList;
         this.description = description;
         this.size = size;
         this.localisation = localisation;
         this.isFree = isFree;
         this.isReservationNecessary = isReservationNecessary;
-        this.isLive = isLive;
         this.ageGroup = ageGroup;
         this.startDate = startDate;
         this.endDate = endDate;
+        this.eventStatus = eventStatus;
     }
 
-    public int getId() {
-        return id;
+    public int get_id() {
+        return _id;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void set_id(int _id) {
+        this._id = _id;
     }
 
     public String getName() {
@@ -57,28 +57,28 @@ public class Event {
         this.name = name;
     }
 
-    public int getorganizer() {
+    public int getOrganizer() {
         return organizer;
     }
 
-    public void setorganizer(int organizer) {
+    public void setOrganizer(int organizer) {
         this.organizer = organizer;
     }
 
-    public List<Integer> getcategoryList() {
+    public List<Integer> getCategoryList() {
         return categoryList;
     }
 
-    public void setcategoryList(List<Integer> categoryList) {
+    public void setCategoryList(List<Integer> categoryList) {
         this.categoryList = categoryList;
     }
 
-    public List<Integer> getClientList() {
-        return clientList;
+    public List<Integer> getUserList() {
+        return userList;
     }
 
-    public void setClientList(List<Integer> clientList) {
-        this.clientList = clientList;
+    public void setUserList(List<Integer> userList) {
+        this.userList = userList;
     }
 
     public String getDescription() {
@@ -121,14 +121,6 @@ public class Event {
         isReservationNecessary = reservationNecessary;
     }
 
-    public boolean isLive() {
-        return isLive;
-    }
-
-    public void setLive(boolean live) {
-        isLive = live;
-    }
-
     public AgeGroup getAgeGroup() {
         return ageGroup;
     }
@@ -151,5 +143,13 @@ public class Event {
 
     public void setEndDate(LocalDateTime endDate) {
         this.endDate = endDate;
+    }
+
+    public EventStatus getEventStatus() {
+        return eventStatus;
+    }
+
+    public void setEventStatus(EventStatus eventStatus) {
+        this.eventStatus = eventStatus;
     }
 }
