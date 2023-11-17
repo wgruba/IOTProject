@@ -4,3 +4,5 @@ export interface Event {
   description: string;
   url: string;
 }
+
+// dodać resztę pól dla eventu

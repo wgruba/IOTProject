@@ -16,9 +16,8 @@ export class LoginSiteComponent {
   onSubmit(): void {
     // Replace with actual authentication logic
     if (this.username && this.password) {
-      this.authService.login('userToken');
-      this.router.navigate(['/']); // Navigate to the home page or dashboard after login
+      this.authService.login(this.username, this.password);
+      this.router.navigate(['/home']); 
     }
   }
-
 }
