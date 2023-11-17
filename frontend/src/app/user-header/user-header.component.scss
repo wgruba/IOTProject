@@ -81,11 +81,12 @@ header {
 
 .search-content {
     display: flex;
-    align-items: center;
+    align-items: start;
 }
 
 input[type="text"] {
     background-color: #FFC971;
+    margin: 30px;
     padding: 10px 70px;
     border-radius: 20px;
     border: none;

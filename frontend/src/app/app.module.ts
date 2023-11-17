@@ -10,11 +10,11 @@ import { UserFooterComponent } from './user-footer/user-footer.component';
 import { SwiperDirective } from './swiper.directive';
 import { RegisterSiteComponent } from './register-site/register-site.component';
 import { LoginSiteComponent } from './login-site/login-site.component';
+import { UserSidebarSearchComponent } from './user-sidebar-search/user-sidebar-search.component';
 import { DescriptionPageComponent } from './description-page/description-page.component';
 import { EventService } from './event.service';
 import { MapComponent } from './map/map.component';
 import { GoogleMapsModule } from '@angular/google-maps';
-
 
 register();
 
@@ -27,6 +27,7 @@ register();
     UserHeaderComponent,
     UserFooterComponent,
     SwiperDirective,
+    UserSidebarSearchComponent
     DescriptionPageComponent,
     MapComponent,
   ],
