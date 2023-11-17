@@ -213,16 +213,30 @@ header {
     background-color: #8684F9;
 }
 
-@media (max-width: 768px) {
-    header {
-      flex-direction: column;
-      align-items: center;
-      font-size: 10px;
-      padding: 0;
-  
-      input[type="text"] {
-        padding: 5px;
-      }
-    }
+@media (max-width: 1300px) {
+  .search-content {
+    display: none;
+  }
+
+  .upper-section, .lower-section {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .left-section img {
+    max-width: 120px;
+  }
+
+  .navigation-list li {
+    margin: 10px 20px;
+  }
+
+  .navigation-list a {
+    font-size: 16px;
+  }
+
+  .logout-button, .login-button, .profile-button, .register-button {
+    font-size: 16px;
+  }
   }
 

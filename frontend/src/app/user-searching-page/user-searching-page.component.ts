@@ -1,5 +1,5 @@
 import { Component, ElementRef, ViewChild } from '@angular/core';
-import { Card } from '../models/card.model';
+import { Event } from '../models/event.model';
 import { Router } from '@angular/router';
 import { EventService } from '../event.service';
 
@@ -9,7 +9,7 @@ import { EventService } from '../event.service';
   styleUrls: ['./user-searching-page.component.scss']
 })
 export class UserSearchingPageComponent {
-  events: Card[] = [
+  events: Event[] = [
     {
       id: 1,
       title: 'Computer',
@@ -101,7 +101,7 @@ export class UserSearchingPageComponent {
     
   }
 
-  showDetails(card: Card): void {
+  showDetails(card: Event): void {
     this.eventService.setCurrentEvent(card);
     this.router.navigate(['/event-details', card.id]);
   }

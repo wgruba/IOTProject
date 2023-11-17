@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { EventService } from '../event.service';
 import { ActivatedRoute } from '@angular/router';
-import { Card } from '../models/card.model';
+import { Event } from '../models/event.model';
 
 
 @Component({
@@ -10,7 +10,7 @@ import { Card } from '../models/card.model';
   styleUrls: ['./description-page.component.scss']
 })
 export class DescriptionPageComponent {
-  event !: Card;
+  event !: Event;
   latitude: number;
   longitude: number;
 
@@ -31,7 +31,7 @@ export class DescriptionPageComponent {
     }
   }
 
-  getGoogleCalendarUrl(event: Card): string {
+  getGoogleCalendarUrl(event: Event): string {
     var start: Date  = new Date('2023-11-14T18:30:00Z');
     var end: Date  = new Date('2023-11-14T23:20:00Z');
     const startTime = this.formatDateToGoogleCalendar(start); //need to adjust later with proper data
@@ -48,7 +48,7 @@ export class DescriptionPageComponent {
     return date.toISOString().replace(/-|:|\.\d\d\d/g, '');
   }
 
-  addToGoogleCalendar(event: Card): void {
+  addToGoogleCalendar(event: Event): void {
     const url = this.getGoogleCalendarUrl(event);
     window.open(url, '_blank');
   }

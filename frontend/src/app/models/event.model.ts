@@ -1,4 +1,4 @@
-export interface Card {
+export interface Event {
   id: number;
   title: string;
   description: string;

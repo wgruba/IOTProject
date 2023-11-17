@@ -1,7 +1,7 @@
 import { AfterViewInit, Component, ElementRef, ViewChild } from '@angular/core';
 import { SwiperContainer } from 'swiper/element';
 import { SwiperOptions } from 'swiper/types';
-import { Card } from '../models/card.model';
+import { Event } from '../models/event.model';
 import { Router } from '@angular/router';
 import { EventService } from '../event.service';
 
@@ -13,7 +13,7 @@ import { EventService } from '../event.service';
 })
 export class MainSiteComponent {
   @ViewChild('swiper') swiper!: ElementRef<SwiperContainer>;
-  contents1: Card[] = [
+  contents1: Event[] = [
     {
       id: 1,
       title: 'Computer',
@@ -97,7 +97,7 @@ export class MainSiteComponent {
     },
   ];
 
-  contents2: Card[] = [
+  contents2: Event[] = [
     {
       id: 1,
       title: 'Computer',
@@ -127,7 +127,7 @@ export class MainSiteComponent {
     },
   ];
   
-  contents3: Card[] = [
+  contents3: Event[] = [
     {
       id: 1,
       title: 'Computer',
@@ -195,7 +195,7 @@ export class MainSiteComponent {
     this.index = swiper.detail[0].activeIndex;
   }
 
-  navigateToDescriptionSite(card: Card): void {
+  navigateToDescriptionSite(card: Event): void {
     this.eventService.setCurrentEvent(card);
     this.router.navigate(['/event-details', card.id]);
   }

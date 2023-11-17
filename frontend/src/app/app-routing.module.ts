@@ -8,6 +8,7 @@ import { AddEventSiteComponent } from './add-event-site/add-event-site.component
 import { UserSearchingPageComponent } from './user-searching-page/user-searching-page.component';
 import { AuthGuard } from './auth.guard';
 import { UserProfileComponent } from './user-profile/user-profile.component';
+import { UserEventsComponent } from './user-events/user-events.component';
 
 
 
@@ -19,6 +20,8 @@ const routes: Routes = [
   { path: 'add-event', component: AddEventSiteComponent, canActivate: [AuthGuard] },
   { path: 'event-searching', component: UserSearchingPageComponent },
   { path: 'user-profile', component: UserProfileComponent, canActivate: [AuthGuard]},
+  { path: 'user-events', component: UserEventsComponent, canActivate: [AuthGuard]},
+
 ];
 
 @NgModule({
