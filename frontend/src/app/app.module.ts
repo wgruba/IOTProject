@@ -10,6 +10,7 @@ import { UserFooterComponent } from './user-footer/user-footer.component';
 import { SwiperDirective } from './swiper.directive';
 import { RegisterSiteComponent } from './register-site/register-site.component';
 import { LoginSiteComponent } from './login-site/login-site.component';
+import { UserSidebarSearchComponent } from './user-sidebar-search/user-sidebar-search.component';
 
 register();
 
@@ -21,7 +22,8 @@ register();
     RegisterSiteComponent,
     UserHeaderComponent,
     UserFooterComponent,
-    SwiperDirective
+    SwiperDirective,
+    UserSidebarSearchComponent
   ],
   imports: [
     BrowserModule,

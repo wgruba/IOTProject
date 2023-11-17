@@ -23,7 +23,14 @@
             <input type="text" placeholder="Wyszukaj...">
             <button class="category-button">Kategoria:</button>
             <button class="location-button">Lokalizacja:</button>
-            <button class="date-button">Data:</button>
+            <div class="date-checker">
+                <button class="date-button" name="dataOd">Od:</button>
+                <button class="date-button" name="dataDo">Do:</button>
+                <div class="checkbox">
+                    <input type="checkbox" class="header-checkbox" checked name="hard-limit" value=0>
+                    <label for="hard-limit">Tylko wydarzenia w pełni zawarte w tym okresie czasu</label>        
+                </div>
+            </div>
             <button class="search-button">Szukaj</button>
         </div>
     </div>
