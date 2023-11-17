@@ -62,19 +62,19 @@
             </div> -->
         
             <!-- Trigger Button -->
-            <button class="show-selected-category-button" (click)="togglePopup()">Show Selected Categories</button>
+            <button class="show-selected-category-button" (click)="togglePopup()">Pokaż wybrane Kategorie</button>
 
             <!-- Popup for Selected Categories -->
             <div class="popup" *ngIf="showPopup">
             <div class="popup-content">
                 <div class="popup-header">
-                <h5>Selected Categories</h5>
-                <button (click)="togglePopup()">Close</button>
+                <h5>Wybrane Kategorie</h5>
+                <button (click)="togglePopup()">Zamknij</button>
                 </div>
                 <div class="popup-body">
                 <div *ngFor="let item of selectedItems" class="selected-item">
                     <span>{{ item.category }}{{ item.subcategory ? ' > ' + item.subcategory : '' }}</span>
-                    <button (click)="removeCategory(item.category, item.subcategory)">Remove</button>
+                    <button (click)="removeCategory(item.category, item.subcategory)">Usun</button>
                 </div>
                 </div>  
             </div>
