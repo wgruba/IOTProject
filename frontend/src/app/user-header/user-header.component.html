@@ -51,7 +51,7 @@
               </div>
 
             <!-- Selected Categories and Subcategories -->
-            <div class="selected-items">
+            <!-- <div class="selected-items">
                     <ng-container *ngFor="let item of selectedItems; let i = index">
                     <div *ngIf="i < 2">
                         <span *ngIf="item.subcategory">{{ item.category }} > {{ item.subcategory }}</span>
@@ -59,7 +59,7 @@
                         <button (click)="removeCategory(item.category, item.subcategory)">Remove</button>
                     </div>
                 </ng-container>
-            </div>
+            </div> -->
         
             <!-- Trigger Button -->
             <button class="show-selected-category-button" (click)="togglePopup()">Show Selected Categories</button>
@@ -76,7 +76,7 @@
                     <span>{{ item.category }}{{ item.subcategory ? ' > ' + item.subcategory : '' }}</span>
                     <button (click)="removeCategory(item.category, item.subcategory)">Remove</button>
                 </div>
-                </div>
+                </div>  
             </div>
             </div>
 
