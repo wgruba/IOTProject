@@ -12,7 +12,7 @@ public interface UserRepository {
     //CRUD
     User getUser(int id) throws UserNotFoundEx;
     User getUser(String nameOrMail) throws UserNotFoundEx;
-    User updateUser(int id, String name, String mail, String password, PermissionLevel permissionLevel, List<Integer> subscribedEvents, List<Integer> subscribedCategories) throws UserNotFoundEx;
+    boolean updateUser(int id, String name, String mail, String password, PermissionLevel permissionLevel, List<Integer> subscribedEvents, List<Integer> subscribedCategories) throws UserNotFoundEx;
     boolean deleteUser(int id) throws UserNotFoundEx;
     boolean addUser(int id, String name, String mail, String password, PermissionLevel permissionLevel, List<Integer> subscribedEvents, List<Integer> subscribedCategories) throws UserExistsEx;
     boolean addUser(User user) throws UserExistsEx;

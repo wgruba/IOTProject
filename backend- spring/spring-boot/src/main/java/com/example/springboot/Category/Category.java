@@ -1,31 +1,45 @@
 package com.example.springboot.Category;
 
+import org.bson.BsonType;
+import org.bson.codecs.pojo.annotations.BsonId;
+import org.bson.codecs.pojo.annotations.BsonIgnore;
+import org.bson.codecs.pojo.annotations.BsonProperty;
+import org.bson.codecs.pojo.annotations.BsonRepresentation;
 
 import java.util.List;
+
 public class Category {
-    private int _id;
+    @BsonId
+    @BsonRepresentation(BsonType.OBJECT_ID)
+    private int id;
+    @BsonProperty
     private String name;
+    @BsonProperty
     private boolean isParentCategory;
+    @BsonIgnore
     private List<Integer> subcategories;
+    @BsonProperty
     private int parentId;
 
     public Category() {
     }
 
-    public Category(int _id, String name, boolean isParentCategory, List<Integer> subcategories, int parentId) {
-        this._id = _id;
+    public Category(@BsonId int id,
+                    @BsonProperty String name,
+                    @BsonProperty boolean isParentCategory,
+                    @BsonProperty int parentId) {
+        this.id = id;
         this.name = name;
         this.isParentCategory = isParentCategory;
-        this.subcategories = subcategories;
         this.parentId = parentId;
     }
 
-    public int get_id() {
-        return _id;
+    public int getId() {
+        return id;
     }
 
-    public void set_id(int _id) {
-        this._id = _id;
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getName() {

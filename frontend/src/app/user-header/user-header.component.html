@@ -81,8 +81,15 @@
             </div>
 
             <button class="location-button">Lokalizacja:</button>
-            <input  type="date" class="date-button" formControlName="date">
+            <div class="date-checker">
+                <input  type="date" class="date-button"  formControlName="date" name="dataOd">Od:</button>
+                <button  type="date" class="date-button"  formControlName="date" name="dataDo">Do:</button>
+                <div class="checkbox">
+                    <input type="checkbox" class="header-checkbox" checked name="hard-limit" value=0>
+                    <label for="hard-limit">Tylko wydarzenia w pełni zawarte w tym okresie czasu</label>        
+                </div>
+            </div>
             <button class="search-button" (click)="onSearch()">Szukaj</button>
-    </div>
+      </div>
     </div>
 </header>

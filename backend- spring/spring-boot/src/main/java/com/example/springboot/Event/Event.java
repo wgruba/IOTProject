@@ -1,35 +1,70 @@
 package com.example.springboot.Event;
 
+import org.bson.BsonType;
+import org.bson.codecs.pojo.annotations.BsonId;
+import org.bson.codecs.pojo.annotations.BsonProperty;
+import org.bson.codecs.pojo.annotations.BsonRepresentation;
+
 import java.time.LocalDateTime;
 import java.util.List;
 
 public class Event {
-    private int _id;
+    @BsonId
+    @BsonRepresentation(BsonType.OBJECT_ID)
+    private int id;
+    @BsonProperty
     private String name;
+    @BsonProperty
     private int organizer;
+    @BsonProperty
     private List<Integer> categoryList;
-    private List<Integer> userList;
+    @BsonProperty
+    private List<Integer> clientList;
+    @BsonProperty
     private String description;
+    @BsonProperty
     private int size;
 
-//    todo localisation as localisation
+    //    todo localisation as localisation
+    @BsonProperty
     private String localisation;
+    @BsonProperty
     private boolean isFree; //not paid
+    @BsonProperty
     private boolean isReservationNecessary;
+    @BsonProperty
+    @BsonRepresentation(BsonType.STRING)
     private AgeGroup ageGroup;
+    @BsonProperty
     private LocalDateTime startDate;
+    @BsonProperty
     private LocalDateTime endDate;
+    @BsonProperty
+    @BsonRepresentation(BsonType.STRING)
     private EventStatus eventStatus;
 
     public Event() {
     }
 
-    public Event(int _id, String name, int organizer, List<Integer> categoryList, List<Integer> userList, String description, int size, String localisation, boolean isFree, boolean isReservationNecessary, AgeGroup ageGroup, LocalDateTime startDate, LocalDateTime endDate, EventStatus eventStatus) {
-        this._id = _id;
+    public Event(@BsonId int id,
+                 @BsonProperty String name,
+                 @BsonProperty int organizer,
+                 @BsonProperty List<Integer> categoryList,
+                 @BsonProperty List<Integer> clientList,
+                 @BsonProperty String description,
+                 @BsonProperty int size,
+                 @BsonProperty String localisation,
+                 @BsonProperty boolean isFree,
+                 @BsonProperty boolean isReservationNecessary,
+                 @BsonProperty AgeGroup ageGroup,
+                 @BsonProperty LocalDateTime startDate,
+                 @BsonProperty LocalDateTime endDate,
+                 @BsonProperty EventStatus eventStatus) {
+        this.id = id;
         this.name = name;
         this.organizer = organizer;
         this.categoryList = categoryList;
-        this.userList = userList;
+        this.clientList = clientList;
         this.description = description;
         this.size = size;
         this.localisation = localisation;
@@ -41,12 +76,12 @@ public class Event {
         this.eventStatus = eventStatus;
     }
 
-    public int get_id() {
-        return _id;
+    public int getId() {
+        return id;
     }
 
-    public void set_id(int _id) {
-        this._id = _id;
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getName() {
@@ -74,11 +109,11 @@ public class Event {
     }
 
     public List<Integer> getUserList() {
-        return userList;
+        return clientList;
     }
 
-    public void setUserList(List<Integer> userList) {
-        this.userList = userList;
+    public void setUserList(List<Integer> clientList) {
+        this.clientList = clientList;
     }
 
     public String getDescription() {
