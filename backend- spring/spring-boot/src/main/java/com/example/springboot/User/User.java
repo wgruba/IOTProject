@@ -2,47 +2,27 @@ package com.example.springboot.User;
 
 import org.bson.BsonType;
 import org.bson.codecs.pojo.annotations.*;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.List;
 
+@Document(collection = "User")
 public class User {
-    @BsonId
-    @BsonRepresentation(BsonType.OBJECT_ID)
+    @Id
     private int id;
-    @BsonProperty
     private String name;
-    @BsonProperty
     private String mail;
-    @BsonProperty
+
     private String password;
-    @BsonProperty
-    @BsonRepresentation(BsonType.STRING)
+
     private PermissionLevel permissionLevel;
-    @BsonProperty
     private List<Integer> subscribedEvents;
-    @BsonProperty
     private List<Integer> subscribedCategories;
 
     public User() {
-
     }
 
-    @BsonCreator
-    public User(@BsonId int id,
-                @BsonProperty String name,
-                @BsonProperty String mail,
-                @BsonProperty String password,
-                @BsonProperty PermissionLevel permissionLevel,
-                @BsonProperty List<Integer> subscribedEvents,
-                @BsonProperty List<Integer> subscribedCategories) {
-        this.id = id;
-        this.name = name;
-        this.mail = mail;
-        this.password = password;
-        this.permissionLevel = permissionLevel;
-        this.subscribedEvents = subscribedEvents;
-        this.subscribedCategories = subscribedCategories;
-    }
 
     public int getId() {
         return id;

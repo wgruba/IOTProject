@@ -9,9 +9,9 @@
         <div class="event-list">
           <div  class="event" *ngFor="let event of events">
               <div class="card">
-                  <img [src]="event.url" alt="Event image">
+                  <img [src]="event.imageUrl" alt="Event image">
                   <div>
-                    <h3>{{ event.title }}</h3>
+                    <h3>{{ event.name }}</h3>
                     <p>{{ event.description }}</p>
                   </div>
                   <i class="fas fa-edit" (click)="editEvent()"></i>

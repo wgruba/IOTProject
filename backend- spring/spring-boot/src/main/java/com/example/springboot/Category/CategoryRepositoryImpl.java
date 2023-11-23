@@ -1,26 +1,102 @@
+/*
 package com.example.springboot.Category;
 
 import com.example.springboot.Category.Exceptions.CategoryExistsEx;
 import com.example.springboot.Category.Exceptions.CategoryIsNotParentCategory;
+import com.example.springboot.Category.Exceptions.CategoryIsNotSubcategoryEx;
 import com.example.springboot.Category.Exceptions.CategoryNotFoundEx;
 import com.example.springboot.Database.CRUDAmount;
-import com.example.springboot.Database.DatabaseConnection;
-import com.example.springboot.Database.DatabaseFilters;
-import com.example.springboot.Database.DatabaseUpdater;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.core.MongoTemplate;
 import org.bson.conversions.Bson;
 
 import java.util.List;
 
 
 public class CategoryRepositoryImpl implements CategoryRepository {
+
     private final String USERNAME = "Agata";
     private final String PASSWORD = "haslo";
     private final String DATABASE = "bazadanych";
+
+    @Autowired
+    MongoTemplate mongoTemplate;
 
     public CategoryRepositoryImpl() {
     }
 
     @Override
+    public List<Category> getAllCategories() {
+        return null;
+    }
+
+    @Override
+    public List<Category> getAllParentCategories() {
+        return null;
+    }
+
+    @Override
+    public List<Category> getAllSubCategoriesofParentCategory(int id) throws CategoryNotFoundEx, CategoryIsNotParentCategory {
+        return null;
+    }
+
+    @Override
+    public List<Category> getSubscribedCategories(List<Integer> ids) throws CategoryNotFoundEx {
+        return null;
+    }
+
+    @Override
+    public List<Category> getEventCategories(List<Integer> ids) throws CategoryNotFoundEx {
+        return null;
+    }
+
+    @Override
+    public Category getCategory(int id) throws CategoryNotFoundEx {
+        return null;
+    }
+
+    @Override
+    public Category getCategory(String name) throws CategoryNotFoundEx {
+        return null;
+    }
+
+    @Override
+    public boolean updateCategory(int id, String name, boolean isParentCategory, List<Integer> subcategories, int parentId) throws CategoryNotFoundEx {
+        return false;
+    }
+
+    @Override
+    public boolean deleteCategory(int id) throws CategoryNotFoundEx {
+        return false;
+    }
+
+    @Override
+    public boolean addCategory(int id, String name, boolean isParentCategory, List<Integer> subcategories, int parentId) throws CategoryExistsEx {
+        return false;
+    }
+
+    @Override
+    public boolean addCategory(Category category) throws CategoryExistsEx {
+        return false;
+    }
+
+    @Override
+    public boolean isCategoryAParentCategory(int id) throws CategoryNotFoundEx {
+        return false;
+    }
+
+    @Override
+    public boolean makeNewCategoryConnection(int parentCategoryId, int subCategoryId) throws CategoryNotFoundEx, CategoryIsNotParentCategory {
+        return false;
+    }
+
+    @Override
+    public boolean deleteCategoryConnection(int parentCategoryId, int subCategoryId) throws CategoryIsNotSubcategoryEx, CategoryNotFoundEx {
+        return false;
+    }
+
+   */
+/* @Override
     public List<Category> getAllCategories() {
         System.out.println("getAllCategory");
 
@@ -225,5 +301,7 @@ public class CategoryRepositoryImpl implements CategoryRepository {
                 0);
 
         return true;
-    }
+    }*//*
+
 }
+*/

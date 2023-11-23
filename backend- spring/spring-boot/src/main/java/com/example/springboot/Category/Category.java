@@ -1,39 +1,18 @@
 package com.example.springboot.Category;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
-import org.bson.BsonType;
-import org.bson.codecs.pojo.annotations.BsonId;
-import org.bson.codecs.pojo.annotations.BsonIgnore;
-import org.bson.codecs.pojo.annotations.BsonProperty;
-import org.bson.codecs.pojo.annotations.BsonRepresentation;
 
 import java.util.List;
 
+@Document(collection = "Category")
 public class Category {
-    @BsonId
-    @BsonRepresentation(BsonType.OBJECT_ID)
+    @Id
     private int id;
-    @BsonProperty
     private String name;
-    @BsonProperty
     private boolean isParentCategory;
-    @BsonIgnore
     private List<Integer> subcategories;
-    @BsonProperty
     private int parentId;
-
-    public Category() {
-    }
-
-    public Category(@BsonId int id,
-                    @BsonProperty String name,
-                    @BsonProperty boolean isParentCategory,
-                    @BsonProperty int parentId) {
-        this.id = id;
-        this.name = name;
-        this.isParentCategory = isParentCategory;
-        this.parentId = parentId;
-    }
-
     public int getId() {
         return id;
     }

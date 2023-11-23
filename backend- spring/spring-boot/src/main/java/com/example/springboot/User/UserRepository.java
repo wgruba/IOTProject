@@ -2,14 +2,24 @@ package com.example.springboot.User;
 
 import com.example.springboot.User.Exceptions.UserExistsEx;
 import com.example.springboot.User.Exceptions.UserNotFoundEx;
+import org.springframework.data.mongodb.repository.MongoRepository;
+import org.springframework.data.mongodb.repository.Query;
+import java.util.Optional;
+
 
 import java.util.List;
 
-public interface UserRepository {
-    List<User> getAllUsers();
-    List<User> getUsersSubscribedToEvent(List<Integer> ids);
+public interface UserRepository extends MongoRepository<User, Integer> {
 
-    //CRUD
+    List<User> findAll();
+    User findById(int id);
+
+    @Query("{'$or': [{'name': ?0}, {'mail': ?0}]}")
+    Optional<User> findByNameOrMail(String nameOrMail);
+
+//    List<User> getUsersSubscribedToEvent(List<Integer> ids);
+
+   /* //CRUD
     User getUser(int id) throws UserNotFoundEx;
     User getUser(String nameOrMail) throws UserNotFoundEx;
     boolean updateUser(int id, String name, String mail, String password, PermissionLevel permissionLevel, List<Integer> subscribedEvents, List<Integer> subscribedCategories) throws UserNotFoundEx;
@@ -39,5 +49,5 @@ public interface UserRepository {
     //Account management
     boolean login(String nameOrMail, String password) throws UserNotFoundEx;
     boolean remindPassword(String nameOrMail) throws UserNotFoundEx;
-    boolean changePermissionLevel(int id, PermissionLevel permissionLevel) throws UserNotFoundEx;
+    boolean changePermissionLevel(int id, PermissionLevel permissionLevel) throws UserNotFoundEx;*/
 }

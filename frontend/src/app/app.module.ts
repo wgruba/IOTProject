@@ -1,4 +1,5 @@
 import { CUSTOM_ELEMENTS_SCHEMA,NgModule } from '@angular/core';
+import { HttpClientModule } from '@angular/common/http';
 import { BrowserModule } from '@angular/platform-browser';
 import { register } from 'swiper/element/bundle';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -51,6 +52,7 @@ register();
     AppRoutingModule,
     GoogleMapsModule,
     ReactiveFormsModule,
+    HttpClientModule,
   ],
   providers: [EventService],
   bootstrap: [AppComponent],

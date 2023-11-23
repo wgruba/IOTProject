@@ -10,9 +10,11 @@ export class UserService {
   private userSubject = new BehaviorSubject<User>({
     id: '1',
     username: 'Adamus12',
+    password: "sadas",
     name: 'Adam',
     email: 'adam.nowak@gmail.com',
-    isVerified: true
+    isVerified: true,
+    permissonLevel: "User", 
   });
 
   constructor() { }
