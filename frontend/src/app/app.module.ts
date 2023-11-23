@@ -16,12 +16,13 @@ import { DescriptionPageComponent } from './description-page/description-page.co
 import { EventService } from './event.service';
 import { MapComponent } from './map/map.component';
 import { GoogleMapsModule } from '@angular/google-maps';
+import { AboutUsComponent } from './about-us/about-us.component';
+import { UserHelpComponent } from './user-help/user-help.component';
 import { AddEventSiteComponent } from './add-event-site/add-event-site.component';
 import { UserProfileAsideComponent } from './user-profile-aside/user-profile-aside.component';
 import { UserSearchingPageComponent } from './user-searching-page/user-searching-page.component';
 import { UserProfileComponent } from './user-profile/user-profile.component';
 import { UserEventsComponent } from './user-events/user-events.component';
-
 
 register();
 
@@ -37,6 +38,8 @@ register();
     UserSidebarSearchComponent,
     DescriptionPageComponent,
     MapComponent,
+    AboutUsComponent,
+    UserHelpComponent,
     AddEventSiteComponent,
     UserProfileAsideComponent,
     UserSearchingPageComponent,
