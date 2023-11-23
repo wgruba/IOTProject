@@ -2,12 +2,24 @@ package com.example.springboot.Event;
 
 import com.example.springboot.Event.Exceptions.EventExistsEx;
 import com.example.springboot.Event.Exceptions.EventNotFoundEx;
+import com.example.springboot.User.User;
+import org.springframework.data.mongodb.repository.MongoRepository;
+import org.springframework.data.mongodb.repository.Query;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
-public interface EventRepository {
-    List<Event> getAllEvents();
+public interface EventRepository extends MongoRepository<Event, String> {
+
+
+    List<Event> findAll();
+    Event findById(int id);
+    @Query("{'$or': [{'name': ?0}]")
+    List<Event> findByName(String name);
+
+
+    /*List<Event> getAllEvents();
     List<Event> getEventsByOrganiser(int organiserId);
     List<Event> getUsersSubscribedEvents(List<Integer> ids);
     List<Event> getEditedEvents();
@@ -71,5 +83,5 @@ public interface EventRepository {
     boolean verifyEditedEvent(int eventId, int event2Id) throws EventNotFoundEx;
     boolean isEventActive(int id) throws EventNotFoundEx;
 
-    boolean isFullEventIncludedInDate(int id, LocalDateTime startDate, LocalDateTime endDate) throws EventNotFoundEx;
+    boolean isFullEventIncludedInDate(int id, LocalDateTime startDate, LocalDateTime endDate) throws EventNotFoundEx;*/
 }

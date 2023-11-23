@@ -8,43 +8,68 @@ import com.example.springboot.Event.EventController;
 import com.example.springboot.User.Exceptions.NotEnoughHighPermissionLevel;
 import com.example.springboot.User.Exceptions.UserExistsEx;
 import com.example.springboot.User.Exceptions.UserNotFoundEx;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDateTime;
-import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 @CrossOrigin
 @RestController
 public class UserController {
-    private final UserRepository impl = new UserRepositoryImpl();
+
+    @Autowired
+    private UserRepository userRepository;
     private final EventController eventController = new EventController();
     private final CategoryController categoryController = new CategoryController();
 
 
-//    @GetMapping("/users/{id}")
-//    public EntityModel<User> getUser(@PathVariable int id){
-//        try {
-//            return EntityModel.of(impl.getUser(id));
-//        } catch (UserNotFoundEx e) {
-//            throw new RuntimeException(e);
-//        }
-//    }
-
-    /***
-     * usage: testing
-     * @return list of all users
-     */
-    @GetMapping("users")
-    public EntityModel<List<User>> getAllUsers(){
-        return EntityModel.of(impl.getAllUsers());
+    @GetMapping("/users/{id}")
+    public EntityModel<User> getUser(@PathVariable int id){
+        try {
+            return EntityModel.of(userRepository.findById(id));
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
-    /***
+    @GetMapping("users")
+    public CollectionModel<User> getAllUsers() {
+        List<User> users = userRepository.findAll();
+        return CollectionModel.of(users);
+    }
+
+
+    @GetMapping("/users/name/{nameOrMail}")
+    public User getUserByName(@PathVariable String nameOrMail) throws UserNotFoundEx {
+        return userRepository.findByNameOrMail(nameOrMail)
+                .orElseThrow(() -> new UserNotFoundEx("User not found with name or email: " + nameOrMail));
+    }
+
+    public void addSampleUser() {
+        User user = new User();
+        user.setMail("Wojciech@mail.com");
+        user.setName("Wojciech");
+        user.setPassword("password");
+        user.setPermissionLevel(PermissionLevel.VERIFIED_USER);
+        user.setSubscribedCategories(Collections.emptyList()); // Empty list
+        userRepository.save(user);
+    }
+
+    @PostMapping("/addUser")
+    public String addUser(@RequestBody User user) {
+        userRepository.save(user);
+        return "User added";
+    }
+
+
+    /*
+    *//***
      * usage: main page; giving list of random events
      * @return list of some events for user
-     */
+     *//*
     @GetMapping
     public EntityModel<List<Event>> getRandomEvents(){
         //todo
@@ -69,10 +94,10 @@ public class UserController {
         } catch (UserExistsEx e) {
             throw new RuntimeException(e);
         }
-    }
+    }*/
 
 
-
+/*
     // Events organised by me
     @PatchMapping("users/{userId}/createEvent")
     public EntityModel<Boolean> createEvent(@PathVariable int userId,
@@ -211,6 +236,6 @@ public class UserController {
         } catch (NotEnoughHighPermissionLevel e) {
             throw new RuntimeException(e);
         }
-    }
+    }*/
 
 }

@@ -32,14 +32,12 @@ export class DescriptionPageComponent {
   }
 
   getGoogleCalendarUrl(event: Event): string {
-    var start: Date  = new Date('2023-11-14T18:30:00Z');
-    var end: Date  = new Date('2023-11-14T23:20:00Z');
-    const startTime = this.formatDateToGoogleCalendar(start); //need to adjust later with proper data
-    const endTime = this.formatDateToGoogleCalendar(end);
+    const startTime = this.formatDateToGoogleCalendar(new Date(event.startDate)); //need to adjust later with proper data
+    const endTime = this.formatDateToGoogleCalendar(new Date(event.endDate));
   
     const details = encodeURIComponent(event.description);
-    const location = encodeURIComponent(event.title);
-    const title = encodeURIComponent(event.title);
+    const location = encodeURIComponent(event.name);
+    const title = encodeURIComponent(event.name);
   
     return `https://calendar.google.com/calendar/r/eventedit?text=${title}&dates=${startTime}/${endTime}&details=${details}&location=${location}`;
   }

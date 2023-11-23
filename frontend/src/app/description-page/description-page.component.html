@@ -5,15 +5,15 @@
 
         <div class="event-details-header">
             <div class="event-image">
-                <img [src]="event.url"  alt="Event Image">
+                <img [src]="event.imageUrl"  alt="Event Image">
             </div>
         
             <div class="event-details">
-                <h1>{{ event.title }}</h1>
-                <p class="event-time">12.02.2024 18:30 - 23:20</p>
-                <p class="event-location">Ciechockinek | Hala Kapcia 12a</p>
-                <p class="event-participants">566 osób</p>
-                <p class="event-organizer">Utworzone przez: HalaKapciaOfficial</p>
+                <h1>{{ event.name }}</h1>
+                <p class="event-time">{{event.startDate}} - {{event.endDate}}</p> <!-- zamienić na normalne daty !!!! -->
+                <p class="event-location">{{event.localisation}}</p>
+                <p class="event-participants">{{event.size}} osób</p>
+                <p class="event-organizer">Utworzone przez: {{event.organizer}}</p>
             </div>
 
             <div class="event-actions">
@@ -24,40 +24,8 @@
         </div>
 
         <div class="event-details-body">
-            <h2>Wielki Koncert grupy Jana w Ciechockinu Sprawdź sam !!!!</h2>
-            <p class="event-description">Świetna muzyka grana przez legendy rocku!</p>
-            <p class="event-atmosphere">Wyjątkowa atmosfera!</p>
-            <p class="event-price">Bilety już od 139,00 zł!</p>
-            <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Iure deserunt modi ab quia vel quas id possimus veritatis, pariatur obcaecati enim aliquid praesentium doloribus minima incidunt asperiores harum iste ratione.
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Provident molestiae obcaecati architecto corporis aliquid iste deleniti debitis totam ea, itaque velit accusantium. Porro, natus nesciunt! Ea doloremque repellat illum repellendus?
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Unde quibusdam porro voluptatum? Voluptas aliquam sapiente doloremque amet ad neque consequatur suscipit, animi quibusdam provident, dicta dolore quo laudantium ipsam maiores!
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Odio animi excepturi maiores assumenda commodi corporis eveniet quam quo vero corrupti. Vel sequi unde reiciendis eum numquam provident dicta tempore obcaecati!
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Necessitatibus vitae molestias quia aspernatur, porro ipsa fugit repudiandae exercitationem magni maxime voluptatum, non nulla quam amet ea numquam sapiente doloremque error.
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Aliquam vitae qui mollitia repellat culpa temporibus quia voluptatem harum voluptate. Laboriosam, quod labore quam aut at dignissimos corporis libero hic sequi.
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Quibusdam ipsum explicabo repudiandae veritatis doloremque optio alias quo eos! Tempora repellat accusantium sapiente nemo aliquam ea nobis hic eius autem cupiditate.
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Non blanditiis amet ea neque ab quo laboriosam dolore porro, tenetur quos, itaque delectus totam, hic rerum pariatur eius debitis consequatur suscipit.Lorem ipsum dolor sit, amet consectetur adipisicing elit. Iure deserunt modi ab quia vel quas id possimus veritatis, pariatur obcaecati enim aliquid praesentium doloribus minima incidunt asperiores harum iste ratione.
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Provident molestiae obcaecati architecto corporis aliquid iste deleniti debitis totam ea, itaque velit accusantium. Porro, natus nesciunt! Ea doloremque repellat illum repellendus?
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Unde quibusdam porro voluptatum? Voluptas aliquam sapiente doloremque amet ad neque consequatur suscipit, animi quibusdam provident, dicta dolore quo laudantium ipsam maiores!
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Odio animi excepturi maiores assumenda commodi corporis eveniet quam quo vero corrupti. Vel sequi unde reiciendis eum numquam provident dicta tempore obcaecati!
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Necessitatibus vitae molestias quia aspernatur, porro ipsa fugit repudiandae exercitationem magni maxime voluptatum, non nulla quam amet ea numquam sapiente doloremque error.
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Aliquam vitae qui mollitia repellat culpa temporibus quia voluptatem harum voluptate. Laboriosam, quod labore quam aut at dignissimos corporis libero hic sequi.
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Quibusdam ipsum explicabo repudiandae veritatis doloremque optio alias quo eos! Tempora repellat accusantium sapiente nemo aliquam ea nobis hic eius autem cupiditate.
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Non blanditiis amet ea neque ab quo laboriosam dolore porro, tenetur quos, itaque delectus totam, hic rerum pariatur eius debitis consequatur suscipit.Lorem ipsum dolor sit, amet consectetur adipisicing elit. Iure deserunt modi ab quia vel quas id possimus veritatis, pariatur obcaecati enim aliquid praesentium doloribus minima incidunt asperiores harum iste ratione.
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Provident molestiae obcaecati architecto corporis aliquid iste deleniti debitis totam ea, itaque velit accusantium. Porro, natus nesciunt! Ea doloremque repellat illum repellendus?
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Unde quibusdam porro voluptatum? Voluptas aliquam sapiente doloremque amet ad neque consequatur suscipit, animi quibusdam provident, dicta dolore quo laudantium ipsam maiores!
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Odio animi excepturi maiores assumenda commodi corporis eveniet quam quo vero corrupti. Vel sequi unde reiciendis eum numquam provident dicta tempore obcaecati!
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Necessitatibus vitae molestias quia aspernatur, porro ipsa fugit repudiandae exercitationem magni maxime voluptatum, non nulla quam amet ea numquam sapiente doloremque error.
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Aliquam vitae qui mollitia repellat culpa temporibus quia voluptatem harum voluptate. Laboriosam, quod labore quam aut at dignissimos corporis libero hic sequi.
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Quibusdam ipsum explicabo repudiandae veritatis doloremque optio alias quo eos! Tempora repellat accusantium sapiente nemo aliquam ea nobis hic eius autem cupiditate.
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Non blanditiis amet ea neque ab quo laboriosam dolore porro, tenetur quos, itaque delectus totam, hic rerum pariatur eius debitis consequatur suscipit.Lorem ipsum dolor sit, amet consectetur adipisicing elit. Iure deserunt modi ab quia vel quas id possimus veritatis, pariatur obcaecati enim aliquid praesentium doloribus minima incidunt asperiores harum iste ratione.
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Provident molestiae obcaecati architecto corporis aliquid iste deleniti debitis totam ea, itaque velit accusantium. Porro, natus nesciunt! Ea doloremque repellat illum repellendus?
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Unde quibusdam porro voluptatum? Voluptas aliquam sapiente doloremque amet ad neque consequatur suscipit, animi quibusdam provident, dicta dolore quo laudantium ipsam maiores!
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Odio animi excepturi maiores assumenda commodi corporis eveniet quam quo vero corrupti. Vel sequi unde reiciendis eum numquam provident dicta tempore obcaecati!
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Necessitatibus vitae molestias quia aspernatur, porro ipsa fugit repudiandae exercitationem magni maxime voluptatum, non nulla quam amet ea numquam sapiente doloremque error.
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Aliquam vitae qui mollitia repellat culpa temporibus quia voluptatem harum voluptate. Laboriosam, quod labore quam aut at dignissimos corporis libero hic sequi.
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Quibusdam ipsum explicabo repudiandae veritatis doloremque optio alias quo eos! Tempora repellat accusantium sapiente nemo aliquam ea nobis hic eius autem cupiditate.
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Non blanditiis amet ea neque ab quo laboriosam dolore porro, tenetur quos, itaque delectus totam, hic rerum pariatur eius debitis consequatur suscipit.
-            </p> 
+            <h2>{{event.name}}</h2>
+            <p class="event-description">{{event.description}}</p>
         </div>
 
         <app-map [latitude]="this.latitude" [longitude]="this.longitude"></app-map>

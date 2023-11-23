@@ -1,16 +1,16 @@
+/*
 package com.example.springboot.Event;
 
 import com.example.springboot.Event.Exceptions.EventExistsEx;
 import com.example.springboot.Event.Exceptions.EventNotFoundEx;
-import com.example.springboot.Database.DatabaseConnection;
-import com.example.springboot.Database.DatabaseFilters;
-import com.example.springboot.Database.DatabaseUpdater;
-import org.bson.conversions.Bson;
-
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.core.MongoTemplate;
 import java.time.LocalDateTime;
 import java.util.List;
 
-public class EventRepositoryImpl implements EventRepository {
+public class EventRepositoryImpl  implements EventRepository{
+    @Autowired
+    MongoTemplate mongoTemplate;
     private final String USERNAME = "Agata";
     private final String PASSWORD = "haslo";
     private final String DATABASE = "bazadanych";
@@ -19,6 +19,107 @@ public class EventRepositoryImpl implements EventRepository {
     }
 
     @Override
+    public List<Event> getAllEvents() {
+        return null;
+    }
+
+    @Override
+    public List<Event> getEventsByOrganiser(int organiserId) {
+        return null;
+    }
+
+    @Override
+    public List<Event> getUsersSubscribedEvents(List<Integer> ids) {
+        return null;
+    }
+
+    @Override
+    public List<Event> getEditedEvents() {
+        return null;
+    }
+
+    @Override
+    public List<Event> getEventsFromCategory(int id) {
+        return null;
+    }
+
+    @Override
+    public List<Event> getFilteredEvents(String name, int categoryId, int sizeMin, int sizeMax, String localisation, int isFree, int isReservationNecessary, String ageGroupMin, LocalDateTime startDate, LocalDateTime endDate, boolean isFullEventIncludedInDate) {
+        return null;
+    }
+
+    @Override
+    public Event getEvent(int id) throws EventNotFoundEx {
+        return null;
+    }
+
+    @Override
+    public Event getEvent(String name) throws EventNotFoundEx {
+        return null;
+    }
+
+    @Override
+    public boolean updateEvent(int id, String name, int organizer, List<Integer> categoryList, List<Integer> userList, String description, int size, String localisation, boolean isFree, boolean isReservationNecessary, AgeGroup ageGroup, LocalDateTime startDate, LocalDateTime endDate, EventStatus eventStatus) throws EventNotFoundEx {
+        return false;
+    }
+
+    @Override
+    public boolean deleteEvent(int id) throws EventNotFoundEx {
+        return false;
+    }
+
+    @Override
+    public boolean addEvent(int id, String name, int organizer, List<Integer> categoryList, List<Integer> userList, String description, int size, String localisation, boolean isFree, boolean isReservationNecessary, AgeGroup ageGroup, LocalDateTime startDate, LocalDateTime endDate, EventStatus eventStatus) throws EventExistsEx {
+        return false;
+    }
+
+    @Override
+    public boolean addEvent(Event event) throws EventExistsEx {
+        return false;
+    }
+
+    @Override
+    public boolean subscribeUser(int eventId, int userId) throws EventNotFoundEx {
+        return false;
+    }
+
+    @Override
+    public boolean subscribeCategory(int eventId, int categoryId) throws EventNotFoundEx {
+        return false;
+    }
+
+    @Override
+    public boolean unsubscribeUser(int eventId, int userId) throws EventNotFoundEx {
+        return false;
+    }
+
+    @Override
+    public boolean unsubscribeCategory(int eventId, int categoryId) throws EventNotFoundEx {
+        return false;
+    }
+
+    @Override
+    public boolean changeEventStatus(int eventId, EventStatus eventStatus) throws EventNotFoundEx {
+        return false;
+    }
+
+    @Override
+    public boolean verifyEditedEvent(int eventId, int event2Id) throws EventNotFoundEx {
+        return false;
+    }
+
+    @Override
+    public boolean isEventActive(int id) throws EventNotFoundEx {
+        return false;
+    }
+
+    @Override
+    public boolean isFullEventIncludedInDate(int id, LocalDateTime startDate, LocalDateTime endDate) throws EventNotFoundEx {
+        return false;
+    }
+
+    */
+/*@Override
     public List<Event> getAllEvents() {
         System.out.println("getAllEvents");
 
@@ -258,5 +359,7 @@ public class EventRepositoryImpl implements EventRepository {
         System.out.println("isFullEventIncludedInDate: " + id + " " + startDate + " " + endDate);
         Event tempEvent = getEvent(id);
         return startDate.isAfter(tempEvent.getStartDate()) && endDate.isBefore(tempEvent.getEndDate());
-    }
+    }*//*
+
 }
+*/

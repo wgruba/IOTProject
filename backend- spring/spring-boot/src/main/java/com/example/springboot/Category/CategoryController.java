@@ -3,6 +3,7 @@ package com.example.springboot.Category;
 import com.example.springboot.Category.Exceptions.CategoryExistsEx;
 import com.example.springboot.Category.Exceptions.CategoryIsNotParentCategory;
 import com.example.springboot.Category.Exceptions.CategoryNotFoundEx;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -11,14 +12,15 @@ import java.util.List;
 
 public class CategoryController {
 
-    private final CategoryRepository impl = new CategoryRepositoryImpl();
+    @Autowired
+    private CategoryRepository categoryRepository;
 
-    @GetMapping("categories")
+/*    @GetMapping("categories")
     public EntityModel<List<Category>> getAllCategories(){
-        return EntityModel.of(impl.getAllCategories());
-    }
+        return EntityModel.of(categoryRepository.getAllCategories());
+    }*/
 
-    @GetMapping("categories/parentCategories")
+/*    @GetMapping("categories/parentCategories")
     public EntityModel<List<Category>> getPArentCategories(){
         return EntityModel.of(impl.getAllParentCategories());
     }
@@ -51,5 +53,5 @@ public class CategoryController {
         } catch (CategoryExistsEx e) {
             throw new RuntimeException(e);
         }
-    }
+    }*/
 }

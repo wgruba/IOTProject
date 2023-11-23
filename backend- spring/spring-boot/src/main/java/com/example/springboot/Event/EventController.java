@@ -2,24 +2,41 @@ package com.example.springboot.Event;
 
 import com.example.springboot.Event.Exceptions.EventExistsEx;
 import com.example.springboot.Event.Exceptions.EventNotFoundEx;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.EntityModel;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-@CrossOrigin
+@CrossOrigin(origins = "http://localhost:4200/")
 @RestController
 public class EventController {
-    private final EventRepository impl = new EventRepositoryImpl();
 
-    @GetMapping("events")
-    public EntityModel<List<Event>> getAllEvents(){
-        return EntityModel.of(impl.getAllEvents());
+    @Autowired
+    private  EventRepository eventRepository;
+
+
+
+    @PostMapping("/addEvent")
+    public ResponseEntity<Event> addEvent(@RequestBody Event event) {
+        Event savedEvent = eventRepository.save(event);
+        return ResponseEntity.ok(savedEvent);
+    }
+    @GetMapping("/events")
+    public ResponseEntity<List<Event>> getAllEvents() {
+        List<Event> events = eventRepository.findAll();
+        return ResponseEntity.ok(events);
     }
 
-
+    @GetMapping("/events/name/{name}")
+    public ResponseEntity<List<Event>> getEventByName(@PathVariable String name) {
+        List<Event> events = eventRepository.findByName(name);
+        return ResponseEntity.ok(events);
+    }
+    /*
     @GetMapping("users/{userId}")
     public EntityModel<Boolean> createEvent(int id,
                                                             String name,
@@ -56,12 +73,12 @@ public class EventController {
         }
     }
 
-    /***
+    *//***
      * getUsersSubscribedEvents- returns list of events, that user has subscribed to
      *
      * @param usersEventList
      * @return
-     */
+     *//*
     public List<Event> getUsersSubscribedEvents(List<Integer> usersEventList) {
         return impl.getUsersSubscribedEvents(usersEventList);
     }
@@ -133,5 +150,5 @@ public class EventController {
 
     public List<Event> getEditedEvents() {
         return impl.getEditedEvents();
-    }
+    }*/
 }

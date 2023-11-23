@@ -1,23 +1,130 @@
+/*
 package com.example.springboot.User;
-
-import com.example.springboot.Database.DatabaseConnection;
-import com.example.springboot.Database.DatabaseFilters;
-import com.example.springboot.Database.DatabaseUpdater;
 import com.example.springboot.User.Exceptions.UserExistsEx;
 import com.example.springboot.User.Exceptions.UserNotFoundEx;
 import org.bson.conversions.Bson;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.core.MongoTemplate;
 
 import java.util.List;
 
 public class UserRepositoryImpl implements UserRepository {
     private final String USERNAME = "Agata";
     private final String PASSWORD = "haslo";
-    private final String DATABASE = "bazadanych";
+    private final String DATABASE = "BazaDanych";
+
+    @Autowired
+    MongoTemplate mongoTemplate;
 
     public UserRepositoryImpl() {
     }
 
     @Override
+    public List<User> getAllUsers() {
+        return null;
+    }
+
+    @Override
+    public List<User> getUsersSubscribedToEvent(List<Integer> ids) {
+        return null;
+    }
+
+    @Override
+    public User getUser(int id) throws UserNotFoundEx {
+        return null;
+    }
+
+    @Override
+    public User getUser(String nameOrMail) throws UserNotFoundEx {
+        return null;
+    }
+
+    @Override
+    public boolean updateUser(int id, String name, String mail, String password, PermissionLevel permissionLevel, List<Integer> subscribedEvents, List<Integer> subscribedCategories) throws UserNotFoundEx {
+        return false;
+    }
+
+    @Override
+    public boolean deleteUser(int id) throws UserNotFoundEx {
+        return false;
+    }
+
+    @Override
+    public boolean addUser(int id, String name, String mail, String password, PermissionLevel permissionLevel, List<Integer> subscribedEvents, List<Integer> subscribedCategories) throws UserExistsEx {
+        return false;
+    }
+
+    @Override
+    public boolean addUser(User user) throws UserExistsEx {
+        return false;
+    }
+
+    @Override
+    public int countUsers() {
+        return 0;
+    }
+
+    @Override
+    public PermissionLevel getPermissionLevel(int id) throws UserNotFoundEx {
+        return null;
+    }
+
+    @Override
+    public boolean subscribeEvent(int userId, int eventId) throws UserNotFoundEx {
+        return false;
+    }
+
+    @Override
+    public boolean subscribeCategory(int userId, int categoryId) throws UserNotFoundEx {
+        return false;
+    }
+
+    @Override
+    public boolean unsubscribeEvent(int userId, int eventId) throws UserNotFoundEx {
+        return false;
+    }
+
+    @Override
+    public boolean unsubscribeCategory(int userId, int categoryId) throws UserNotFoundEx {
+        return false;
+    }
+
+    @Override
+    public int countUsersEvents(int id) throws UserNotFoundEx {
+        return 0;
+    }
+
+    @Override
+    public int countUsersCategories(int id) throws UserNotFoundEx {
+        return 0;
+    }
+
+    @Override
+    public List<Integer> getUsersEventList(int id) throws UserNotFoundEx {
+        return null;
+    }
+
+    @Override
+    public List<Integer> getUsersCategoryList(int id) throws UserNotFoundEx {
+        return null;
+    }
+
+    @Override
+    public boolean login(String nameOrMail, String password) throws UserNotFoundEx {
+        return false;
+    }
+
+    @Override
+    public boolean remindPassword(String nameOrMail) throws UserNotFoundEx {
+        return false;
+    }
+
+    @Override
+    public boolean changePermissionLevel(int id, PermissionLevel permissionLevel) throws UserNotFoundEx {
+        return false;
+    }
+
+@Override
     public List<User> getAllUsers() {
         System.out.println("getAllUsers");
         DatabaseConnection dc = new DatabaseConnection(USERNAME, PASSWORD, DATABASE);
@@ -222,4 +329,6 @@ public class UserRepositoryImpl implements UserRepository {
         return dc.UserCUD(new Bson[]{df.findById(id)}, new Bson[]{du.updatePermissionLevel(permissionLevel)});
     }
 
+
 }
+*/

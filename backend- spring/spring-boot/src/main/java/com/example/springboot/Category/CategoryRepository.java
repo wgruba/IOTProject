@@ -6,9 +6,11 @@ import com.example.springboot.Category.Exceptions.CategoryIsNotParentCategory;
 import com.example.springboot.Category.Exceptions.CategoryIsNotSubcategoryEx;
 import com.example.springboot.Category.Exceptions.CategoryNotFoundEx;
 import com.example.springboot.Category.Exceptions.CategoryExistsEx;
+import com.example.springboot.Event.Event;
+import org.springframework.data.mongodb.repository.MongoRepository;
 
-public interface CategoryRepository {
-    List<Category> getAllCategories();
+public interface CategoryRepository extends MongoRepository<Event, String> {
+   /* List<Category> getAllCategories();
     List<Category> getAllParentCategories();
     List<Category> getAllSubCategoriesofParentCategory(int id) throws CategoryNotFoundEx, CategoryIsNotParentCategory;
     List<Category> getSubscribedCategories(List<Integer> ids) throws CategoryNotFoundEx;
@@ -27,5 +29,5 @@ public interface CategoryRepository {
     boolean isCategoryAParentCategory(int id) throws CategoryNotFoundEx;
     boolean makeNewCategoryConnection(int parentCategoryId, int subCategoryId) throws CategoryNotFoundEx, CategoryIsNotParentCategory;
     boolean deleteCategoryConnection(int parentCategoryId, int subCategoryId) throws CategoryIsNotSubcategoryEx, CategoryNotFoundEx;
-
+*/
 }
