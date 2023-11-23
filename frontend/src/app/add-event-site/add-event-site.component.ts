@@ -17,13 +17,15 @@ export class AddEventSiteComponent {
     this.eventForm = new FormGroup({
       eventName: new FormControl('', Validators.required),
       participants: new FormControl(50, [Validators.required, Validators.min(1)]),
-      isPaid: new FormControl('no'),
+      isFree: new FormControl('no'),
       isOnline: new FormControl('no'),
       isReservationRequired: new FormControl('no'),
       ageRequirement: new FormControl('all'),
       startTime: new FormControl('', Validators.required), // Consider using Validators.pattern for time format
       endTime: new FormControl('', Validators.required),   // Consider using Validators.pattern for time format
-      description: new FormControl('')  
+      description: new FormControl('')  ,
+      localisation: new FormControl(''), // Add this if required
+      imageUrl: new FormControl('') 
     });
   }
 

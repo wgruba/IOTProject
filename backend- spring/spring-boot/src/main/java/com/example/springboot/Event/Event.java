@@ -40,6 +40,24 @@ public class Event {
     private EventStatus eventStatus;
     private String imageUrl;
 
+    public Event(int id, String name, int organizer, List<Integer> categoryList, List<Integer> clientList, String description, int size, String localisation, boolean isFree, boolean isReservationNecessary, AgeGroup ageGroup, LocalDateTime startDate, LocalDateTime endDate, EventStatus eventStatus, String imageUrl) {
+        this.id = id;
+        this.name = name;
+        this.organizer = organizer;
+        this.categoryList = categoryList;
+        this.clientList = clientList;
+        this.description = description;
+        this.size = size;
+        this.localisation = localisation;
+        this.isFree = isFree;
+        this.isReservationNecessary = isReservationNecessary;
+        this.ageGroup = ageGroup;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.eventStatus = eventStatus;
+        this.imageUrl = imageUrl;
+    }
+
     public int getId() {
         return id;
     }
@@ -70,6 +88,13 @@ public class Event {
 
     public void setCategoryList(List<Integer> categoryList) {
         this.categoryList = categoryList;
+    }
+    public List<Integer> getClientList() {
+        return clientList;
+    }
+
+    public void setClientList(List<Integer> clientList) {
+        this.clientList = clientList;
     }
 
     public List<Integer> getUserList() {

@@ -7,15 +7,15 @@ import { User } from '../models/user.model';
   templateUrl: './user-profile.component.html',
   styleUrls: ['./user-profile.component.scss']
 })
-export class UserProfileComponent {
-  user!: User;
+export class UserProfileComponent implements OnInit{
+  user !: User;
 
   constructor(private userService: UserService) {}
 
   ngOnInit(): void {
-    this.userService.getUser().subscribe(user => {
-      this.user = user;
-    });
+    this.userService.getUserFromDatabase(0).subscribe(data => {
+      this.user = data;
+    }, error => console.error(error));
   }
 
   // Method to handle password change

@@ -14,6 +14,8 @@ import { LoginSiteComponent } from './login-site/login-site.component';
 import { UserSidebarSearchComponent } from './user-sidebar-search/user-sidebar-search.component';
 import { DescriptionPageComponent } from './description-page/description-page.component';
 import { EventService } from './event.service';
+import { AuthenticationService } from './authentication.service';
+import { UserService } from './user.service';
 import { MapComponent } from './map/map.component';
 import { GoogleMapsModule } from '@angular/google-maps';
 import { AddEventSiteComponent } from './add-event-site/add-event-site.component';
@@ -51,7 +53,7 @@ register();
     ReactiveFormsModule,
     HttpClientModule,
   ],
-  providers: [EventService],
+  providers: [EventService, UserService, AuthenticationService],
   bootstrap: [AppComponent],
   schemas: [
     CUSTOM_ELEMENTS_SCHEMA

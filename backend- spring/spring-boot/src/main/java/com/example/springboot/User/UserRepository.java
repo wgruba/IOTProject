@@ -17,6 +17,9 @@ public interface UserRepository extends MongoRepository<User, Integer> {
     @Query("{'$or': [{'name': ?0}, {'mail': ?0}]}")
     Optional<User> findByNameOrMail(String nameOrMail);
 
+    @Query("{'$or': [{'name': ?0}, {'mail': ?0}]}")
+    Optional<User> login(String nameOrMail, String password) throws UserNotFoundEx;
+
 //    List<User> getUsersSubscribedToEvent(List<Integer> ids);
 
    /* //CRUD

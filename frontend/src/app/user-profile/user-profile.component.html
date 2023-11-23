@@ -7,10 +7,10 @@
         <div class="profile-picture">
           <img src="../assets/Logo.png" alt="User Profile Picture">
         </div>
-        <div class="username">{{ user.username }}</div>
+        <div class="username">{{ user.name }}</div>
       </div>
       
-      <div class="verified-user">
+      <div class="verified-user" *ngIf="user.permissionLevel === 'VERIFIED_USER'">
         Użytkownik Zweryfikowany
       </div>
       
@@ -20,7 +20,7 @@
           <i class="fas fa-edit" (click)="editName()"></i>
         </div>
         <div class="detail">
-          <span>Email: {{ user.email }}</span>
+          <span>Email: {{ user.mail }}</span>
           <i class="fas fa-edit" (click)="editEmail()"></i>
         </div>
       </div>

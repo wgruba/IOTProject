@@ -43,7 +43,7 @@ export class EventService {
     startDate: "2023-12-01T19:00:00",
     endDate: "2023-12-01T23:00:00",
     eventStatus: "SCHEDULED",
-    imageUrl: "https://picsum.photos/id/1/640/480g"
+    imageUrl: "https://picsum.photos/id/1/640/480"
   };
   }
 

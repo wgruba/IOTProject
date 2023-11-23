@@ -8,6 +8,11 @@
                     <label for="eventName">Nazwa Wydarzenia:</label>
                     <input type="text" id="eventName" formControlName="eventName">
                   </div>
+
+                  <div class="form-group">
+                    <label for="imageUrl">Zdjęcie:</label>
+                    <input type="text" id="imageUrl" formControlName="imageUrl">
+                </div>
               
                     <div class="form-group">
                         <label for="participants">Maksymalna liczba uczestników:</label>
@@ -16,7 +21,7 @@
 
                     <div class="form-group">
                         <div class="form-check form-switch">
-                            <input class="form-check-input" formControlName="isPaid" type="checkbox" id="flexSwitchCheckChecked" unchecked>
+                            <input class="form-check-input" formControlName="isFree" type="checkbox" id="flexSwitchCheckChecked" unchecked>
                             <label class="form-check-label" for="flexSwitchCheckChecked">Czy wydarzenie jest płatne?</label>
                           </div>                    
                     </div>
@@ -51,6 +56,11 @@
                     <div class="form-group">
                         <label for="endTime">Czas zakończenia:</label>
                         <input formControlName="endTime" type="datetime-local" id="endTime" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="localisation">Lokalizacja:</label>
+                        <input type="text" id="localisation" formControlName="localisation">
                     </div>
                     
                     <div class="form-group">

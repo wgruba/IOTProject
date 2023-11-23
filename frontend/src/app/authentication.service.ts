@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient,HttpHeaders} from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
@@ -18,20 +18,23 @@ export class AuthenticationService {
   }
 
   login(username: string, password: string): void {
-    // const loginUrl = 'http://localhost:8080/user/login';
-    // this.http.post(loginUrl, { username, password }).subscribe(
-    //   (response: any) => {
-    //     const token = response.token;
-    //     localStorage.setItem('userToken', token);
-    //     this.isLoggedIn.next(true);
-    //   },
-    //   (error) => {
-    //       console.error(error);
-    //       // Handle error
-    //   });
-    localStorage.setItem('userToken', username);
-    this.isLoggedIn.next(true);
-  }
+    const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+    const loginUrl = 'http://localhost:8080/users/login';
+    this.http.get<boolean>(loginUrl, {headers: headers,
+      params: { loginOrMail: username, password: password }
+  }).subscribe(
+      (response: any) => {
+        const token = response.token;
+        localStorage.setItem('userToken', token);
+        if(response !== false){
+          this.isLoggedIn.next(true);
+        }
+      },
+      (error) => {
+          console.error(error);
+          this.isLoggedIn.next(false);
+      });
+    }
 
   logout(): void {
     localStorage.removeItem('userToken');
