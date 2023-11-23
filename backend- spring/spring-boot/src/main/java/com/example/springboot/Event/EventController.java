@@ -18,8 +18,6 @@ public class EventController {
     @Autowired
     private  EventRepository eventRepository;
 
-
-
     @PostMapping("/addEvent")
     public ResponseEntity<Event> addEvent(@RequestBody Event event) {
         Event savedEvent = eventRepository.save(event);
@@ -36,6 +34,7 @@ public class EventController {
         List<Event> events = eventRepository.findByName(name);
         return ResponseEntity.ok(events);
     }
+
     /*
     @GetMapping("users/{userId}")
     public EntityModel<Boolean> createEvent(int id,

@@ -1,15 +1,26 @@
 package com.example.springboot.Category;
 
 import java.util.List;
+import java.util.Optional;
 
 import com.example.springboot.Category.Exceptions.CategoryIsNotParentCategory;
 import com.example.springboot.Category.Exceptions.CategoryIsNotSubcategoryEx;
 import com.example.springboot.Category.Exceptions.CategoryNotFoundEx;
 import com.example.springboot.Category.Exceptions.CategoryExistsEx;
 import com.example.springboot.Event.Event;
+import com.example.springboot.User.User;
 import org.springframework.data.mongodb.repository.MongoRepository;
+import org.springframework.data.mongodb.repository.Query;
 
-public interface CategoryRepository extends MongoRepository<Event, String> {
+public interface CategoryRepository extends MongoRepository<Category, String> {
+
+    List<Category> findAll();
+    User findById(int id);
+
+    @Query("{'$or': [{'name': ?0}}")
+    Optional<Category> findByNameOrMail(String nameOrMail);
+
+
    /* List<Category> getAllCategories();
     List<Category> getAllParentCategories();
     List<Category> getAllSubCategoriesofParentCategory(int id) throws CategoryNotFoundEx, CategoryIsNotParentCategory;

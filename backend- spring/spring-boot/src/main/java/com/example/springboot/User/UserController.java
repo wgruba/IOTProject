@@ -27,11 +27,11 @@ public class UserController {
 
 
     @GetMapping("/users/{id}")
-    public EntityModel<User> getUser(@PathVariable int id){
+    public EntityModel<User> getUser(@PathVariable int id)  throws UserNotFoundEx{
         try {
             return EntityModel.of(userRepository.findById(id));
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            throw new UserNotFoundEx(id);
         }
     }
 
@@ -45,7 +45,7 @@ public class UserController {
     @GetMapping("/users/name/{nameOrMail}")
     public User getUserByName(@PathVariable String nameOrMail) throws UserNotFoundEx {
         return userRepository.findByNameOrMail(nameOrMail)
-                .orElseThrow(() -> new UserNotFoundEx("User not found with name or email: " + nameOrMail));
+                .orElseThrow(() -> new UserNotFoundEx(nameOrMail));
     }
 
     public void addSampleUser() {
