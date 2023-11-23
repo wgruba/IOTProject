@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { EventService } from '../event.service';
 
 @Component({
   selector: 'app-add-event-site',
@@ -8,6 +9,8 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 })
 export class AddEventSiteComponent {
   eventForm !: FormGroup;
+
+  constructor(private eventService: EventService){}
 
 
   ngOnInit(): void {
@@ -26,5 +29,17 @@ export class AddEventSiteComponent {
 
   onSubmit(): void {
       console.log(this.eventForm.value);
+      if (this.eventForm.valid) {
+        this.eventService.addEvent(this.eventForm.value).subscribe(
+          response => {
+            console.log('Event added:', response);
+            // Handle success
+          },
+          error => {
+            console.error('Error adding event:', error);
+            // Handle error
+          }
+        );
+      }
   }
 }

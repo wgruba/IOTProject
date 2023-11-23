@@ -10,7 +10,7 @@ export class EventService {
   private currentEvent!: Event;
   private eventsSubject = new BehaviorSubject<Event[]>([
   ]);
-  private baseUrl = 'http://localhost:8080/events'
+  private baseUrl = 'http://localhost:8080'
 
   constructor(private http: HttpClient) { 
   }
@@ -53,7 +53,11 @@ export class EventService {
   }
 
   getAllEvents(): Observable<any> {
-    return this.http.get(this.baseUrl);
+    return this.http.get(`${this.baseUrl}/events`);
+  }
+
+  addEvent(eventData: any): Observable<any> {
+    return this.http.post(`${this.baseUrl}/addEvent`, eventData);
   }
 
 }
