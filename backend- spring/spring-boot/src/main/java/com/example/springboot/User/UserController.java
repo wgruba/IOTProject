@@ -49,7 +49,7 @@ public class UserController {
 
     @GetMapping("/users/name/{nameOrMail}")
     public User getUserByName(@PathVariable String nameOrMail) throws UserNotFoundEx {
-        return userRepository.findByNameOrMail(nameOrMail)
+        return userRepository.getUserByNameOrMail(nameOrMail)
                 .orElseThrow(() -> new UserNotFoundEx(nameOrMail));
     }
 
@@ -70,7 +70,7 @@ public class UserController {
     }
 
     public boolean loginUser(String loginOrMail, String password) {
-        Optional<User> userOptional = userRepository.findByNameOrMail(loginOrMail);
+        Optional<User> userOptional = userRepository.getUserByNameOrMail(loginOrMail);
         if (userOptional.isPresent()) {
             User user = userOptional.get();
             return password.equals(user.getPassword());
