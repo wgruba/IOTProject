@@ -4,6 +4,7 @@ import com.example.springboot.User.Exceptions.UserExistsEx;
 import com.example.springboot.User.Exceptions.UserNotFoundEx;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.data.mongodb.repository.Query;
+import org.springframework.data.repository.query.Param;
 import java.util.Optional;
 
 
@@ -12,10 +13,15 @@ import java.util.List;
 public interface UserRepository extends MongoRepository<User, Integer> {
 
     List<User> findAll();
-    User findById(int id);
-
+    @Query("{'id': ?0}")
+    Optional<User> getUserById(int userId);
     @Query("{'$or': [{'name': ?0}, {'mail': ?0}]}")
-    Optional<User> findByNameOrMail(String nameOrMail);
+    Optional<User> getUserByNameOrMail(String nameOrMail);
+    @Query("{'id': {'$in': ?0}}")
+    List<User> getUsersSubscribedToEvent(@Param("ids") List<Integer> ids);
+
+
+    User save(User user);
 
     @Query("{'$or': [{'name': ?0}, {'mail': ?0}]}")
     Optional<User> login(String nameOrMail, String password) throws UserNotFoundEx;
