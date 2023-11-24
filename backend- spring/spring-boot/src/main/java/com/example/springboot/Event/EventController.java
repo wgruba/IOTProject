@@ -18,11 +18,6 @@ public class EventController {
     @Autowired
     private  EventRepository eventRepository;
 
-    @PostMapping("/addEvent")
-    public ResponseEntity<Event> addEvent(@RequestBody Event event) {
-        Event savedEvent = eventRepository.save(event);
-        return ResponseEntity.ok(savedEvent);
-    }
     @GetMapping("/events")
     public ResponseEntity<List<Event>> getAllEvents() {
         List<Event> events = eventRepository.findAll();
@@ -33,6 +28,16 @@ public class EventController {
     public ResponseEntity<List<Event>> getEventByName(@PathVariable String name) {
         List<Event> events = eventRepository.findByName(name);
         return ResponseEntity.ok(events);
+    }
+
+    @PostMapping("/addEvent")
+    public ResponseEntity<Event> addEvent(Event event) {
+        event.setId(1);
+        event.setOrganizer(0);
+        event.setClientList(new ArrayList<>());
+        event.setCategoryList(new ArrayList<>());
+        Event savedEvent = eventRepository.save(event);
+        return ResponseEntity.ok(savedEvent);
     }
 
     /*

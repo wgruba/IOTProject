@@ -10,7 +10,7 @@ export class EventService {
   private currentEvent!: Event;
   private eventsSubject = new BehaviorSubject<Event[]>([
   ]);
-  private baseUrl = 'http://localhost:8080/events'
+  private baseUrl = 'http://localhost:8080'
 
   constructor(private http: HttpClient) { 
   }
@@ -43,7 +43,7 @@ export class EventService {
     startDate: "2023-12-01T19:00:00",
     endDate: "2023-12-01T23:00:00",
     eventStatus: "SCHEDULED",
-    imageUrl: "https://picsum.photos/id/1/640/480g"
+    imageUrl: "https://picsum.photos/id/1/640/480"
   };
   }
 
@@ -53,7 +53,11 @@ export class EventService {
   }
 
   getAllEvents(): Observable<any> {
-    return this.http.get(this.baseUrl);
+    return this.http.get(`${this.baseUrl}/events`);
+  }
+
+  addEvent(eventData: any): Observable<any> {
+    return this.http.post(`${this.baseUrl}/addEvent`, eventData);
   }
 
 }

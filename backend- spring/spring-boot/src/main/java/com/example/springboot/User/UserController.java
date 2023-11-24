@@ -5,16 +5,23 @@ import com.example.springboot.Category.CategoryController;
 import com.example.springboot.Event.AgeGroup;
 import com.example.springboot.Event.Event;
 import com.example.springboot.Event.EventController;
+import com.example.springboot.Event.EventStatus;
 import com.example.springboot.User.Exceptions.NotEnoughHighPermissionLevel;
 import com.example.springboot.User.Exceptions.UserExistsEx;
 import com.example.springboot.User.Exceptions.UserNotFoundEx;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
+
 
 @CrossOrigin(origins = "http://localhost:4200/")
 @RestController
@@ -27,12 +34,10 @@ public class UserController {
 
 
     @GetMapping("/users/{id}")
-    public EntityModel<User> getUser(@PathVariable int id)  throws UserNotFoundEx{
-        try {
-            return EntityModel.of(userRepository.findById(id));
-        } catch (Exception e) {
-            throw new UserNotFoundEx(id);
-        }
+    public ResponseEntity<UserDTO> getUser(@PathVariable int id) {
+        User user = userRepository.findById(id);
+        UserDTO userDTO = UserDTO.toDTO(user);
+        return ResponseEntity.ok(userDTO);
     }
 
     @GetMapping("users")
@@ -64,6 +69,64 @@ public class UserController {
         return "User added";
     }
 
+    public boolean loginUser(String loginOrMail, String password) {
+        Optional<User> userOptional = userRepository.findByNameOrMail(loginOrMail);
+        if (userOptional.isPresent()) {
+            User user = userOptional.get();
+            return password.equals(user.getPassword());
+        }
+        return false;
+    }
+
+    @GetMapping("users/login")
+    public ResponseEntity<Boolean> tryToLoginUser(String loginOrMail, String password){
+        try {
+            boolean result = userRepository.login(loginOrMail, password).isPresent();
+            return ResponseEntity.ok(result); // trzeba dodać user ID żeby się wysyłało
+        } catch (UserNotFoundEx e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+
+
+/*    @PatchMapping("users/{userId}/createEvent")
+    public ResponseEntity<Boolean> createEvent(@RequestBody int userId,
+                                            int id,
+                                            String name,
+                                            List<Integer> categoryList,
+                                            String description,
+                                            int size,
+                                            String localisation,
+                                            boolean isFree,
+                                            boolean isReservationNecessary,
+                                            AgeGroup ageGroup,
+                                            LocalDateTime startDate,
+                                            LocalDateTime endDate,
+                                            String imageURL){
+        try {
+            ArrayList<Integer> clientList = new ArrayList<>();
+            return eventController.addEvent(new Event(
+                    id,
+                    name,
+                    userId,
+                    categoryList,
+                    clientList,
+                    description,
+                    size,
+                    localisation,
+                    isFree,
+                    isReservationNecessary,
+                    ageGroup,
+                    startDate,
+                    endDate,
+                    EventStatus.ACCEPTED,
+                    imageURL)));
+        } catch (UserNotFoundEx e) {
+            throw new RuntimeException(e);
+        }
+    }*/
+
 
     /*
     *//***
@@ -78,14 +141,6 @@ public class UserController {
 
 
 
-    @GetMapping("users/login")
-    public EntityModel<Boolean> tryToLoginUser(String loginOrMail, String password){
-        try {
-            return EntityModel.of(impl.login(loginOrMail, password));
-        } catch (UserNotFoundEx e) {
-            throw new RuntimeException(e);
-        }
-    }
     @GetMapping("users/register")
     public EntityModel<Boolean> tryToRegisterUser(int id, String name, String mail, String password){
         try {
@@ -98,37 +153,6 @@ public class UserController {
 
 
 /*
-    // Events organised by me
-    @PatchMapping("users/{userId}/createEvent")
-    public EntityModel<Boolean> createEvent(@PathVariable int userId,
-                                            int id,
-                                            String name,
-                                            List<Integer> categoryList,
-                                            String description,
-                                            int size,
-                                            String localisation,
-                                            boolean isFree,
-                                            boolean isReservationNecessary,
-                                            AgeGroup ageGroup,
-                                            LocalDateTime startDate,
-                                            LocalDateTime endDate){
-        try {
-            return EntityModel.of(Boolean.TRUE.equals(eventController.createEvent(id,
-                    name,
-                    userId,
-                    categoryList,
-                    description,
-                    size,
-                    localisation,
-                    isFree,
-                    isReservationNecessary,
-                    ageGroup,
-                    startDate,
-                    endDate).getContent()) && impl.subscribeEvent(userId, id));
-        } catch (UserNotFoundEx e) {
-            throw new RuntimeException(e);
-        }
-    }
     @PatchMapping("users/{userId}/{eventId}/deleteEvent")
     public EntityModel<Boolean> deleteEvent(@PathVariable int userId, @PathVariable int eventId){
         try {
