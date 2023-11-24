@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { User } from './models/user.model';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 
 
@@ -9,45 +9,48 @@ import { HttpClient } from '@angular/common/http';
   providedIn: 'root'
 })
 export class UserService {
-  private currentSavedUser!: User;
-  private currentUser = new BehaviorSubject<User>({
-    id: '1',
-    name: 'Adam',
-    mail: 'adam.nowak@gmail.com',
-    permissionLevel: "User", 
-  });
-
+  private currentUser = new BehaviorSubject<User>(this.getCurrentUser());
   constructor(private http: HttpClient) {}
-
-  getUserFromDatabase(id: number): Observable<any> {
-    const getUserUrl = `http://localhost:8080/users/${id}`;
-    return this.http.get<User>(getUserUrl);
-}
-
-setCurrentUser(user: User): void {
-  localStorage.setItem('currentUser', JSON.stringify(user));
-}
-
-removeCurrentUser(): void {
-  localStorage.removeItem('currentUser');
-}
-
-getCurrentUser(): User {
-  try {
-    const userJson = localStorage.getItem('currentUser');
-    if (userJson) {
-      return JSON.parse(userJson) as User;
-    }
-  } catch (error) {
-    console.error('Error parsing event data from localStorage', error);
+  
+  getUserFromDatabase(): Observable<any> {
+    const username = this.getUsername();
+    const getUserUrl = `http://localhost:8080/users/name/${username}`;
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${this.getUserToken()}`
+    });
+    return this.http.get<User>(getUserUrl, { headers });
   }
-  return  {
-    id: '1',
-    name: 'Adam',
-    mail: 'adam.nowak@gmail.com',
-    permissionLevel: "User", 
-  };
+
+  setCurrentUser(user: User): void {
+    localStorage.setItem('currentUser', JSON.stringify(user));
+    localStorage.setItem('userToken', user.token); 
+    localStorage.setItem('username', user.name); 
+  }
+
+  removeCurrentUser(): void {
+    localStorage.removeItem('currentUser');
+    localStorage.removeItem('userToken');
+    localStorage.removeItem('username'); // Remove the username
+  }
+
+  getCurrentUser(): User {
+    try {
+      const userJson = localStorage.getItem('currentUser');
+      if (userJson) {
+        return JSON.parse(userJson) as User;
+      }
+    } catch (error) {
+      console.error('Error parsing user data from localStorage', error);
+    }
+    return {id:0, name: "Adam" , mail: "a@mail.com", permissionLevel: "None", token: ""}; // Return null or a default user object
+  }
+
+  private getUserToken(): string | null {
+    return localStorage.getItem('userToken');
+  }
+
+  private getUsername(): string | null {
+    return localStorage.getItem('username');
+  }
 }
 
-
-}

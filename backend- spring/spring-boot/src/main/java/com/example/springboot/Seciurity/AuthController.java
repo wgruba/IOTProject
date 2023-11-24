@@ -27,7 +27,6 @@ public class AuthController {
                 return ResponseEntity.ok(new AuthResponse(token));
             }
         }
-
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid credentials");
     }
 }

@@ -18,20 +18,8 @@ export class AuthenticationService {
   }
 
 
-  login( username: string, password: string ): void {
-     this.http.post('http://localhost:8080/login', {username, password})
-     .subscribe(
-        (response: any) => {
-            const token = response.token;
-            localStorage.setItem('userToken', token);
-            if(response !== false){
-              this.isLoggedIn.next(true);
-            }
-          },
-        (error) => {
-              console.error(error);
-              this.isLoggedIn.next(false);
-          });;
+  login(username: string, password: string): Observable<any> {
+    return this.http.post<any>('http://localhost:8080/login', { username, password });
   }
 
   register(user: any): Observable<any> {
@@ -41,6 +29,10 @@ export class AuthenticationService {
   logout(): void {
     localStorage.removeItem('userToken');
     this.isLoggedIn.next(false);
+  }
+
+  setIsLoggedIn(value: boolean){
+    this.isLoggedIn.next(value);
   }
 
 }

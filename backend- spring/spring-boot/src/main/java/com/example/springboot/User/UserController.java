@@ -23,6 +23,7 @@ import java.util.List;
 import java.util.Optional;
 
 
+@CrossOrigin
 @RestController
 public class UserController {
 
@@ -52,7 +53,7 @@ public class UserController {
                 .orElseThrow(() -> new UserNotFoundEx(nameOrMail));
     }
 
-    public void addSampleUser() {
+       public void addSampleUser() {
         User user = new User();
         user.setMail("Wojciech@mail.com");
         user.setName("Wojciech");
@@ -68,24 +69,6 @@ public class UserController {
         return "User added";
     }
 
-    public boolean loginUser(String loginOrMail, String password) {
-        Optional<User> userOptional = userRepository.findByNameOrMail(loginOrMail);
-        if (userOptional.isPresent()) {
-            User user = userOptional.get();
-            return password.equals(user.getPassword());
-        }
-        return false;
-    }
-
-    @GetMapping("users/login")
-    public ResponseEntity<Boolean> tryToLoginUser(String loginOrMail, String password){
-        try {
-            boolean result = userRepository.login(loginOrMail, password).isPresent();
-            return ResponseEntity.ok(result); // trzeba dodać user ID żeby się wysyłało
-        } catch (UserNotFoundEx e) {
-            throw new RuntimeException(e);
-        }
-    }
 
 
 
