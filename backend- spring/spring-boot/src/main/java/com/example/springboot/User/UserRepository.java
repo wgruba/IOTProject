@@ -38,19 +38,21 @@ public interface UserRepository extends MongoRepository<User, Integer> {
 
 //    @Modifying
 //    @Query("{'id': ?0}")
-//    int updateUser(User user) throws UserNotFoundEx;
+//    @Query("update User u set u.name = name where u.id < :1")
+//    @Query("update User u set u.active = false where u.lastLoginDate < :date")
+//    int updateUser(int id, User user) throws UserNotFoundEx;
 
-    @Modifying
-    @Query("{'id': ?0}")
-    int updateUser(
-            int id,
-            String name,
-            String mail,
-            String password,
-            PermissionLevel permissionLevel,
-            List<Integer> subscribedEvents,
-            List<Integer> subscribedCategories
-    ) throws UserNotFoundEx;
+//    @Modifying
+//    @Query("{'id': ?0}")
+//    int updateUser(
+//            int id,
+//            String name,
+//            String mail,
+//            String password,
+//            PermissionLevel permissionLevel,
+//            List<Integer> subscribedEvents,
+//            List<Integer> subscribedCategories
+//    ) throws UserNotFoundEx;
 
 
 

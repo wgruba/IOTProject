@@ -32,7 +32,15 @@ public class UserController {
     private final EventController eventController = new EventController();
     private final CategoryController categoryController = new CategoryController();
 
+    // CRUD - Create
+    @PostMapping("/addUser")
+    public boolean addUser(@RequestBody UserDTO userDTO) {
+        User user = new User(userDTO.getId(), userDTO.getName(), userDTO.getMail(), "haslo", userDTO.getPermissionLevel(), new ArrayList<>(), new ArrayList<>());
+        userRepository.save(user);
+        return true;
+    }
 
+    // CRUD - Read
     @GetMapping("users")
     public CollectionModel<User> getAllUsers() {
         List<User> users = userRepository.findAll();
@@ -57,41 +65,34 @@ public class UserController {
         return userRepository.getUsersSubscribedToEvent(idList);
     }
 
+    // CRUD - Update
+    @PutMapping("/{id}")
+    public User updateUser(@PathVariable int id, @RequestBody User user) {
+        return updateUser2(id, user);
+    }
+    public User updateUser2(int userId, User updatedUser) {
+        return userRepository.findById(userId).map(user -> {
+            user.setName(updatedUser.getName());
+            user.setMail(updatedUser.getMail());
+            user.setName(updatedUser.getName());
+            user.setPassword(updatedUser.getPassword());
+            user.setPermissionLevel(updatedUser.getPermissionLevel());
+            user.setSubscribedEvents(updatedUser.getSubscribedEvents());
+            user.setSubscribedCategories(updatedUser.getSubscribedCategories());
+            return userRepository.save(user);
+        }).orElseGet(() -> {
+            updatedUser.setId(userId);
+            return userRepository.save(updatedUser);
+        });
+    }
 
-
+    // CRUD - Delete
     @DeleteMapping("/users/delete/{id}")
     public boolean deleteUser(@PathVariable int id) {
         userRepository.deleteById(id);
         return true;
     }
 
-    @PatchMapping("/users/update/{id}")
-    public boolean updateUser(@PathVariable int id){
-        try {
-            userRepository.updateUser(id, "name", "mail", "pass", PermissionLevel.UNVERIFIED_USER, new ArrayList<>(), new ArrayList<>());
-//            User temp = new User(id, "name", "mail", "pass", PermissionLevel.UNVERIFIED_USER, new ArrayList<>(), new ArrayList<>());
-//            userRepository.updateUser(temp);
-        } catch (UserNotFoundEx e) {
-            throw new RuntimeException(e);
-        }
-        return true;
-    }
-
-    public void addSampleUser() {
-        User user = new User();
-        user.setMail("Wojciech@mail.com");
-        user.setName("Wojciech");
-        user.setPassword("password");
-        user.setPermissionLevel(PermissionLevel.VERIFIED_USER);
-        user.setSubscribedCategories(Collections.emptyList()); // Empty list
-        userRepository.save(user);
-    }
-
-    @PostMapping("/addUser")
-    public String addUser(@RequestBody User user) {
-        userRepository.save(user);
-        return "User added";
-    }
 
     public boolean loginUser(String loginOrMail, String password) {
         Optional<User> userOptional = userRepository.getUserByNameOrMail(loginOrMail);
