@@ -32,7 +32,12 @@ public class UserController {
     private final EventController eventController = new EventController();
     private final CategoryController categoryController = new CategoryController();
 
-    
+
+    @GetMapping("users")
+    public CollectionModel<User> getAllUsers() {
+        List<User> users = userRepository.findAll();
+        return CollectionModel.of(users);
+    }
     @GetMapping("/users/{id}")
     public ResponseEntity<User> getUser(@PathVariable int id) throws UserNotFoundEx{
         try {
@@ -42,18 +47,34 @@ public class UserController {
             throw new UserNotFoundEx(id);
         }
     }
-
-    @GetMapping("users")
-    public CollectionModel<User> getAllUsers() {
-        List<User> users = userRepository.findAll();
-        return CollectionModel.of(users);
-    }
-
-
     @GetMapping("/users/name/{nameOrMail}")
     public User getUserByName(@PathVariable String nameOrMail) throws UserNotFoundEx {
         return userRepository.getUserByNameOrMail(nameOrMail)
                 .orElseThrow(() -> new UserNotFoundEx(nameOrMail));
+    }
+    @GetMapping("/users/list")
+    public List<User> getUsersFromList(ArrayList<Integer> idList) {
+        return userRepository.getUsersSubscribedToEvent(idList);
+    }
+
+
+
+    @DeleteMapping("/users/delete/{id}")
+    public boolean deleteUser(@PathVariable int id) {
+        userRepository.deleteById(id);
+        return true;
+    }
+
+    @PatchMapping("/users/update/{id}")
+    public boolean updateUser(@PathVariable int id){
+        try {
+            userRepository.updateUser(id, "name", "mail", "pass", PermissionLevel.UNVERIFIED_USER, new ArrayList<>(), new ArrayList<>());
+//            User temp = new User(id, "name", "mail", "pass", PermissionLevel.UNVERIFIED_USER, new ArrayList<>(), new ArrayList<>());
+//            userRepository.updateUser(temp);
+        } catch (UserNotFoundEx e) {
+            throw new RuntimeException(e);
+        }
+        return true;
     }
 
     public void addSampleUser() {
