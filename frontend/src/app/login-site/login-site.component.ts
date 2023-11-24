@@ -12,9 +12,7 @@ export class LoginSiteComponent {
   password: string = '';
   errorMessage: string = '';
 
-
   constructor(private authService: AuthenticationService, private router: Router) {}
-
 
   onSubmit() {
     if (this.username && this.password) {

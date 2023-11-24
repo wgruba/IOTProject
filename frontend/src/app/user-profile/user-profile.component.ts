@@ -22,12 +22,5 @@ export class UserProfileComponent implements OnInit{
   changePassword(): void {
     //password change logic
   }
-
-  editName(): void {
-    // Logic to handle name editing
-  }
-
-  editEmail(): void {
-    // Logic to handle email editing
-  }
+  
 }
