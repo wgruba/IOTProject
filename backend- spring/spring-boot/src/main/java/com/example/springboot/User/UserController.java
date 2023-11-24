@@ -32,12 +32,15 @@ public class UserController {
     private final EventController eventController = new EventController();
     private final CategoryController categoryController = new CategoryController();
 
-
+    
     @GetMapping("/users/{id}")
-    public ResponseEntity<UserDTO> getUser(@PathVariable int id) {
-        User user = userRepository.findById(id);
-        UserDTO userDTO = UserDTO.toDTO(user);
-        return ResponseEntity.ok(userDTO);
+    public ResponseEntity<User> getUser(@PathVariable int id) throws UserNotFoundEx{
+        try {
+            return ResponseEntity.ok(userRepository.getUserById(id)
+                    .orElseThrow(() -> new UserNotFoundEx(id)));
+        } catch (Exception e) {
+            throw new UserNotFoundEx(id);
+        }
     }
 
     @GetMapping("users")
