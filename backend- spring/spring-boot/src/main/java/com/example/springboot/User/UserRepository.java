@@ -36,47 +36,9 @@ public interface UserRepository extends MongoRepository<User, Integer> {
 
 
 
-//    @Modifying
-//    @Query("{'id': ?0}")
-//    @Query("update User u set u.name = name where u.id < :1")
-//    @Query("update User u set u.active = false where u.lastLoginDate < :date")
-//    int updateUser(int id, User user) throws UserNotFoundEx;
-
-//    @Modifying
-//    @Query("{'id': ?0}")
-//    int updateUser(
-//            int id,
-//            String name,
-//            String mail,
-//            String password,
-//            PermissionLevel permissionLevel,
-//            List<Integer> subscribedEvents,
-//            List<Integer> subscribedCategories
-//    ) throws UserNotFoundEx;
-
-
-
-//    @Modifying
-//    @Query("{'id': ?0}")
-//    void updateUser(
-//            @Param("id") int id,
-//            @Param("name") String name,
-//            @Param("mail") String mail,
-//            @Param("password") String password,
-//            @Param("permissionLevel") PermissionLevel permissionLevel,
-//            @Param("subscribedEvents") List<Integer> subscribedEvents,
-//            @Param("subscribedCategories") List<Integer> subscribedCategories
-//    ) throws UserNotFoundEx;
-
-//    @Query("DELETE FROM User u WHERE u.id = :id")
-//    void deleteUserById(@Param("id") int id);
-
-
    /* //CRUD
     boolean updateUser(int id, String name, String mail, String password, PermissionLevel permissionLevel, List<Integer> subscribedEvents, List<Integer> subscribedCategories) throws UserNotFoundEx;
-    boolean deleteUser(int id) throws UserNotFoundEx;
-    boolean addUser(int id, String name, String mail, String password, PermissionLevel permissionLevel, List<Integer> subscribedEvents, List<Integer> subscribedCategories) throws UserExistsEx;
-    boolean addUser(User user) throws UserExistsEx;
+
 
 
     int countUsers();
