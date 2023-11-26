@@ -1,5 +1,4 @@
-
-<body>
+<body [class]="{'admin-body': isAdmin, 'user-body': isUser}">
 <div class="main-page">
     <aside class="filters">
         <form>
@@ -31,7 +30,10 @@
                   <h3>{{ event.name }}</h3>
                   <p>{{ event.description }}</p>
                 </div>
-                <button (click)="showDetails(event)">Pokaż</button>
+                <button (click)="showDetails(event)">
+                <div *ngIf="isUser"> Pokaż </div>
+                <div *ngIf="isAdmin"> Sprawdź </div>
+                </button>
               </div>              
         </div>
       </div>  

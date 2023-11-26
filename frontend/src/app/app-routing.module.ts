@@ -22,8 +22,8 @@ const routes: Routes = [
   { path: 'o-nas', component:AboutUsComponent},
   { path: 'pomoc', component:UserHelpComponent},
   { path: '', redirectTo: '/home', pathMatch: 'full'},
-  { path: 'add-event', component: AddEventSiteComponent, canActivate: [AuthGuard, RoleGuard],  data: { requiredRole:  ['VERIFIED_USER, UNVERIFIED_USER'] }},
-  { path: 'event-searching', component: UserSearchingPageComponent, canActivate: [RoleGuard], data: { requiredRole: ['VERIFIED_USER, UNVERIFIED_USER'] } },
+  { path: 'add-event', component: AddEventSiteComponent},
+  { path: 'event-searching', component: UserSearchingPageComponent},
   { path: 'user-profile', component: UserProfileComponent, canActivate: [AuthGuard, RoleGuard],  data: { requiredRole:  ['VERIFIED_USER, UNVERIFIED_USER'] } },
   { path: 'user-events', component: UserEventsComponent, canActivate: [AuthGuard, RoleGuard],  data: { requiredRole:  ['VERIFIED_USER, UNVERIFIED_USER'] } },
 
