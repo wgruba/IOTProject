@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthenticationService } from '../authentication.service';
+import { UserService } from '../user.service';
 
 @Component({
   selector: 'app-login-site',
@@ -12,7 +13,7 @@ export class LoginSiteComponent {
   password: string = '';
   errorMessage: string = '';
 
-  constructor(private authService: AuthenticationService, private router: Router) {}
+  constructor(private authService: AuthenticationService, private router: Router, public userService: UserService) {}
 
   onSubmit() {
     if (this.username && this.password) {
@@ -22,7 +23,10 @@ export class LoginSiteComponent {
             this.authService.setIsLoggedIn(true); 
             localStorage.setItem('userToken', response.token);
             localStorage.setItem('username', this.username)
-            this.router.navigate(['/home']);
+            this.userService.getUserFromDatabase().subscribe(data => {
+              this.userService.setCurrentUser(data);
+              this.router.navigate(['/home']);
+            }, error => console.error(error));
           } else {
             // Handle the case where login is unsuccessful but no error is thrown
             this.errorMessage = 'Login failed: Invalid username or password';

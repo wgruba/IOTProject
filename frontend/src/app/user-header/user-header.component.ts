@@ -1,9 +1,10 @@
-import { Component } from '@angular/core';
+import { Component, OnInit} from '@angular/core';
 import { Category } from '../models/Category.model';
 import { SelectedItem } from '../models/selectedItem.model';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthenticationService } from '../authentication.service';
+import { UserService } from '../user.service';
 
 
 @Component({
@@ -11,7 +12,7 @@ import { AuthenticationService } from '../authentication.service';
   templateUrl: './user-header.component.html',
   styleUrls: ['./user-header.component.scss']
 })
-export class UserHeaderComponent {
+export class UserHeaderComponent implements OnInit {
   categories: Category[] = [
     { 
       name: 'Kategoria 1', 
@@ -52,16 +53,27 @@ export class UserHeaderComponent {
   ];
   selectedItems: SelectedItem[] = [];
   showPopup: boolean = false;
-  searchForm: FormGroup;
+  searchForm: FormGroup;  
+  roleClass: string = '';
+  isAdmin: boolean = false;
+  isUser: boolean = false ;
 
 
-
-  constructor(private router: Router, private formBuilder: FormBuilder,public authService: AuthenticationService  ) {
+  constructor(private router: Router, private formBuilder: FormBuilder,public authService: AuthenticationService, public userService: UserService) {
     this.searchForm = this.formBuilder.group({
       searchQuery: [''],
       location: [''],
       date: ['']
     });
+  }
+
+  ngOnInit(): void {
+    const user = this.userService.getCurrentUser();
+    if(user){
+      this.isUser = user.permissionLevel !== 'VERIFIED_USER';
+      this.isAdmin = user.permissionLevel === 'VERIFIED_USER';
+    }
+    this.roleClass = user.permissionLevel === 'VERIFIED_USER' ? 'admin-header' : 'user-header';
   }
 
 
@@ -89,6 +101,7 @@ export class UserHeaderComponent {
 
   logout(): void {
     this.authService.logout();
+    this.userService.removeCurrentUser();
     this.router.navigate(['/login-site']);
   }
 

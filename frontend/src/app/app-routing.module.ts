@@ -11,20 +11,21 @@ import { UserSearchingPageComponent } from './user-searching-page/user-searching
 import { AuthGuard } from './auth.guard';
 import { UserProfileComponent } from './user-profile/user-profile.component';
 import { UserEventsComponent } from './user-events/user-events.component';
+import { RoleGuard } from './role.guard';
 
 
 const routes: Routes = [
-  { path: 'home', component: MainSiteComponent },
-  { path: 'login-site', component:LoginSiteComponent },
-  { path: 'register-site', component:RegisterSiteComponent },
-  { path: 'event-details/:id', component: DescriptionPageComponent },
-  { path: 'o-nas', component:AboutUsComponent },
-  { path: 'pomoc', component:UserHelpComponent },
-  { path: '', redirectTo: '/home', pathMatch: 'full' },
-  { path: 'add-event', component: AddEventSiteComponent, canActivate: [AuthGuard] },
-  { path: 'event-searching', component: UserSearchingPageComponent },
-  { path: 'user-profile', component: UserProfileComponent, canActivate: [AuthGuard] },
-  { path: 'user-events', component: UserEventsComponent, canActivate: [AuthGuard] },
+  { path: 'home', component: MainSiteComponent},
+  { path: 'login-site', component:LoginSiteComponent},
+  { path: 'register-site', component:RegisterSiteComponent},
+  { path: 'event-details/:id', component: DescriptionPageComponent, canActivate: [RoleGuard], data: { requiredRole: 'Admin' }},
+  { path: 'o-nas', component:AboutUsComponent},
+  { path: 'pomoc', component:UserHelpComponent},
+  { path: '', redirectTo: '/home', pathMatch: 'full'},
+  { path: 'add-event', component: AddEventSiteComponent, canActivate: [AuthGuard, RoleGuard],  data: { requiredRole:  ['VERIFIED_USER, UNVERIFIED_USER'] }},
+  { path: 'event-searching', component: UserSearchingPageComponent, canActivate: [RoleGuard], data: { requiredRole: ['VERIFIED_USER, UNVERIFIED_USER'] } },
+  { path: 'user-profile', component: UserProfileComponent, canActivate: [AuthGuard, RoleGuard],  data: { requiredRole:  ['VERIFIED_USER, UNVERIFIED_USER'] } },
+  { path: 'user-events', component: UserEventsComponent, canActivate: [AuthGuard, RoleGuard],  data: { requiredRole:  ['VERIFIED_USER, UNVERIFIED_USER'] } },
 
 ];
 

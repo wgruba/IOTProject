@@ -4,16 +4,25 @@ header {
     left: 0;
     width: 100%;
     z-index: 1000;
-    background-color: #FF9505;
-    filter: brightness(110%);
+
     height: auto;
-    color: #4A4A4A;
     display: flex;
     flex-direction: column;
     align-items: center;
     padding: 5px;
     border-radius: 0px 0px 10px 10px;
     font-family: 'Inter';
+  }
+
+  .user-header {
+    background-color: #FF9505;
+    filter: brightness(110%);
+    color: #4A4A4A;
+  }
+
+  .admin-header{
+    background-color: #52A5E9;
+    color: #A7E0BE;
   }
   
   .upper-section, .lower-section {
@@ -89,20 +98,11 @@ header {
     align-items: center;
   
     input[type="text"] {
-      background-color: #FFC971;
       padding: 5px 20px; 
       border-radius: 20px;
       border: none;
     }
   }
-
-input[type="text"] {
-    background-color: #FFC971;
-    margin: 10px;
-    padding: 10px 40px;
-    border-radius: 20px;
-
- }
 
 .dropdown-submenu {
     position: relative;
@@ -206,6 +206,10 @@ input[type="text"] {
     border-radius: 20px;
 }
 
+.admin-header .search-button {
+  background-color: #A7E0BE;
+}
+
 .show-selected-category-button{
     background-color: #F1F7EA;
     color: #000000;
@@ -217,7 +221,7 @@ input[type="text"] {
     border-radius: 20px;
 }
 
-.search-button{
+.user-header .search-button{
     background-color: #8684F9;
 }
 

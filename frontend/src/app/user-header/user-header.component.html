@@ -1,15 +1,22 @@
-<header>
+<header [class]="{'admin-header': isAdmin, 'user-header': isUser}">
     <div class="upper-section">
         <div class="left-section">
             <a routerLink="/home"><img src="assets/Logo.png" alt="Logo Strony"></a>
         </div>
         <div class="center-section">
-            <ul class="navigation-list">
+            <ul class="navigation-list" *ngIf="isUser">
                 <li><a routerLink="/home">Strona główna</a></li>
                 <li><a routerLink="/o-nas">O nas</a></li>
                 <li><a routerLink="/add-event">Dodaj wydarzenie</a></li>
                 <li><a routerLink="/pomoc">Pomoc</a></li>
             </ul>
+
+            <ul class="navigation-list" *ngIf="isAdmin">
+              <li><a routerLink="/home">Strona główna</a></li>
+              <li><a routerLink="/o-nas">Wydarzenia do Akceptacji</a></li>
+              <li><a routerLink="/add-event">Wydarzenia Użytkowników</a></li>
+              <li><a routerLink="/pomoc">Użytkownicy</a></li>
+          </ul>
         </div>
         <div class="right-section">
             <ng-container *ngIf="authService.isLoggedIn$ | async; else loggedOutTemplate">
@@ -50,17 +57,6 @@
                 </ul>
               </div>
 
-            <!-- Selected Categories and Subcategories -->
-            <!-- <div class="selected-items">
-                    <ng-container *ngFor="let item of selectedItems; let i = index">
-                    <div *ngIf="i < 2">
-                        <span *ngIf="item.subcategory">{{ item.category }} > {{ item.subcategory }}</span>
-                        <span *ngIf="!item.subcategory">{{ item.category }}</span>
-                        <button (click)="removeCategory(item.category, item.subcategory)">Remove</button>
-                    </div>
-                </ng-container>
-            </div> -->
-        
             <!-- Trigger Button -->
             <button class="show-selected-category-button" (click)="togglePopup()">Pokaż wybrane Kategorie</button>
 
