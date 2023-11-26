@@ -1,6 +1,7 @@
 export interface User {
-    id: string;
+    id: number;
     name: string;
     mail: string;
     permissionLevel: string;
+    token: string;
 }
