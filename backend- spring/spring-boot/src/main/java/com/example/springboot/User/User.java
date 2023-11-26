@@ -23,6 +23,15 @@ public class User {
     public User() {
     }
 
+    public User(int id, String name, String mail, String password, PermissionLevel permissionLevel, List<Integer> subscribedEvents, List<Integer> subscribedCategories) {
+        this.id = id;
+        this.name = name;
+        this.mail = mail;
+        this.password = password;
+        this.permissionLevel = permissionLevel;
+        this.subscribedEvents = subscribedEvents;
+        this.subscribedCategories = subscribedCategories;
+    }
 
     public int getId() {
         return id;

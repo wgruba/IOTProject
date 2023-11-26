@@ -4,6 +4,7 @@ import com.example.springboot.User.Exceptions.UserExistsEx;
 import com.example.springboot.User.Exceptions.UserNotFoundEx;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.data.mongodb.repository.Query;
+import org.springframework.data.repository.query.Param;
 import java.util.Optional;
 
 
@@ -11,24 +12,32 @@ import java.util.List;
 
 public interface UserRepository extends MongoRepository<User, Integer> {
 
-    List<User> findAll();
-    User findById(int id);
+    //CRUD - Create
+    User save(User user);
 
+    //CRUD - Read
+    List<User> findAll();
+    @Query("{'id': ?0}")
+    Optional<User> getUserById(int userId);
     @Query("{'$or': [{'name': ?0}, {'mail': ?0}]}")
-    Optional<User> findByNameOrMail(String nameOrMail);
+    Optional<User> getUserByNameOrMail(String nameOrMail);
+    @Query("{'id': {'$in': ?0}}")
+    List<User> getUsersSubscribedToEvent(@Param("ids") List<Integer> ids);
+
+
+    // CRUD - Delete
+    void deleteById(int id);
+
+
 
     @Query("{'$or': [{'name': ?0}, {'mail': ?0}]}")
     Optional<User> login(String nameOrMail, String password) throws UserNotFoundEx;
 
-//    List<User> getUsersSubscribedToEvent(List<Integer> ids);
+
 
    /* //CRUD
-    User getUser(int id) throws UserNotFoundEx;
-    User getUser(String nameOrMail) throws UserNotFoundEx;
     boolean updateUser(int id, String name, String mail, String password, PermissionLevel permissionLevel, List<Integer> subscribedEvents, List<Integer> subscribedCategories) throws UserNotFoundEx;
-    boolean deleteUser(int id) throws UserNotFoundEx;
-    boolean addUser(int id, String name, String mail, String password, PermissionLevel permissionLevel, List<Integer> subscribedEvents, List<Integer> subscribedCategories) throws UserExistsEx;
-    boolean addUser(User user) throws UserExistsEx;
+
 
 
     int countUsers();

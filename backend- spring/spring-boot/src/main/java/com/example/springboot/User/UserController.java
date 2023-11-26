@@ -23,7 +23,7 @@ import java.util.List;
 import java.util.Optional;
 
 
-@CrossOrigin
+@CrossOrigin(origins = "http://localhost:4200/")
 @RestController
 public class UserController {
 
@@ -32,42 +32,88 @@ public class UserController {
     private final EventController eventController = new EventController();
     private final CategoryController categoryController = new CategoryController();
 
-
-    @GetMapping("/users/{id}")
-    public ResponseEntity<UserDTO> getUser(@PathVariable int id) {
-        User user = userRepository.findById(id);
-        UserDTO userDTO = UserDTO.toDTO(user);
-        return ResponseEntity.ok(userDTO);
+    // CRUD - Create
+    @PostMapping("/addUser")
+    public boolean addUser(@RequestBody UserDTO userDTO) {
+        User user = new User(userDTO.getId(), userDTO.getName(), userDTO.getMail(), "haslo", userDTO.getPermissionLevel(), new ArrayList<>(), new ArrayList<>());
+        userRepository.save(user);
+        return true;
     }
 
+    // CRUD - Read
     @GetMapping("users")
     public CollectionModel<User> getAllUsers() {
         List<User> users = userRepository.findAll();
         return CollectionModel.of(users);
     }
-
-
+    @GetMapping("/users/{id}")
+    public ResponseEntity<User> getUser(@PathVariable int id) throws UserNotFoundEx{
+        try {
+            return ResponseEntity.ok(userRepository.getUserById(id)
+                    .orElseThrow(() -> new UserNotFoundEx(id)));
+        } catch (Exception e) {
+            throw new UserNotFoundEx(id);
+        }
+    }
     @GetMapping("/users/name/{nameOrMail}")
     public User getUserByName(@PathVariable String nameOrMail) throws UserNotFoundEx {
-        return userRepository.findByNameOrMail(nameOrMail)
+        return userRepository.getUserByNameOrMail(nameOrMail)
                 .orElseThrow(() -> new UserNotFoundEx(nameOrMail));
     }
-
-       public void addSampleUser() {
-        User user = new User();
-        user.setMail("Wojciech@mail.com");
-        user.setName("Wojciech");
-        user.setPassword("password");
-        user.setPermissionLevel(PermissionLevel.VERIFIED_USER);
-        user.setSubscribedCategories(Collections.emptyList());
-        userRepository.save(user);
+    @GetMapping("/users/list")
+    public List<User> getUsersFromList(ArrayList<Integer> idList) {
+        return userRepository.getUsersSubscribedToEvent(idList);
     }
 
-    @PostMapping("/addUser")
-    public String addUser(@RequestBody User user) {
-        userRepository.save(user);
-        return "User added";
+    // CRUD - Update
+    @PutMapping("/{id}")
+    public User updateUser(@PathVariable int id, @RequestBody User user) {
+        return updateUser2(id, user);
     }
+    public User updateUser2(int userId, User updatedUser) {
+        return userRepository.findById(userId).map(user -> {
+            user.setName(updatedUser.getName());
+            user.setMail(updatedUser.getMail());
+            user.setName(updatedUser.getName());
+            user.setPassword(updatedUser.getPassword());
+            user.setPermissionLevel(updatedUser.getPermissionLevel());
+            user.setSubscribedEvents(updatedUser.getSubscribedEvents());
+            user.setSubscribedCategories(updatedUser.getSubscribedCategories());
+            return userRepository.save(user);
+        }).orElseGet(() -> {
+            updatedUser.setId(userId);
+            return userRepository.save(updatedUser);
+        });
+    }
+
+    // CRUD - Delete
+    @DeleteMapping("/users/delete/{id}")
+    public boolean deleteUser(@PathVariable int id) {
+        userRepository.deleteById(id);
+        return true;
+    }
+
+
+    public boolean loginUser(String loginOrMail, String password) {
+        Optional<User> userOptional = userRepository.getUserByNameOrMail(loginOrMail);
+        if (userOptional.isPresent()) {
+            User user = userOptional.get();
+            return password.equals(user.getPassword());
+        }
+        return false;
+    }
+
+    @GetMapping("users/login")
+    public ResponseEntity<Boolean> tryToLoginUser(String loginOrMail, String password){
+        try {
+            boolean result = userRepository.login(loginOrMail, password).isPresent();
+            return ResponseEntity.ok(result); // trzeba dodać user ID żeby się wysyłało
+        } catch (UserNotFoundEx e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+
 
 /*    @PatchMapping("users/{userId}/createEvent")
     public ResponseEntity<Boolean> createEvent(@RequestBody int userId,
@@ -108,7 +154,7 @@ public class UserController {
 
 
     /*
-    *//***
+     *//***
      * usage: main page; giving list of random events
      * @return list of some events for user
      *//*

@@ -19,7 +19,7 @@ public class AuthController {
 
     @PostMapping("/login")
     public ResponseEntity<?> authenticateUser(@RequestBody LoginRequest loginRequest) {
-        Optional<User> user = userRepository.findByNameOrMail(loginRequest.getUsername());
+        Optional<User> user = userRepository.getUserByNameOrMail(loginRequest.getUsername());
         if(user.isPresent()) {
             BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
             if (loginRequest.getPassword().equals(user.get().getPassword())) {
