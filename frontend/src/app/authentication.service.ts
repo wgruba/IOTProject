@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { HttpClient,HttpHeaders} from '@angular/common/http';
+import { jwtDecode } from "jwt-decode";
+
 
 @Injectable({
   providedIn: 'root'
@@ -9,8 +11,7 @@ export class AuthenticationService {
   private isLoggedIn = new BehaviorSubject<boolean>(false);
 
   constructor(private http: HttpClient) {
-    const userToken = localStorage.getItem('userToken');
-    this.isLoggedIn.next(!!userToken);
+    this.checkTokenValidity();
   }
 
   get isLoggedIn$(): Observable<boolean> {
@@ -34,5 +35,32 @@ export class AuthenticationService {
   setIsLoggedIn(value: boolean){
     this.isLoggedIn.next(value);
   }
+  
+  private isTokenExpired(token: string): boolean {
+    try {
+      const { exp } = jwtDecode(token);
+      if (!exp) {
+        return false;
+      }
+      return Date.now() >= exp * 1000;
+    } catch (error) {
+      return false;
+    }
+  }
 
+  private checkTokenValidity(): void {
+    const token = localStorage.getItem('userToken');
+    if (token) {
+      const isExpired = this.isTokenExpired(token); // Implement this similar to previous example
+      this.isLoggedIn.next(!isExpired);
+      if (isExpired) {
+        this.logout();
+      }
+    }
+  }
+
+  private getHeadersWithToken(): HttpHeaders {
+    const token = localStorage.getItem('userToken');
+    return new HttpHeaders().set('Authorization', `Bearer ${token}`);
+  }
 }

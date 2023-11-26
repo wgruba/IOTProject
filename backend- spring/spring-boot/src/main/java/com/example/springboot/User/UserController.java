@@ -59,7 +59,7 @@ public class UserController {
         user.setName("Wojciech");
         user.setPassword("password");
         user.setPermissionLevel(PermissionLevel.VERIFIED_USER);
-        user.setSubscribedCategories(Collections.emptyList()); // Empty list
+        user.setSubscribedCategories(Collections.emptyList());
         userRepository.save(user);
     }
 
@@ -68,9 +68,6 @@ public class UserController {
         userRepository.save(user);
         return "User added";
     }
-
-
-
 
 /*    @PatchMapping("users/{userId}/createEvent")
     public ResponseEntity<Boolean> createEvent(@RequestBody int userId,
