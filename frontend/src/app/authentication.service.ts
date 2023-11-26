@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, provideZoneChangeDetection } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { HttpClient,HttpHeaders} from '@angular/common/http';
 import { jwtDecode } from "jwt-decode";
@@ -37,6 +37,10 @@ export class AuthenticationService {
   }
   
   private isTokenExpired(token: string): boolean {
+    if (!token) {
+      return true;
+    }
+  
     try {
       const { exp } = jwtDecode(token);
       if (!exp) {
@@ -44,6 +48,7 @@ export class AuthenticationService {
       }
       return Date.now() >= exp * 1000;
     } catch (error) {
+      console.error('Error decoding token:', error);
       return false;
     }
   }
@@ -51,7 +56,7 @@ export class AuthenticationService {
   private checkTokenValidity(): void {
     const token = localStorage.getItem('userToken');
     if (token) {
-      const isExpired = this.isTokenExpired(token); // Implement this similar to previous example
+      const isExpired = this.isTokenExpired(token);
       this.isLoggedIn.next(!isExpired);
       if (isExpired) {
         this.logout();
@@ -59,7 +64,7 @@ export class AuthenticationService {
     }
   }
 
-  private getHeadersWithToken(): HttpHeaders {
+  public getHeadersWithToken(): HttpHeaders {
     const token = localStorage.getItem('userToken');
     return new HttpHeaders().set('Authorization', `Bearer ${token}`);
   }

@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { AuthenticationService } from '../authentication.service';
 import { UserService } from '../user.service';
 
+
 @Component({
   selector: 'app-login-site',
   templateUrl: './login-site.component.html',
@@ -28,15 +29,11 @@ export class LoginSiteComponent {
               this.router.navigate(['/home']);
             }, error => console.error(error));
           } else {
-            // Handle the case where login is unsuccessful but no error is thrown
             this.errorMessage = 'Login failed: Invalid username or password';
-            // Implement logic to show the error popup here
           }
         },
         error: (error) => {
-          // Handle error response and show an error message
           this.errorMessage = 'Login failed: ' + error.message;
-          // Implement logic to show the error popup here
         }
       });
   }

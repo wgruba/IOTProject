@@ -70,8 +70,8 @@ export class UserHeaderComponent implements OnInit {
   ngOnInit(): void {
     const user = this.userService.getCurrentUser();
     if(user){
-      this.isUser = user.permissionLevel !== 'VERIFIED_USER';
-      this.isAdmin = user.permissionLevel === 'VERIFIED_USER';
+      this.isAdmin = user.permissionLevel === 'MODERATOR' || user.permissionLevel === "ADMIN";
+      this.isUser = (!this.isAdmin)
     }
     this.roleClass = user.permissionLevel === 'VERIFIED_USER' ? 'admin-header' : 'user-header';
   }
@@ -100,8 +100,8 @@ export class UserHeaderComponent implements OnInit {
   }
 
   logout(): void {
-    this.authService.logout();
     this.userService.removeCurrentUser();
+    this.authService.logout();
     this.router.navigate(['/login-site']);
   }
 

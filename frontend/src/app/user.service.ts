@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { User } from './models/user.model';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { AuthenticationService } from './authentication.service';
 
 
 
@@ -10,27 +11,24 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 })
 export class UserService {
   private currentUser = new BehaviorSubject<User>(this.getCurrentUser());
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, public authenticationService: AuthenticationService) {}
   
   getUserFromDatabase(): Observable<any> {
     const username = this.getUsername();
     const getUserUrl = `http://localhost:8080/users/name/${username}`;
-    const headers = new HttpHeaders({
-      'Authorization': `Bearer ${this.getUserToken()}`
-    });
+    const headers = this.authenticationService.getHeadersWithToken()
     return this.http.get<User>(getUserUrl, { headers });
   }
 
   setCurrentUser(user: User): void {
     localStorage.setItem('currentUser', JSON.stringify(user));
-    localStorage.setItem('userToken', user.token); 
     localStorage.setItem('username', user.name); 
   }
 
   removeCurrentUser(): void {
     localStorage.removeItem('currentUser');
     localStorage.removeItem('userToken');
-    localStorage.removeItem('username'); // Remove the username
+    localStorage.removeItem('username');
   }
 
   getCurrentUser(): User {

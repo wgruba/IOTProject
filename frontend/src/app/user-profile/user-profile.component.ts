@@ -13,9 +13,7 @@ export class UserProfileComponent implements OnInit{
   constructor(private userService: UserService) {}
 
   ngOnInit(): void {
-    this.userService.getUserFromDatabase().subscribe(data => {
-      this.user = data;
-    }, error => console.error(error));
+   this.user = this.userService.getCurrentUser();
   }
 
   // Method to handle password change

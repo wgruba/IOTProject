@@ -18,14 +18,14 @@ const routes: Routes = [
   { path: 'home', component: MainSiteComponent},
   { path: 'login-site', component:LoginSiteComponent},
   { path: 'register-site', component:RegisterSiteComponent},
-  { path: 'event-details/:id', component: DescriptionPageComponent, canActivate: [RoleGuard], data: { requiredRole: 'Admin' }},
+  { path: 'event-details/:id', component: DescriptionPageComponent, canActivate: [RoleGuard], data: { allowedRoles: ['Admin'] }},
   { path: 'o-nas', component:AboutUsComponent},
   { path: 'pomoc', component:UserHelpComponent},
   { path: '', redirectTo: '/home', pathMatch: 'full'},
   { path: 'add-event', component: AddEventSiteComponent},
   { path: 'event-searching', component: UserSearchingPageComponent},
-  { path: 'user-profile', component: UserProfileComponent, canActivate: [AuthGuard, RoleGuard],  data: { requiredRole:  ['VERIFIED_USER, UNVERIFIED_USER'] } },
-  { path: 'user-events', component: UserEventsComponent, canActivate: [AuthGuard, RoleGuard],  data: { requiredRole:  ['VERIFIED_USER, UNVERIFIED_USER'] } },
+  { path: 'user-profile', component: UserProfileComponent, canActivate: [AuthGuard, RoleGuard],  data: { allowedRoles:  ['VERIFIED_USER', 'UNVERIFIED_USER'] } },
+  { path: 'user-events', component: UserEventsComponent, canActivate: [AuthGuard, RoleGuard],  data: { allowedRoles:  ['VERIFIED_USER', 'UNVERIFIED_USER'] } },
 
 ];
 

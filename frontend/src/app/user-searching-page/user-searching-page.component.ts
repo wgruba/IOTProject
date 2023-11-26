@@ -188,8 +188,8 @@ export class UserSearchingPageComponent implements OnInit{
   ngOnInit(): void {
     const user = this.userService.getCurrentUser();
     if(user){
-      this.isUser = user.permissionLevel !== 'VERIFIED_USER';
-      this.isAdmin = user.permissionLevel === 'VERIFIED_USER';
+      this.isAdmin = user.permissionLevel === 'MODERATOR' || user.permissionLevel === "ADMIN";
+      this.isUser = (!this.isAdmin)
     }
     this.roleClass = user.permissionLevel === 'VERIFIED_USER' ? 'admin-header' : 'user-header';
   }
