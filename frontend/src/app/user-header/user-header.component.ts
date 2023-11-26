@@ -1,9 +1,10 @@
-import { Component } from '@angular/core';
+import { Component, OnInit} from '@angular/core';
 import { Category } from '../models/Category.model';
 import { SelectedItem } from '../models/selectedItem.model';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthenticationService } from '../authentication.service';
+import { UserService } from '../user.service';
 import { SelectedLocation } from '../models/selectedLocation.model';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
@@ -14,7 +15,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
   templateUrl: './user-header.component.html',
   styleUrls: ['./user-header.component.scss']
 })
-export class UserHeaderComponent {
+export class UserHeaderComponent implements OnInit {
   categories: Category[] = [
     { 
       name: 'Kategoria 1', 
@@ -73,14 +74,26 @@ export class UserHeaderComponent {
   showPopup: boolean = false;
   searchForm: FormGroup;
   viewLocation: string = 'Lokalizacja:';
+  roleClass: string = '';
+  isAdmin: boolean = false;
+  isUser: boolean = false ;
 
+  constructor(private router: Router, private formBuilder: FormBuilder,public authService: AuthenticationService, public userService: UserService, private _snackBar: MatSnackBar) {
 
-  constructor(private router: Router, private formBuilder: FormBuilder,public authService: AuthenticationService, private _snackBar: MatSnackBar  ) {
     this.searchForm = this.formBuilder.group({
       searchQuery: [''],
       dateFrom: [''],
       dateTo: [''],
     });
+  }
+
+  ngOnInit(): void {
+    const user = this.userService.getCurrentUser();
+    if(user){
+      this.isAdmin = user.permissionLevel === 'MODERATOR' || user.permissionLevel === "ADMIN";
+      this.isUser = (!this.isAdmin)
+    }
+    this.roleClass = user.permissionLevel === 'VERIFIED_USER' ? 'admin-header' : 'user-header';
   }
 
 
@@ -132,6 +145,7 @@ export class UserHeaderComponent {
   }
 
   logout(): void {
+    this.userService.removeCurrentUser();
     this.authService.logout();
     this.router.navigate(['/login-site']);
   }

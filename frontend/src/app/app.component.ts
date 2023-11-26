@@ -12,6 +12,5 @@ export class AppComponent {
   title = 'IwentHub';
   constructor(public router: Router, private titleService: Title) {
     this.titleService.setTitle('IwentHub');
-    
   }
 }

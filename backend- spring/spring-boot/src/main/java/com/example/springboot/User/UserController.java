@@ -154,7 +154,7 @@ public class UserController {
 
 
     /*
-    *//***
+     *//***
      * usage: main page; giving list of random events
      * @return list of some events for user
      *//*

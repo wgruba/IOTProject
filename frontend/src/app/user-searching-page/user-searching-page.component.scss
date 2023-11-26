@@ -1,8 +1,6 @@
 
 .filters {
     margin: 20px;
-    background: linear-gradient(#FF9505 ,#ffffff);
-    filter: brightness(110%);
     flex: 0 0 250px;
     padding: 20px;
     border-radius: 20px;
@@ -11,14 +9,35 @@
     max-width: 250px; 
 }
 
+.user-body .filters {
+  background: linear-gradient(#FF9505, #ffffff);
+  filter: brightness(110%);
+}
+
+.admin-body .filters {
+  background-color: #52A5E9;
+}
+
+.admin-body .card {
+  background-color: #F1F7EA;
+}
+
+.user-body .card {
+  background: linear-gradient(#FFF8E1 ,#FFFAE8);
+}
+
+.admin-body button {
+  background-color: #0060AA;
+  color: white; 
+}
+
+
 .event-list {
     padding: 20px;
     width: 100%; 
     margin-top: 20px; 
     
-    
   .card {
-    background: linear-gradient(#FFF8E1 ,#FFFAE8);
     width: 100%; 
     max-width: 100%;
     margin: 20px 0; 
@@ -46,8 +65,6 @@
       }
 
     button {
-          background-color: #FF9505;
-          color: #494949; 
           border: 1px solid #fff; 
           padding: 8px 16px;
           font-weight: bold;

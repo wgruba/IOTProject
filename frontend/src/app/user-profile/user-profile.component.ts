@@ -13,21 +13,12 @@ export class UserProfileComponent implements OnInit{
   constructor(private userService: UserService) {}
 
   ngOnInit(): void {
-    this.userService.getUserFromDatabase(0).subscribe(data => {
-      this.user = data;
-    }, error => console.error(error));
+   this.user = this.userService.getCurrentUser();
   }
 
   // Method to handle password change
   changePassword(): void {
     //password change logic
   }
-
-  editName(): void {
-    // Logic to handle name editing
-  }
-
-  editEmail(): void {
-    // Logic to handle email editing
-  }
+  
 }
