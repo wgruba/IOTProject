@@ -25,6 +25,9 @@ import { UserProfileAsideComponent } from './user-profile-aside/user-profile-asi
 import { UserSearchingPageComponent } from './user-searching-page/user-searching-page.component';
 import { UserProfileComponent } from './user-profile/user-profile.component';
 import { UserEventsComponent } from './user-events/user-events.component';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+
 
 register();
 
@@ -55,6 +58,8 @@ register();
     GoogleMapsModule,
     ReactiveFormsModule,
     HttpClientModule,
+    MatSnackBarModule,
+    BrowserAnimationsModule,
   ],
   providers: [EventService, UserService, AuthenticationService],
   bootstrap: [AppComponent],

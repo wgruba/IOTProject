@@ -76,10 +76,34 @@
             </div>
             </div>
 
-            <button class="location-button">Lokalizacja:</button>
+            <!-- <button class="location-button">Lokalizacja:</button> -->
+            <div dropdown>
+              <button class="category-button" type="button" id="localisationDropdown"
+                      data-bs-toggle="dropdown" aria-expanded="false">
+                {{ viewLocation || 'Lokalizacja:' }} 
+              </button>
+              <ul class="dropdown-menu" aria-labelledby="localisationDropdown">
+                  <li *ngFor="let localisation of localisations" class="dropdown-submenu">
+                    <a class="dropdown-item" href="javascript:void(0);"
+                       (click)="toggleLocation(localisation.name)">
+                      {{ localisation.name }}
+                    </a>
+                    <ul class="dropdown-menu dropdown-submenu-right">
+                      <li *ngFor="let subcategory of localisation.subcategories">
+                        <a class="dropdown-item" href="javascript:void(0);"
+                           (click)="toggleLocation(localisation.name, subcategory)">
+                          {{ subcategory }}
+                        </a>
+                      </li>
+                    </ul>
+                  </li>
+              </ul>
+            </div>
+
+
             <div class="date-checker">
-                Od: <input  type="datetime-local" class="date-button"  formControlName="date" name="dataOd">
-                Do: <input  type="datetime-local" class="date-button"  formControlName="date" name="dataDo">
+                Od: <input  type="datetime-local" class="date-button"  formControlName="dateFrom" name="dataOd">
+                Do: <input  type="datetime-local" class="date-button"  formControlName="dateTo" name="dataDo">
             </div>
             <button class="search-button" (click)="onSearch()">Szukaj</button>
       </div>
