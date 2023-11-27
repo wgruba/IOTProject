@@ -30,11 +30,7 @@ public class EventController {
     }
 
     @PostMapping("/addEvent")
-    public ResponseEntity<Event> addEvent(Event event) {
-        event.setId(1);
-        event.setOrganizer(0);
-        event.setClientList(new ArrayList<>());
-        event.setCategoryList(new ArrayList<>());
+    public ResponseEntity<Event> addEvent(@RequestBody Event event) {
         Event savedEvent = eventRepository.save(event);
         return ResponseEntity.ok(savedEvent);
     }
