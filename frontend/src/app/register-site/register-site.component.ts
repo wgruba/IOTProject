@@ -1,4 +1,9 @@
 import { Component } from '@angular/core';
+import { UserService } from '../user.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { Router } from '@angular/router';
+
+
 
 @Component({
   selector: 'app-register-site',
@@ -9,10 +14,17 @@ import { Component } from '@angular/core';
 
 
 export class RegisterSiteComponent {
-
   password: string = "";
   password_repeated: string = "";
   warning: string = "";
+  login: string = "";
+  email: string = "";
+  id: number = 0;
+  message: string = "";
+
+  constructor(public userService: UserService, private snackBar: MatSnackBar,private router: Router) {
+    
+  }
 
   validatePassword(p: string, p2: string): string[] {
     const errors: string[] = [];
@@ -37,6 +49,60 @@ export class RegisterSiteComponent {
     }
 
     return errors;
+  }
+
+  isPasswordValid(): boolean {
+    return this.validatePassword(this.password, this.password_repeated).length === 0;
+  }
+
+  registerUser(event: Event) {
+    if(this.isPasswordValid()){
+      this.userService.getLastID().subscribe(response => {
+        this.id = response + 1
+        event.preventDefault();
+        const user = {
+          id: this.id,
+          name: this.login,
+          mail: this.email,
+          password: this.password,
+          permissionLevel: "UNVERIFIED_USER",
+          subscribedEvents: [],
+          subscribedCategories: [],
+        };
+        this.userService.addUser(user).subscribe(
+          response => {
+            this.snackBar.open("Zarejestrowano pomyślnie", 'Zamknij', {
+              duration: 3000,
+              horizontalPosition: 'right',
+              verticalPosition: 'top', });
+            this.router.navigate(['/login-site']);
+          },
+          error => {
+            if(error === "User with the same name or email already exists" ){
+              this.snackBar.open("Użytkownik o takiej nazwie lub mailu istnieje spróbuj ponownie", 'Zamknij', {
+                duration: 3000,
+                horizontalPosition: 'right',
+                verticalPosition: 'top', });
+            }
+            else{
+              this.snackBar.open("Coś poszło nie tak spróbuj ponownie", 'Zamknij', {
+                duration: 3000,
+                horizontalPosition: 'right',
+                verticalPosition: 'top', });
+            }
+            console.error('Error registering user', error);
+          }
+        );
+      },
+      error => {
+        this.snackBar.open("Coś poszło nie tak spróbuj ponownie", 'Zamknij', {
+          duration: 3000,
+          horizontalPosition: 'right',
+          verticalPosition: 'top', });
+        console.error('Error registering user', error);
+      }
+    );
+    }
   }
   
   updateWarning() {

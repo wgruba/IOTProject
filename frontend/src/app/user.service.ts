@@ -31,6 +31,14 @@ export class UserService {
     localStorage.removeItem('username');
   }
 
+  addUser(user: any): Observable<any> {
+    return this.http.post('http://localhost:8080/addUser', user);
+  }
+
+  getLastID(): Observable<any> {
+    return this.http.get('http://localhost:8080/last');
+  }
+
   getCurrentUser(): User {
     try {
       const userJson = localStorage.getItem('currentUser');

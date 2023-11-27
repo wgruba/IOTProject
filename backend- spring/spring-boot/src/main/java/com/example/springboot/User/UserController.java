@@ -10,6 +10,7 @@ import com.example.springboot.User.Exceptions.NotEnoughHighPermissionLevel;
 import com.example.springboot.User.Exceptions.UserExistsEx;
 import com.example.springboot.User.Exceptions.UserNotFoundEx;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.http.HttpStatus;
@@ -22,8 +23,9 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
+import static com.mongodb.client.model.Aggregates.limit;
 
-@CrossOrigin(origins = "http://localhost:4200/")
+
 @RestController
 public class UserController {
 
@@ -34,10 +36,22 @@ public class UserController {
 
     // CRUD - Create
     @PostMapping("/addUser")
-    public boolean addUser(@RequestBody UserDTO userDTO) {
-        User user = new User(userDTO.getId(), userDTO.getName(), userDTO.getMail(), "haslo", userDTO.getPermissionLevel(), new ArrayList<>(), new ArrayList<>());
+    public ResponseEntity<?> addUser(@RequestBody User user) {
+        Optional<User> existingUser = userRepository.getUserByNameOrMail(user.getName());
+        if (existingUser.isPresent()) {
+            return ResponseEntity
+                .status(HttpStatus.CONFLICT)
+                .body("User with the same name or email already exists");
+        }
         userRepository.save(user);
-        return true;
+        return ResponseEntity.ok(null);
+    }
+
+    @GetMapping("/last")
+    public int getLastUser() {
+        return userRepository.findTopByOrderByIdDesc()
+                .map(User::getId)
+                .orElse(null);
     }
 
     // CRUD - Read
