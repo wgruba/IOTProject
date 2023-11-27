@@ -2,6 +2,8 @@ import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthenticationService } from '../authentication.service';
 import { UserService } from '../user.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
+
 
 
 @Component({
@@ -14,7 +16,7 @@ export class LoginSiteComponent {
   password: string = '';
   errorMessage: string = '';
 
-  constructor(private authService: AuthenticationService, private router: Router, public userService: UserService) {}
+  constructor(private authService: AuthenticationService, private router: Router, public userService: UserService, private snackBar: MatSnackBar) {}
 
   onSubmit() {
     if (this.username && this.password) {
@@ -26,6 +28,10 @@ export class LoginSiteComponent {
             localStorage.setItem('username', this.username)
             this.userService.getUserFromDatabase().subscribe(data => {
               this.userService.setCurrentUser(data);
+              this.snackBar.open("Zalogowano pomyślnie", 'Zamknij', {
+                duration: 3000,
+                horizontalPosition: 'right',
+                verticalPosition: 'top', });
               this.router.navigate(['/home']);
             }, error => console.error(error));
           } else {

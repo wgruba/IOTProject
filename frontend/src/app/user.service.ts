@@ -20,6 +20,12 @@ export class UserService {
     return this.http.get<User>(getUserUrl, { headers });
   }
 
+  getAllUsers(): Observable<User[]>{
+    const getUserUrl = `http://localhost:8080/users`;
+    const headers = this.authenticationService.getHeadersWithToken()
+    return this.http.get<User[]>(getUserUrl, { headers });
+  }
+
   setCurrentUser(user: User): void {
     localStorage.setItem('currentUser', JSON.stringify(user));
     localStorage.setItem('username', user.name); 

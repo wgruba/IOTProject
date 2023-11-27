@@ -93,13 +93,6 @@ export class RegisterSiteComponent {
             console.error('Error registering user', error);
           }
         );
-      },
-      error => {
-        this.snackBar.open("Coś poszło nie tak spróbuj ponownie", 'Zamknij', {
-          duration: 3000,
-          horizontalPosition: 'right',
-          verticalPosition: 'top', });
-        console.error('Error registering user', error);
       }
     );
     }

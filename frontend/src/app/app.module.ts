@@ -27,6 +27,9 @@ import { UserProfileComponent } from './user-profile/user-profile.component';
 import { UserEventsComponent } from './user-events/user-events.component';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { ModeratorAcceptationSiteComponent } from './moderator-acceptation-site/moderator-acceptation-site.component';
+import { ModeratorAcceptationDetailsSiteComponent } from './moderator-acceptation-details-site/moderator-acceptation-details-site.component';
+import { ModeratorUsersSearchSiteComponent } from './moderator-users-search-site/moderator-users-search-site.component';
 
 
 register();
@@ -50,6 +53,9 @@ register();
     UserSearchingPageComponent,
     UserProfileComponent,
     UserEventsComponent,
+    ModeratorAcceptationSiteComponent,
+    ModeratorAcceptationDetailsSiteComponent,
+    ModeratorUsersSearchSiteComponent,
   ],
   imports: [
     BrowserModule,

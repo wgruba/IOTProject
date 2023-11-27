@@ -33,6 +33,7 @@ public class User {
         this.subscribedCategories = subscribedCategories;
     }
 
+
     public int getId() {
         return id;
     }
