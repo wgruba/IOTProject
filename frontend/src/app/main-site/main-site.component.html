@@ -45,7 +45,10 @@
                   </div>
                   <div class="card-body"  [class.show]="hoverIndices['swiper3'] === i">
                     <h3 class="card-title">{{ item.name }}</h3>
-                    <p class="card-description" *ngIf="hoverIndices['swiper3'] === i">{{ item.description }}</p></div>
+                    <div class="card-description" *ngIf="hoverIndices['swiper3'] === i">
+                      <p>{{ item.startDate }} - {{ item.endDate }}</p>
+                      <p>{{ item.localisation }}</p>
+                    </div></div>
                 </div>
                 <h3 class="card-title" *ngIf="hoverIndices['swiper3'] !== i">{{ item.name }}</h3>
               </swiper-slide>

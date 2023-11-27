@@ -17,6 +17,7 @@ public interface UserRepository extends MongoRepository<User, Integer> {
 
     //CRUD - Read
     List<User> findAll();
+    Optional<User> findTopByOrderByIdDesc();
     @Query("{'id': ?0}")
     Optional<User> getUserById(int userId);
     @Query("{'$or': [{'name': ?0}, {'mail': ?0}]}")

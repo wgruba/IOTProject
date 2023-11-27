@@ -10,6 +10,7 @@ import com.example.springboot.User.Exceptions.NotEnoughHighPermissionLevel;
 import com.example.springboot.User.Exceptions.UserExistsEx;
 import com.example.springboot.User.Exceptions.UserNotFoundEx;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.http.HttpStatus;
@@ -21,9 +22,11 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+
+import static com.mongodb.client.model.Aggregates.limit;
 
 
-@CrossOrigin(origins = "http://localhost:4200/")
 @RestController
 public class UserController {
 
@@ -34,31 +37,48 @@ public class UserController {
 
     // CRUD - Create
     @PostMapping("/addUser")
-    public boolean addUser(@RequestBody UserDTO userDTO) {
-        User user = new User(userDTO.getId(), userDTO.getName(), userDTO.getMail(), "haslo", userDTO.getPermissionLevel(), new ArrayList<>(), new ArrayList<>());
+    public ResponseEntity<?> addUser(@RequestBody User user) {
+        Optional<User> existingUser = userRepository.getUserByNameOrMail(user.getName());
+        if (existingUser.isPresent()) {
+            return ResponseEntity
+                .status(HttpStatus.CONFLICT)
+                .body("User with the same name or email already exists");
+        }
         userRepository.save(user);
-        return true;
+        return ResponseEntity.ok(null);
+    }
+
+    @GetMapping("/last")
+    public int getLastUser() {
+        return userRepository.findTopByOrderByIdDesc()
+                .map(User::getId)
+                .orElse(null);
     }
 
     // CRUD - Read
     @GetMapping("users")
-    public CollectionModel<User> getAllUsers() {
+    public ResponseEntity<List<UserDTO>> getAllUsers() {
         List<User> users = userRepository.findAll();
-        return CollectionModel.of(users);
+        List<UserDTO> userDTOs = users.stream()
+                .map(UserDTO::toDTO)
+                .collect(Collectors.toList());
+        return ResponseEntity.ok(userDTOs);
     }
     @GetMapping("/users/{id}")
-    public ResponseEntity<User> getUser(@PathVariable int id) throws UserNotFoundEx{
+    public ResponseEntity<UserDTO> getUser(@PathVariable int id) throws UserNotFoundEx{
         try {
-            return ResponseEntity.ok(userRepository.getUserById(id)
-                    .orElseThrow(() -> new UserNotFoundEx(id)));
+            User user = userRepository.getUserById(id)
+                    .orElseThrow(() -> new UserNotFoundEx(id));
+            return ResponseEntity.ok(UserDTO.toDTO(user));
         } catch (Exception e) {
             throw new UserNotFoundEx(id);
         }
     }
     @GetMapping("/users/name/{nameOrMail}")
-    public User getUserByName(@PathVariable String nameOrMail) throws UserNotFoundEx {
-        return userRepository.getUserByNameOrMail(nameOrMail)
+    public UserDTO getUserByName(@PathVariable String nameOrMail) throws UserNotFoundEx {
+        User user = userRepository.getUserByNameOrMail(nameOrMail)
                 .orElseThrow(() -> new UserNotFoundEx(nameOrMail));
+        return UserDTO.toDTO(user);
     }
     @GetMapping("/users/list")
     public List<User> getUsersFromList(ArrayList<Integer> idList) {

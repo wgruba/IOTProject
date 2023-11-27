@@ -20,6 +20,12 @@ export class UserService {
     return this.http.get<User>(getUserUrl, { headers });
   }
 
+  getAllUsers(): Observable<User[]>{
+    const getUserUrl = `http://localhost:8080/users`;
+    const headers = this.authenticationService.getHeadersWithToken()
+    return this.http.get<User[]>(getUserUrl, { headers });
+  }
+
   setCurrentUser(user: User): void {
     localStorage.setItem('currentUser', JSON.stringify(user));
     localStorage.setItem('username', user.name); 
@@ -29,6 +35,14 @@ export class UserService {
     localStorage.removeItem('currentUser');
     localStorage.removeItem('userToken');
     localStorage.removeItem('username');
+  }
+
+  addUser(user: any): Observable<any> {
+    return this.http.post('http://localhost:8080/addUser', user);
+  }
+
+  getLastID(): Observable<any> {
+    return this.http.get('http://localhost:8080/last');
   }
 
   getCurrentUser(): User {

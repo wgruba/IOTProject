@@ -1,6 +1,9 @@
 import { Component } from '@angular/core';
 import { FormControl, FormGroup, Validators, AbstractControl } from '@angular/forms';
 import { EventService } from '../event.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { UserService } from '../user.service';
+import { Event } from '../models/event.model';
 
 @Component({
   selector: 'app-add-event-site',
@@ -9,16 +12,16 @@ import { EventService } from '../event.service';
 })
 export class AddEventSiteComponent {
   eventForm !: FormGroup;
-  constructor(private eventService: EventService){}
+  constructor(private eventService: EventService, private snackBar: MatSnackBar, public userService: UserService){}
 
   ngOnInit(): void {
     this.eventForm = new FormGroup({
       eventName: new FormControl('', Validators.required),
       participants: new FormControl(50, [Validators.required, Validators.min(1)]),
-      isFree: new FormControl('no'),
-      isOnline: new FormControl('no'),
-      isReservationRequired: new FormControl('no'),
-      ageRequirement: new FormControl('all'),
+      isFree: new FormControl(false),
+      isOnline: new FormControl(false),
+      isReservationRequired: new FormControl(false),
+      ageRequirement: new FormControl('FAMILY_FRIENDLY'),
       startTime: new FormControl('', [Validators.required, this.validateStartTime]),
       endTime: new FormControl('', Validators.required),
       description: new FormControl(''),
@@ -45,17 +48,45 @@ export class AddEventSiteComponent {
     return null;
   }
 
+
+  prepareEventData(formValue: any): Event {
+    return {
+        id: 12,
+        name: formValue.eventName,
+        organizer: this.userService.getCurrentUser().id,
+        categoryList: [],
+        clientList: [],
+        description: formValue.description,
+        size: formValue.participants,
+        localisation: formValue.localisation,
+        isFree: formValue.isFree,
+        isReservationNecessary: formValue.isReservationRequired,
+        ageGroup: formValue.ageRequirement,
+        startDate: formValue.startTime,
+        endDate: formValue.endTime,
+        eventStatus: 'TO_ACCEPTANCE',
+        imageUrl: formValue.imageUrl 
+    };
+  }
+
   onSubmit(): void {
       if (this.eventForm.valid) {
-        console.log(this.eventForm.value);
-        this.eventService.addEvent(this.eventForm.value).subscribe(
+        const eventData = this.prepareEventData(this.eventForm.value);
+        console.log(eventData);
+        this.eventService.addEvent(eventData).subscribe(
           response => {
             console.log('Event added:', response);
-            // Handle success
+            this.snackBar.open("Wydarzenie zostało dodane", 'Zamknij', {
+              duration: 3000,
+              horizontalPosition: 'right',
+              verticalPosition: 'top', });
           },
           error => {
             console.error('Error adding event:', error);
-            // Handle error
+            this.snackBar.open("Coś poszło nie tak, Spróbuj ponownie", 'Zamknij', {
+              duration: 3000,
+              horizontalPosition: 'right',
+              verticalPosition: 'top', });
           }
         );
       }

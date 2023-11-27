@@ -2,6 +2,8 @@ import { Injectable } from '@angular/core';
 import { Event } from './models/event.model';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
+import { AuthenticationService } from './authentication.service';
+
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +14,7 @@ export class EventService {
   ]);
   private baseUrl = 'http://localhost:8080'
 
-  constructor(private http: HttpClient) { 
+  constructor(private http: HttpClient, public authenticationService: AuthenticationService) { 
   }
 
   setCurrentEvent(event: Event): void {
@@ -38,7 +40,7 @@ export class EventService {
     size: 200,
     localisation: "Downtown Auditorium",
     isFree : false,
-    isReservationNecessary: true,
+    isReservationNecessary: true, 
     ageGroup: "ADULT",
     startDate: "2023-12-01T19:00:00",
     endDate: "2023-12-01T23:00:00",
@@ -56,8 +58,8 @@ export class EventService {
     return this.http.get(`${this.baseUrl}/events`);
   }
 
-  addEvent(eventData: any): Observable<any> {
-    return this.http.post(`${this.baseUrl}/addEvent`, eventData);
+  addEvent(eventData: Event): Observable<any> {
+    const headers = this.authenticationService.getHeadersWithToken()
+    return this.http.post(`${this.baseUrl}/addEvent`, eventData, { headers });
   }
-
 }
