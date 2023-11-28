@@ -12,8 +12,9 @@ import java.util.List;
 
 public interface UserRepository extends MongoRepository<User, Integer> {
 
-    //CRUD - Create
+    //CRUD - Create & Update
     User save(User user);
+
 
     //CRUD - Read
     List<User> findAll();
@@ -30,37 +31,7 @@ public interface UserRepository extends MongoRepository<User, Integer> {
     void deleteById(int id);
 
 
-
+    // Account Management
     @Query("{'$or': [{'name': ?0}, {'mail': ?0}]}")
     Optional<User> login(String nameOrMail, String password) throws UserNotFoundEx;
-
-
-
-   /* //CRUD
-    boolean updateUser(int id, String name, String mail, String password, PermissionLevel permissionLevel, List<Integer> subscribedEvents, List<Integer> subscribedCategories) throws UserNotFoundEx;
-
-
-
-    int countUsers();
-    PermissionLevel getPermissionLevel(int id) throws UserNotFoundEx;
-
-
-    //Subscription management
-    boolean subscribeEvent(int userId, int eventId) throws UserNotFoundEx;
-    boolean subscribeCategory(int userId, int categoryId) throws UserNotFoundEx;
-    boolean unsubscribeEvent(int userId, int eventId) throws UserNotFoundEx;
-    boolean unsubscribeCategory(int userId, int categoryId) throws UserNotFoundEx;
-
-
-    //User's saved events and categories
-    int countUsersEvents(int id) throws UserNotFoundEx;
-    int countUsersCategories(int id) throws UserNotFoundEx;
-    List<Integer> getUsersEventList(int id) throws UserNotFoundEx;
-    List<Integer> getUsersCategoryList(int id) throws UserNotFoundEx;
-
-
-    //Account management
-    boolean login(String nameOrMail, String password) throws UserNotFoundEx;
-    boolean remindPassword(String nameOrMail) throws UserNotFoundEx;
-    boolean changePermissionLevel(int id, PermissionLevel permissionLevel) throws UserNotFoundEx;*/
 }

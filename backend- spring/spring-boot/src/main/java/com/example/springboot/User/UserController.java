@@ -10,6 +10,7 @@ import com.example.springboot.User.Exceptions.NotEnoughHighPermissionLevel;
 import com.example.springboot.User.Exceptions.UserExistsEx;
 import com.example.springboot.User.Exceptions.UserNotFoundEx;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.core.aggregation.ArrayOperators;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
@@ -48,12 +49,6 @@ public class UserController {
         return ResponseEntity.ok(null);
     }
 
-    @GetMapping("/last")
-    public int getLastUser() {
-        return userRepository.findTopByOrderByIdDesc()
-                .map(User::getId)
-                .orElse(null);
-    }
 
     // CRUD - Read
     @GetMapping("users")
@@ -84,13 +79,20 @@ public class UserController {
     public List<User> getUsersFromList(ArrayList<Integer> idList) {
         return userRepository.getUsersSubscribedToEvent(idList);
     }
+    @GetMapping("/last")
+    public int getLastUser() {
+        return userRepository.findTopByOrderByIdDesc()
+                .map(User::getId)
+                .orElse(null);
+    }
+
 
     // CRUD - Update
     @PutMapping("/{id}")
     public User updateUser(@PathVariable int id, @RequestBody User user) {
-        return updateUser2(id, user);
+        return updateUserHelper(id, user);
     }
-    public User updateUser2(int userId, User updatedUser) {
+    public User updateUserHelper(int userId, User updatedUser) {
         return userRepository.findById(userId).map(user -> {
             user.setName(updatedUser.getName());
             user.setMail(updatedUser.getMail());
@@ -106,6 +108,7 @@ public class UserController {
         });
     }
 
+
     // CRUD - Delete
     @DeleteMapping("/users/delete/{id}")
     public boolean deleteUser(@PathVariable int id) {
@@ -114,6 +117,7 @@ public class UserController {
     }
 
 
+    // Account management
     public boolean loginUser(String loginOrMail, String password) {
         Optional<User> userOptional = userRepository.getUserByNameOrMail(loginOrMail);
         if (userOptional.isPresent()) {
@@ -122,7 +126,6 @@ public class UserController {
         }
         return false;
     }
-
     @GetMapping("users/login")
     public ResponseEntity<Boolean> tryToLoginUser(String loginOrMail, String password){
         try {
@@ -132,141 +135,101 @@ public class UserController {
             throw new RuntimeException(e);
         }
     }
-
-
-
-/*    @PatchMapping("users/{userId}/createEvent")
-    public ResponseEntity<Boolean> createEvent(@RequestBody int userId,
-                                            int id,
-                                            String name,
-                                            List<Integer> categoryList,
-                                            String description,
-                                            int size,
-                                            String localisation,
-                                            boolean isFree,
-                                            boolean isReservationNecessary,
-                                            AgeGroup ageGroup,
-                                            LocalDateTime startDate,
-                                            LocalDateTime endDate,
-                                            String imageURL){
-        try {
-            ArrayList<Integer> clientList = new ArrayList<>();
-            return eventController.addEvent(new Event(
-                    id,
-                    name,
-                    userId,
-                    categoryList,
-                    clientList,
-                    description,
-                    size,
-                    localisation,
-                    isFree,
-                    isReservationNecessary,
-                    ageGroup,
-                    startDate,
-                    endDate,
-                    EventStatus.ACCEPTED,
-                    imageURL)));
-        } catch (UserNotFoundEx e) {
-            throw new RuntimeException(e);
-        }
-    }*/
-
-
-    /*
-     *//***
-     * usage: main page; giving list of random events
-     * @return list of some events for user
-     *//*
-    @GetMapping
-    public EntityModel<List<Event>> getRandomEvents(){
-        //todo
-        return null;
+    public ResponseEntity<PermissionLevel> getPermissionLevel(int userId){
+        return ResponseEntity.ok(userRepository.findById(userId).get().getPermissionLevel());
+    }
+    public ResponseEntity<Boolean> changePermissionLevel(int userId, PermissionLevel permissionLevel){
+        userRepository.findById(userId).map(user -> {
+                    user.setPermissionLevel(permissionLevel);
+        return ResponseEntity.ok(true);});
+        return ResponseEntity.ok(false);
     }
 
 
+    // Subscription Management
+    @GetMapping("/users/{userId}/subscribedEvents")
+    public ResponseEntity<List<Event>> getSubscribedEvents(@PathVariable int userId) {
+        User tempUser = userRepository.findById(userId).get();
+        return ResponseEntity.ok(eventController.getEventsFromList(tempUser.getSubscribedEvents()));
+    }
+    @GetMapping("/users/{userId}/subscribedCategories")
+    public ResponseEntity<List<Category>> getSubscribedCategories(@PathVariable int userId) {
+        User tempUser = userRepository.findById(userId).get();
+        return ResponseEntity.ok(categoryController.getCategoriesFromList(tempUser.getSubscribedCategories()));
+    }
+    @PatchMapping("/users/{userId}/subscribeEvent/{eventId}")
+    public ResponseEntity<Boolean> subscribeEvent(@PathVariable int userId, @PathVariable int eventId) {
+        User tempUser = userRepository.findById(userId).get();
+        List<Integer> tempList = tempUser.getSubscribedEvents();
+        tempList.add(eventId);
+        tempUser.setSubscribedEvents(tempList);
+        userRepository.save(tempUser);
+        return ResponseEntity.ok(true);
+    }
+    @PatchMapping("/users/{userId}/subscribeCategory/{categoryId}")
+    public ResponseEntity<Boolean> subscribeCategory(@PathVariable int userId, @PathVariable int categoryId) {
+        User tempUser = userRepository.findById(userId).get();
+        List<Integer> tempList = tempUser.getSubscribedCategories();
+        tempList.add(categoryId);
+        tempUser.setSubscribedCategories(tempList);
+        userRepository.save(tempUser);
+        return ResponseEntity.ok(true);
+    }
+    @PatchMapping("/users/{userId}/unsubscribeEvent/{eventId}")
+    public ResponseEntity<Boolean> unsubscribeEvent(@PathVariable int userId, @PathVariable int eventId) {
+        if(eventController.getEventOrganiser(eventId) == userId)
+            return ResponseEntity.ok(false);
+        User tempUser = userRepository.findById(userId).get();
+        List<Integer> tempList = tempUser.getSubscribedEvents();
+        tempList.remove(eventId);
+        tempUser.setSubscribedEvents(tempList);
+        userRepository.save(tempUser);
+        return ResponseEntity.ok(true);
+    }
+    @PatchMapping("/users/{userId}/unsubscribeCategory/{categoryId}")
+    public ResponseEntity<Boolean> unsubscribeCategory(@PathVariable int userId, @PathVariable int categoryId) {
+        User tempUser = userRepository.findById(userId).get();
+        List<Integer> tempList = tempUser.getSubscribedCategories();
+        tempList.remove(categoryId);
+        tempUser.setSubscribedCategories(tempList);
+        userRepository.save(tempUser);
+        return ResponseEntity.ok(true);
+    }
 
-    @GetMapping("users/register")
-    public EntityModel<Boolean> tryToRegisterUser(int id, String name, String mail, String password){
-        try {
-            //todo weryfikaja czy dane są odpowiednie
-            return EntityModel.of(impl.addUser(id, name, mail, password, PermissionLevel.UNVERIFIED_USER, new ArrayList<>(), new ArrayList<>()));
-        } catch (UserExistsEx e) {
-            throw new RuntimeException(e);
+
+    // User's Events
+    @PostMapping("/users/{userId}/createEvent")
+    public ResponseEntity<Event> createEvent(@PathVariable int userId, @RequestBody Event event){
+        subscribeEvent(userId, event.getId());
+        return eventController.addEvent(event);
+    }
+    @PatchMapping("/users/{userId}/deleteEvent/{eventId}")
+    public ResponseEntity<Boolean> deleteEvent(@PathVariable int userId, @PathVariable int eventId){
+        if(eventController.getEventOrganiser(eventId) != userId)
+            return ResponseEntity.ok(false);
+        List<Integer> userList = eventController.getUsersThatSubscribedToEvent(eventId);
+        for(Integer user:userList){
+            unsubscribeEvent(user, eventId);
         }
-    }*/
+
+        eventController.deleteEvent(eventId);
+
+        User tempUser = userRepository.findById(userId).get();
+        List<Integer> tempList = tempUser.getSubscribedEvents();
+        tempList.remove(eventId);
+        tempUser.setSubscribedEvents(tempList);
+        userRepository.save(tempUser);
+
+        return ResponseEntity.ok(true);
+    }
+    @GetMapping("users/{userId}/myEvents")
+    public ResponseEntity<List<Event>> getEventsOrganisedByUser(@PathVariable int userId){
+        return ResponseEntity.ok(eventController.getEventsByOrganiser(userId));
+    }
+
 
 
 /*
-    @PatchMapping("users/{userId}/{eventId}/deleteEvent")
-    public EntityModel<Boolean> deleteEvent(@PathVariable int userId, @PathVariable int eventId){
-        try {
-            List<Integer> ids = eventController.deleteEvent(eventId);
-            for(int id:ids){
-                unsubscribeEvent(id, eventId);
-            }
-            return EntityModel.of(impl.unsubscribeEvent(userId, eventId));
-        } catch (UserNotFoundEx e) {
-            throw new RuntimeException(e);
-        }
-    }
-    @GetMapping("users/{userId}/myEvents")
-    public EntityModel<List<Event>> getEventsOrganisedByUser(@PathVariable int userId){
-        return EntityModel.of(eventController.getEventsByOrganiser(userId));
-    }
-
-
-
-    // Subscription management
-    @PatchMapping("users/{userId}/subscribeEvent/{eventId}")
-    public EntityModel<Boolean> subscribeEvent(@PathVariable int userId, @PathVariable int eventId){
-        try {
-            return EntityModel.of(impl.subscribeEvent(userId, eventId) && eventController.subscribeUser(userId, eventId));
-        } catch (UserNotFoundEx e) {
-            throw new RuntimeException(e);
-        }
-    }
-    @PatchMapping("users/{userId}/subscribeCategory/{eventId}")
-    public EntityModel<Boolean> subscribeCategory(@PathVariable int userId, @PathVariable int categoryId){
-        try {
-            return EntityModel.of(impl.unsubscribeCategory(userId, categoryId));
-        } catch (UserNotFoundEx e) {
-            throw new RuntimeException(e);
-        }
-    }
-    @PatchMapping("users/{userId}/unsubscribeEvent/{eventId}")
-    public EntityModel<Boolean> unsubscribeEvent(@PathVariable int userId, @PathVariable int eventId){
-        try {
-            return EntityModel.of(impl.unsubscribeEvent(userId, eventId) && eventController.unsubscribeUser(userId, eventId));
-        } catch (UserNotFoundEx e) {
-            throw new RuntimeException(e);
-        }
-    }
-    @PatchMapping("users/{userId}/unsubscribeCategory/{eventId}")
-    public EntityModel<Boolean> unsubscribeCategory(@PathVariable int userId, @PathVariable int categoryId){
-        try {
-            return EntityModel.of(impl.unsubscribeCategory(userId, categoryId));
-        } catch (UserNotFoundEx e) {
-            throw new RuntimeException(e);
-        }
-    }
-    @GetMapping("users/{userId}/getEvents")
-    public EntityModel<List<Event>> getSubscribedEvents(@PathVariable int userId){
-        try {
-            return EntityModel.of(eventController.getUsersSubscribedEvents(impl.getUsersEventList(userId)));
-        } catch (UserNotFoundEx e) {
-            throw new RuntimeException(e);
-        }
-    }
-    @GetMapping("users/{userId}/subscribedCategories")
-    public EntityModel<List<Category>> getClientCategories(@PathVariable int userId){
-        try {
-            return EntityModel.of(categoryController.getUsersSubscribedCategories(impl.getUsersEventList(userId)));
-        } catch (UserNotFoundEx e) {
-            throw new RuntimeException(e);
-        }
-    }
-
 
     // moderator operations
     @GetMapping("users/{userId}/editedEvents")

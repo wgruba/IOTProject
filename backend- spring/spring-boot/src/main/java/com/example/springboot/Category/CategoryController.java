@@ -10,6 +10,7 @@ import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -36,6 +37,14 @@ public class CategoryController {
         categoryRepository.save(category);
         return "User added";
     }
+
+
+
+
+    public List<Category> getCategoriesFromList(List<Integer> subscribedCategories) {
+        return new ArrayList<>();
+    }
+
 
 /*    @GetMapping("categories")
     public EntityModel<List<Category>> getAllCategories(){

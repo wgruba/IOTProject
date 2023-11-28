@@ -40,6 +40,9 @@ public class Event {
     private EventStatus eventStatus;
     private String imageUrl;
 
+    public Event() {
+    }
+
     public Event(int id, String name, int organizer, List<Integer> categoryList, List<Integer> clientList, String description, int size, String localisation, boolean isFree, boolean isReservationNecessary, AgeGroup ageGroup, LocalDateTime startDate, LocalDateTime endDate, EventStatus eventStatus, String imageUrl) {
         this.id = id;
         this.name = name;

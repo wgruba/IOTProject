@@ -3,6 +3,7 @@ package com.example.springboot.Event;
 import com.example.springboot.Event.Exceptions.EventExistsEx;
 import com.example.springboot.Event.Exceptions.EventNotFoundEx;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.core.aggregation.ArrayOperators;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -35,6 +36,36 @@ public class EventController {
         return ResponseEntity.ok(savedEvent);
     }
 
+
+
+
+    public List<Event >getEventsFromList(List<Integer> ids){
+        return new ArrayList<>();
+    }
+    public int getEventOrganiser(int eventId){
+        return eventRepository.findById(eventId).getOrganizer();
+    }
+    public List<Integer> getUsersThatSubscribedToEvent(int eventId){
+        return eventRepository.findById(eventId).getUserList();
+    }
+    public boolean deleteEvent(int eventId){
+        return eventRepository.delete(eventRepository.findById(eventId);
+    }
+
+    public List<Event> getEventsByOrganiser(int userId) {
+        return new ArrayList<>();
+    }
+
+    /*
+     *//***
+     * usage: main page; giving list of random events
+     * @return list of some events for user
+     *//*
+    @GetMapping
+    public EntityModel<List<Event>> getRandomEvents(){
+        //todo
+        return null;
+    }
     /*
     @GetMapping("users/{userId}")
     public EntityModel<Boolean> createEvent(int id,
