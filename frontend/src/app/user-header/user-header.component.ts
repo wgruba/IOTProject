@@ -1,13 +1,14 @@
 import { Component, OnInit} from '@angular/core';
 import { Category } from '../models/Category.model';
 import { SelectedItem } from '../models/selectedItem.model';
-import { FormGroup, FormBuilder } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthenticationService } from '../authentication.service';
 import { UserService } from '../user.service';
 import { SelectedLocation } from '../models/selectedLocation.model';
 import { MatSnackBar } from '@angular/material/snack-bar';
-
+import { FilterSearchService } from '../filter-search.service';
+import { Subscription } from 'rxjs';
 
 
 @Component({
@@ -69,6 +70,8 @@ export class UserHeaderComponent implements OnInit {
     }
   ];
 
+  private filterSub: Subscription;
+
   selectedItems: SelectedItem[] = [];
   selectedLocalisation: SelectedLocation = { localisation: '', sublocalisation: ''}
   showPopup: boolean = false;
@@ -77,8 +80,12 @@ export class UserHeaderComponent implements OnInit {
   roleClass: string = '';
   isAdmin: boolean = false;
   isUser: boolean = false ;
+  filterParsed: any;
 
-  constructor(private router: Router, private formBuilder: FormBuilder,public authService: AuthenticationService, public userService: UserService, private _snackBar: MatSnackBar) {
+  constructor(private router: Router, private formBuilder: FormBuilder,public authService: AuthenticationService, public userService: UserService, private _snackBar: MatSnackBar, private filterSearchService: FilterSearchService) {
+    this.filterSub = this.filterSearchService.buttonClick$.subscribe(() => {
+      this.onSearch();
+    });
 
     this.searchForm = this.formBuilder.group({
       searchQuery: [''],
@@ -95,6 +102,10 @@ export class UserHeaderComponent implements OnInit {
     }
     this.roleClass = user.permissionLevel === 'VERIFIED_USER' ? 'admin-header' : 'user-header';
   }
+  ngOnDestroy(): void {
+    this.filterSub.unsubscribe();
+  }
+
 
 
   toggleSelection(categoryName: string, subcategoryName?: string): void {
@@ -154,7 +165,15 @@ export class UserHeaderComponent implements OnInit {
     console.log('Form Values:', this.searchForm.value);
     console.log(this.selectedLocalisation)
     console.log(this.selectedItems)
-    const formData = {...this.searchForm.value, ...this.selectedLocalisation, ...this.selectedItems}
+    const filterData = localStorage.getItem('filter')
+    if(filterData == null){
+      this.filterParsed = JSON.stringify({historyczne: false, rezerwacja: "0", koszt: "0", wiek: "0", miejscaMin: [null, [Validators.min(0)]], miejscaMax: [null, [Validators.min(0)]]})
+    }
+    else {
+      this.filterParsed = JSON.parse(filterData)
+    }
+    console.log(filterData)
+    const formData = {...this.searchForm.value, ...this.selectedLocalisation, ...this.selectedItems, ...this.filterParsed}
     console.log(formData)
     this.router.navigate(['/event-searching']);
   }
