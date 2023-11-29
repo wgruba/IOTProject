@@ -3,6 +3,9 @@ import { Event } from '../models/event.model';
 import { Router } from '@angular/router';
 import { EventService } from '../event.service';
 import { UserService } from '../user.service';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { FilterSearchService } from '../filter-search.service';
+import { FormControl } from '@angular/forms';
 
 
 @Component({
@@ -14,6 +17,7 @@ export class UserSearchingPageComponent implements OnInit{
   roleClass: string = '';
   isAdmin: boolean = false;
   isUser: boolean = false ;
+  filterForm: FormGroup;
   events: Event[] = [
     {
       id: 1,
@@ -182,10 +186,22 @@ export class UserSearchingPageComponent implements OnInit{
   ];
 
 
-  constructor(private router: Router,private eventService: EventService, public userService: UserService) {
+  constructor(private router: Router,private eventService: EventService, public userService: UserService, private formBuilder: FormBuilder, private filterSearchService: FilterSearchService) {
+    this.filterForm = this.formBuilder.group({
+      historyczne: false,
+      rezerwacja: "0",
+      koszt: "0",
+      wiek: "0",
+      miejscaMin: null,
+      miejscaMax: null,
+    });
   }
 
   ngOnInit(): void {
+    const filter = localStorage.getItem('filter');
+    if(filter != null){
+      this.filterForm.patchValue(JSON.parse(filter));
+    }
     const user = this.userService.getCurrentUser();
     if(user){
       this.isAdmin = user.permissionLevel === 'MODERATOR' || user.permissionLevel === "ADMIN";
@@ -195,7 +211,9 @@ export class UserSearchingPageComponent implements OnInit{
   }
 
   applyFilters(){
-    
+    console.log(this.filterForm.value);
+    localStorage.setItem('filter', JSON.stringify(this.filterForm.value));
+    this.filterSearchService.sendToSearch();
   }
 
   showDetails(card: Event): void {

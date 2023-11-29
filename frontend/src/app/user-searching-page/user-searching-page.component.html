@@ -1,25 +1,53 @@
 <body [class]="{'admin-body': isAdmin, 'user-body': isUser}">
 <div class="main-page">
     <aside class="filters">
-        <form>
+        <div class="filter-content" [formGroup]="filterForm">
           <p class="filtr-category">Filtry:</p>
-          <input type="checkbox" class="sidebar-checkbox" name="historyczne" value=1>
+          <input type="checkbox" class="sidebar-checkbox" name="historyczne" value=1 formControlName="historyczne">
           <label for="historyczne">Wydarzenia już zakończone</label><br>
-          <input type="checkbox" class="sidebar-checkbox" name="darmowe" value=2>
-          <label for="darmowe">Wydarzenia Darmowe</label><br>
           <!-- radiobuttony do reserwacji miejsc-->
-          <input type="radio" class="sidebar-checkbox" name="rezerwacja" value=3>
-          
+          <div>
+            Rezerwacja miejsc:<br>
+            <input type="radio" class="sidebar-checkbox" name="rezerwacja" value=1 formControlName="rezerwacja">
+            <label for="rezerwacja">Rezerwacja Wymagana</label><br>
+            <input type="radio" class="sidebar-checkbox" name="rezerwacja" value=2 formControlName="rezerwacja">
+            <label for="rezerwacja">Rezerwacja Niewymagana</label><br>
+            <input type="radio" class="sidebar-checkbox" name="rezerwacja" value=0 formControlName="rezerwacja">
+            <label for="rezerwacja">Obojętnie</label><br>
+          </div>          
           <!-- radiobuttony do kosztu-->
-          
+          <div>
+            Koszt:<br>
+            <input type="radio" class="sidebar-checkbox" name="koszt" value=1 formControlName="koszt">
+            <label for="koszt">Darmowe</label><br>
+            <input type="radio" class="sidebar-checkbox" name="koszt" value=2 formControlName="koszt">
+            <label for="koszt">Płatne</label><br>
+            <input type="radio" class="sidebar-checkbox" name="koszt" value=0 formControlName="koszt" checked>
+            <label for="koszt">Obojętnie</label><br>
+          </div>
           <!-- selector min wieku -->
-          <label for="miejscaMin">Ilość miejsc od</label>
-          <input type="number" class="sidebar-input" name="miejscaMin" min="0" value=3>
-          <label for="miejscaMax">do</label>
-          <input type="number" class="sidebar-input" name="miejscaMax" min="0" value=4><br>
-          
+          <div>
+            Wymagany wiek:<br>
+            <input type="radio" class="sidebar-checkbox" name="wiek" value=0 formControlName="wiek" checked>
+            <label for="wiek">Rodzinne</label><br>
+            <input type="radio" class="sidebar-checkbox" name="wiek" value=1 formControlName="wiek">
+            <label for="wiek">7+</label><br>
+            <input type="radio" class="sidebar-checkbox" name="wiek" value=2 formControlName="wiek">
+            <label for="wiek">13+</label><br>
+            <input type="radio" class="sidebar-checkbox" name="wiek" value=3 formControlName="wiek">
+            <label for="wiek">16+</label><br>
+            <input type="radio" class="sidebar-checkbox" name="wiek" value=4 formControlName="wiek">
+            <label for="wiek">18+</label><br>
+          </div>
+          <!-- selector miejsc NIE DZIAŁA NIE WIEM DLACZEGO -->
+          <div>
+            <label for="miejscaMin">Ilość miejsc od</label>
+            <input type="number" class="sidebar-input" name="miejscaMin" min="0" formControlName="miejscaMin">
+            <label for="miejscaMax">do</label>
+            <input type="number" class="sidebar-input" name="miejscaMax" min="0" formControlName="miejscaMax"><br>
+          </div>
           <button (click)="applyFilters()">Filtruj</button>
-      </form>
+        </div>
       </aside>
 
     <div class="event-list">
