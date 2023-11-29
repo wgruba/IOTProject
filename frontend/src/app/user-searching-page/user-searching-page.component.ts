@@ -5,6 +5,7 @@ import { EventService } from '../event.service';
 import { UserService } from '../user.service';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { FilterSearchService } from '../filter-search.service';
+import { FormControl } from '@angular/forms';
 
 
 @Component({
@@ -191,8 +192,8 @@ export class UserSearchingPageComponent implements OnInit{
       rezerwacja: "0",
       koszt: "0",
       wiek: "0",
-      miejscaMin: [null, [Validators.min(0)]],
-      miejscaMax: [null, [Validators.min(0)]],
+      miejscaMin: null,
+      miejscaMax: null,
     });
   }
 

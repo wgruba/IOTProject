@@ -42,9 +42,9 @@
           <!-- selector miejsc NIE DZIAŁA NIE WIEM DLACZEGO -->
           <div>
             <label for="miejscaMin">Ilość miejsc od</label>
-            <input type="number" class="sidebar-input" name="miejscaMin" min="0" formGroupName="miejscaMin">
+            <input type="number" class="sidebar-input" name="miejscaMin" min="0" formControlName="miejscaMin">
             <label for="miejscaMax">do</label>
-            <input type="number" class="sidebar-input" name="miejscaMax" min="0" formGroupName="miejscaMax"><br>
+            <input type="number" class="sidebar-input" name="miejscaMax" min="0" formControlName="miejscaMax"><br>
           </div>
           <button (click)="applyFilters()">Filtruj</button>
         </div>
