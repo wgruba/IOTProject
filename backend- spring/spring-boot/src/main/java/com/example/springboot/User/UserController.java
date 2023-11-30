@@ -20,11 +20,10 @@ import java.util.stream.Collectors;
 public class UserController {
 
     @Autowired
-    private UserRepository userRepository;
+    private static UserRepository userRepository;
 
     @Autowired
-    private EventController eventController;
-    private final EventController eventController = new EventController();
+    private static EventController eventController;
     private final CategoryController categoryController = new CategoryController();
 
     // CRUD - Create

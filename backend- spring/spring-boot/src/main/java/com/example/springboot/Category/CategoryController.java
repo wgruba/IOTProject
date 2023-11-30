@@ -45,12 +45,10 @@ public class CategoryController {
         return new ArrayList<>();
     }
 
-    id: number;
+    /*id: number;
     name: string;
     subcategories: { id: number; name: string; }[];
-
-
-
+*/
 
 /*    @GetMapping("categories")
     public EntityModel<List<Category>> getAllCategories(){

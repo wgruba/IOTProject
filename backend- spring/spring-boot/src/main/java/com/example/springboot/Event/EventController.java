@@ -72,13 +72,60 @@ public class EventController {
     public int getEventOrganiser(@PathVariable int eventId){
         return eventRepository.findById(eventId).getOrganizer();
     }
-    public List<Integer> getUsersThatSubscribedToEvent(int eventId){
+    public List<Integer> getUsersThatSubscribedToEvent(int eventId) {
         return eventRepository.findById(eventId).getUserList();
-
-
-    public List<Event> getEventsByOrganiser(int userId) {
-        return new ArrayList<>();
     }
+
+
+    // Subscription Management
+    @GetMapping("/events/{eventId}/subscribedUsers")
+    public ResponseEntity<List<User>> getSubscribedEvents(@PathVariable int eventId) {
+        Event tempEvent = eventRepository.findById(eventId);
+        return ResponseEntity.ok(UserController.getUsersFromList((ArrayList<Integer>) tempEvent.getUserList()));
+    }
+    @GetMapping("/events/{eventId}/subscribedCategories")
+    public ResponseEntity<List<Category>> getSubscribedCategories(@PathVariable int eventId) {
+        Event tempEvent = eventRepository.findById(eventId);
+        return ResponseEntity.ok(CategoryController.getCategoriesFromList(tempEvent.getCategoryList()));
+    }
+    public ResponseEntity<Boolean> subscribeUser(@PathVariable int userId, @PathVariable int eventId) {
+        // jest wywoływane przez UserController.subscribeEvent
+        Event tempEvent = eventRepository.findById(eventId);
+        List<Integer> tempList = tempEvent.getClientList();
+        tempList.add(userId);
+        tempEvent.setUserList(tempList);
+        eventRepository.save(tempEvent);
+        return ResponseEntity.ok(true);
+    }
+    public ResponseEntity<Boolean> subscribeCategory(@PathVariable int eventId, @PathVariable int categoryId) {
+        Event tempEvent = eventRepository.findById(eventId);
+        List<Integer> tempList = tempEvent.getCategoryList();
+        tempList.add(categoryId);
+        tempEvent.setCategoryList(tempList);
+        eventRepository.save(tempEvent);
+        return ResponseEntity.ok(true);
+    }
+
+    public ResponseEntity<Boolean> unsubscribeUser(@PathVariable int userId, @PathVariable int eventId) {
+        // jest wywoływane przez UserController.subscribeEvent
+        Event tempEvent = eventRepository.findById(eventId);
+        List<Integer> tempList = tempEvent.getClientList();
+        tempList.remove(userId);
+        tempEvent.setUserList(tempList);
+        eventRepository.save(tempEvent);
+        return ResponseEntity.ok(true);
+    }
+
+    public ResponseEntity<Boolean> unsubscribeCategory(@PathVariable int eventId, @PathVariable int categoryId) {
+        Event tempEvent = eventRepository.findById(eventId);
+        List<Integer> tempList = tempEvent.getCategoryList();
+        tempList.remove(categoryId);
+        tempEvent.setCategoryList(tempList);
+        eventRepository.save(tempEvent);
+        return ResponseEntity.ok(true);
+    }
+
+
 
     /*
      *//***
