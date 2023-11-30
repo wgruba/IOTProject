@@ -19,52 +19,42 @@ import { Subscription } from 'rxjs';
 export class UserHeaderComponent implements OnInit {
   categories: Category[] = [
     { 
+      id: 1,
       name: 'Kategoria 1', 
-      subcategories: ['Podkategoria 1.1', 'Podkategoria 1.2']
-    },
-    { 
-      name: 'Kategoria 1', 
-      subcategories: ['Podkategoria 1.1', 'Podkategoria 1.2']
-    },
-    { 
-      name: 'Kategoria 1', 
-      subcategories: ['Podkategoria 1.1', 'Podkategoria 1.2']
-    },
-    { 
-      name: 'Kategoria 1', 
-      subcategories: ['Podkategoria 1.1', 'Podkategoria 1.2']
-    },
-    { 
-      name: 'Kategoria 1', 
-      subcategories: ['Podkategoria 1.1', 'Podkategoria 1.2']
-    },
-    { 
+      subcategories: [
+          { id: 101, name: 'Podkategoria 1.1' }, 
+          { id: 102, name: 'Podkategoria 1.2' }
+      ]
+      },
+      { 
+      id: 1,
       name: 'Kategoria 2', 
-      subcategories: ['Podkategoria 1.1', 'Podkategoria 1.2']
+      subcategories: [
+          { id: 103, name: 'Podkategoria 2.1' }, 
+          { id: 106, name: 'Podkategoria 2.2' }
+        ]
     },
     { 
+      id: 1,
       name: 'Kategoria 3', 
-      subcategories: ['Podkategoria 1.1', 'Podkategoria 1.2']
-    },
-    { 
-      name: 'Kategoria 5', 
-      subcategories: ['Podkategoria 1.1', 'Podkategoria 1.2']
-    },
-    { 
-      name: 'Kategoria 9', 
-      subcategories: ['Podkategoria 9.1', 'Podkategoria 9.2']
-    },
-  ];
+      subcategories: [
+          { id: 104, name: 'Podkategoria 3.1' }, 
+          { id: 105, name: 'Podkategoria 3.2' }
+      ]
+    },]
   localisations: Category[] = [
     {
+      id: 3,
       name: 'Dolnośląskie',
-      subcategories: ['Wrocław', 'Wałbrzych', 'Legnica']
+      subcategories: [{id: 104, name:'Wrocław'}, {id: 104, name:'Wałbrzych'}, {id: 104, name:'Legnica'}]
     },
     {
+      id: 2,
       name: 'Podlasie',
-      subcategories: ['Białystok', 'Łomża', 'Suwałki']
+      subcategories: []
     },
     {
+      id: 5,
       name: 'Online',
       subcategories: []
     }

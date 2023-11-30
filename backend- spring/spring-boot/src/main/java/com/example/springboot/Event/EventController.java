@@ -1,5 +1,8 @@
 package com.example.springboot.Event;
 
+import com.example.springboot.Event.Exceptions.EventExistsEx;
+import com.example.springboot.Event.Exceptions.EventNotFoundEx;
+import com.example.springboot.User.User;
 import com.example.springboot.Category.Category;
 import com.example.springboot.Category.CategoryController;
 import com.example.springboot.User.User;
@@ -49,6 +52,13 @@ public class EventController {
         return eventRepository.getEventsFromCategory(categoryId);
     }
 
+    @GetMapping("/events/last")
+    public int getLastEventId() {
+        return eventRepository.findTopByOrderByIdDesc()
+                .map(Event::getId)
+                .orElse(null);
+    }
+
     // CRUD - Delete
     @DeleteMapping("/events/{eventId}")
     public boolean deleteEvent(@PathVariable int eventId){
@@ -57,13 +67,78 @@ public class EventController {
     }
 
 
+
     @GetMapping("/events/{eventId}/organiser")
     public int getEventOrganiser(@PathVariable int eventId){
         return eventRepository.findById(eventId).getOrganizer();
     }
     public List<Integer> getUsersThatSubscribedToEvent(int eventId){
         return eventRepository.findById(eventId).getUserList();
+
+
+    public List<Event> getEventsByOrganiser(int userId) {
+        return new ArrayList<>();
     }
+
+    /*
+     *//***
+     * usage: main page; giving list of random events
+     * @return list of some events for user
+     *//*
+    @GetMapping
+    public EntityModel<List<Event>> getRandomEvents(){
+        //todo
+        return null;
+    }
+    /*
+    @GetMapping("users/{userId}")
+    public EntityModel<Boolean> createEvent(int id,
+                                                            String name,
+                                                            int organizer,
+                                                            List<Integer> categoryList,
+                                                            String description,
+                                                            int size,
+                                                            String localisation,
+                                                            boolean isFree,
+                                                            boolean isReservationNecessary,
+                                                            AgeGroup ageGroup,
+                                                            LocalDateTime startDate,
+                                                            LocalDateTime endDate)
+    {
+        try {
+            return EntityModel.of(impl.addEvent(id,
+                    name,
+                    organizer,
+                    categoryList,
+                    new ArrayList<Integer>(),
+                    description,
+                    size,
+                    localisation,
+                    isFree,
+                    isReservationNecessary,
+                    ageGroup,
+                    startDate,
+                    endDate,
+                    EventStatus.ACCEPTED) && impl.subscribeUser(id, organizer));
+        } catch (EventExistsEx e) {
+            throw new RuntimeException(e);
+        } catch (EventNotFoundEx e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    *//***
+     * getUsersSubscribedEvents- returns list of events, that user has subscribed to
+     *
+     * @param usersEventList
+     * @return
+     *//*
+    public List<Event> getUsersSubscribedEvents(List<Integer> usersEventList) {
+        return impl.getUsersSubscribedEvents(usersEventList);
+    }
+
+    public List<Event> getEventsByOrganiser(int id) {
+        return impl.getEventsByOrganiser(id);
 
 
     // Subscription Management

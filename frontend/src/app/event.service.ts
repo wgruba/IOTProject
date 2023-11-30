@@ -3,6 +3,7 @@ import { Event } from './models/event.model';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { AuthenticationService } from './authentication.service';
+import { UserService } from './user.service';
 
 
 @Injectable({
@@ -14,7 +15,7 @@ export class EventService {
   ]);
   private baseUrl = 'http://localhost:8080'
 
-  constructor(private http: HttpClient, public authenticationService: AuthenticationService) { 
+  constructor(private http: HttpClient, public authenticationService: AuthenticationService, public userService: UserService) { 
   }
 
   setCurrentEvent(event: Event): void {
@@ -49,6 +50,11 @@ export class EventService {
   };
   }
 
+  getLastID(): Observable<any> {
+    const headers = this.authenticationService.getHeadersWithToken()
+    return this.http.get('http://localhost:8080/events/last', { headers });
+  }
+
   
   getEvents(): Observable<Event[]> {
     return this.eventsSubject.asObservable();
@@ -60,6 +66,6 @@ export class EventService {
 
   addEvent(eventData: Event): Observable<any> {
     const headers = this.authenticationService.getHeadersWithToken()
-    return this.http.post(`${this.baseUrl}/addEvent`, eventData, { headers });
+    return this.http.post(`${this.baseUrl}/users/${this.userService.getCurrentUser().id}/createEvent`, eventData, { headers });
   }
 }

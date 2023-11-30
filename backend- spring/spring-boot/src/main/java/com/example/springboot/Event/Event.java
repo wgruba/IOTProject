@@ -6,14 +6,15 @@ import org.bson.codecs.pojo.annotations.BsonProperty;
 import org.bson.codecs.pojo.annotations.BsonRepresentation;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.MongoId;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
 @Document(collection = "Event")
 public class Event {
-    @Id
-    private int id;
+    @MongoId
+    private Integer id;
     private String name;
     private int organizer;
 

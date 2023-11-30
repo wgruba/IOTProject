@@ -2,7 +2,7 @@ export interface Event {
   id: number;
   name: string;
   organizer: number;
-  categoryList: [];
+  categoryList: number[];
   clientList: [];
   description: string;
   size: number;

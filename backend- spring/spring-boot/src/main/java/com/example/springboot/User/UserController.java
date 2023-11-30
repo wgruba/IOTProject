@@ -20,7 +20,10 @@ import java.util.stream.Collectors;
 public class UserController {
 
     @Autowired
-    private static UserRepository userRepository;
+    private UserRepository userRepository;
+
+    @Autowired
+    private EventController eventController;
     private final EventController eventController = new EventController();
     private final CategoryController categoryController = new CategoryController();
 
@@ -67,7 +70,7 @@ public class UserController {
     public static List<User> getUsersFromList(ArrayList<Integer> idList) {
         return userRepository.getUsersSubscribedToEvent(idList);
     }
-    @GetMapping("/last")
+    @GetMapping("/user/last")
     public int getLastUser() {
         return userRepository.findTopByOrderByIdDesc()
                 .map(User::getId)
@@ -145,6 +148,7 @@ public class UserController {
         User tempUser = userRepository.findById(userId).get();
         return ResponseEntity.ok(categoryController.getCategoriesFromList(tempUser.getSubscribedCategories()));
     }
+
     @PatchMapping("/users/{userId}/subscribeEvent/{eventId}")
     public ResponseEntity<Boolean> subscribeEvent(@PathVariable int userId, @PathVariable int eventId) {
         User tempUser = userRepository.findById(userId).get();
@@ -155,6 +159,7 @@ public class UserController {
         eventController.subscribeUser(userId, eventId);
         return ResponseEntity.ok(true);
     }
+
     @PatchMapping("/users/{userId}/subscribeCategory/{categoryId}")
     public ResponseEntity<Boolean> subscribeCategory(@PathVariable int userId, @PathVariable int categoryId) {
         User tempUser = userRepository.findById(userId).get();
