@@ -48,8 +48,8 @@
                       <ul class="dropdown-menu dropdown-submenu-right">
                         <li *ngFor="let subcategory of category.subcategories">
                           <a class="dropdown-item" href="javascript:void(0);"
-                             (click)="toggleSelection(category.name, subcategory)">
-                            {{ subcategory }}
+                             (click)="toggleSelection(category.name, subcategory.name)">
+                            {{ subcategory.name }}
                           </a>
                         </li>
                       </ul>
@@ -91,7 +91,7 @@
                     <ul class="dropdown-menu dropdown-submenu-right">
                       <li *ngFor="let subcategory of localisation.subcategories">
                         <a class="dropdown-item" href="javascript:void(0);"
-                           (click)="toggleLocation(localisation.name, subcategory)">
+                           (click)="toggleLocation(localisation.name, subcategory.name)">
                           {{ subcategory }}
                         </a>
                       </li>

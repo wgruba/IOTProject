@@ -4,6 +4,7 @@ import { EventService } from '../event.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { UserService } from '../user.service';
 import { Event } from '../models/event.model';
+import { Category } from '../models/Category.model';
 
 @Component({
   selector: 'app-add-event-site',
@@ -12,6 +13,37 @@ import { Event } from '../models/event.model';
 })
 export class AddEventSiteComponent {
   eventForm !: FormGroup;
+  categories: Category[] = [
+    { 
+      id: 1,
+      name: 'Kategoria 1', 
+      subcategories: [
+          { id: 101, name: 'Podkategoria 1.1' }, 
+          { id: 102, name: 'Podkategoria 1.2' }
+      ]
+      },
+      { 
+      id: 2,
+      name: 'Kategoria 2', 
+      subcategories: [
+          { id: 103, name: 'Podkategoria 2.1' }, 
+          { id: 106, name: 'Podkategoria 2.2' }
+        ]
+    },
+    { 
+      id: 3,
+      name: 'Kategoria 3', 
+      subcategories: [
+          { id: 104, name: 'Podkategoria 3.1' }, 
+          { id: 105, name: 'Podkategoria 3.2' }
+      ]
+    },]
+  selectedCategoryIds: number[] = [];
+  selectedSubcategoryIds: number[] = [];
+  id: number = 0;
+
+
+
   constructor(private eventService: EventService, private snackBar: MatSnackBar, public userService: UserService){}
 
   ngOnInit(): void {
@@ -25,9 +57,10 @@ export class AddEventSiteComponent {
       startTime: new FormControl('', [Validators.required, this.validateStartTime]),
       endTime: new FormControl('', Validators.required),
       description: new FormControl(''),
-      localisation: new FormControl(''), // Add this if required
-      imageUrl: new FormControl('') // Add this if required
+      localisation: new FormControl(''),
+      imageUrl: new FormControl('') 
     }, { validators: this.validateDates });
+    this.loadCategories();
   }
 
   validateStartTime(control: FormControl): {[key: string]: any} | null {
@@ -48,13 +81,102 @@ export class AddEventSiteComponent {
     return null;
   }
 
+  toggleCategorySelection(categoryId: number): void {
+    const index = this.selectedCategoryIds.indexOf(categoryId);
+    if (index > -1) {
+      this.selectedCategoryIds.splice(index, 1);
+    } else {
+      this.selectedCategoryIds.push(categoryId);
+    }
+  }
+
+  toggleSubcategorySelection(subcategoryId: number): void {
+    const index = this.selectedSubcategoryIds.indexOf(subcategoryId);
+    if (index > -1) {
+      this.selectedSubcategoryIds.splice(index, 1);
+    } else {
+      this.selectedSubcategoryIds.push(subcategoryId);
+    }
+  }
+
+
+  getSelectedCategoryNames(): string[] {
+    return this.selectedCategoryIds.map(categoryId => 
+      this.categories.find(category => category.id === categoryId)?.name || ''
+    );
+  }
+  
+  getSelectedSubcategoryNames(): string[] {
+    return this.selectedSubcategoryIds.map(subcategoryId => {
+      for (const category of this.categories) {
+        const subcategory = category.subcategories.find(sub => sub.id === subcategoryId);
+        if (subcategory) {
+          return subcategory.name;
+        }
+      }
+      return '';
+    });
+  }
+
+
+  getCategoryByName(name: string): Category | undefined {
+    return this.categories.find(category => category.name === name);
+  }
+  
+  getSubcategoryByName(name: string): { categoryId: number, subcategoryId: number } | undefined {
+    for (const category of this.categories) {
+      const subcategory = category.subcategories.find(sub => sub.name === name);
+      if (subcategory) {
+        return { categoryId: category.id, subcategoryId: subcategory.id };
+      }
+    }
+    return undefined;
+  }
+  
+  removeSelectedCategory(categoryName: string): void {
+    const category = this.getCategoryByName(categoryName);
+    if (category) {
+      this.selectedCategoryIds = this.selectedCategoryIds.filter(id => id !== category.id);
+      // Update UI or backend as necessary
+    }
+  }
+  
+  removeSelectedSubcategory(subcategoryName: string): void {
+    const subcategoryInfo = this.getSubcategoryByName(subcategoryName);
+    if (subcategoryInfo) {
+      this.selectedSubcategoryIds = this.selectedSubcategoryIds.filter(id => id !== subcategoryInfo.subcategoryId);
+      // Update UI or backend as necessary
+    }
+  }
+
+  removeCategory(categoryId: number): void {
+    this.selectedCategoryIds = this.selectedCategoryIds.filter(id => id !== categoryId);
+    this.snackBar.open('Kategoria usunięta', 'Zamknij', { duration: 3000 });
+  }
+  
+  removeSubcategory(subcategoryId: number): void {
+    this.selectedSubcategoryIds = this.selectedSubcategoryIds.filter(id => id !== subcategoryId);
+    this.snackBar.open('Podkategoria usunięta', 'Zamknij', { duration: 3000 });
+  }
+  
+
+  
+  loadCategories() {
+    // Load categories from your backend and assign to this.categories
+  }
+
+
 
   prepareEventData(formValue: any): Event {
+    let allCategoryIds: number[] = [];
+      this.eventService.getLastID().subscribe(response => {
+        this.id = response + 1});
+
     return {
-        id: 12,
+        id: this.id,
         name: formValue.eventName,
-        organizer: this.userService.getCurrentUser().id,
-        categoryList: [],
+        organizer: 0,
+        categoryList: allCategoryIds,
         clientList: [],
         description: formValue.description,
         size: formValue.participants,
@@ -65,7 +187,7 @@ export class AddEventSiteComponent {
         startDate: formValue.startTime,
         endDate: formValue.endTime,
         eventStatus: 'TO_ACCEPTANCE',
-        imageUrl: formValue.imageUrl 
+        imageUrl: formValue.imageUrl,
     };
   }
 

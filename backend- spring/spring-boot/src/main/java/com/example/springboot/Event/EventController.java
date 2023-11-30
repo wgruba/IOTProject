@@ -2,6 +2,7 @@ package com.example.springboot.Event;
 
 import com.example.springboot.Event.Exceptions.EventExistsEx;
 import com.example.springboot.Event.Exceptions.EventNotFoundEx;
+import com.example.springboot.User.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.aggregation.ArrayOperators;
 import org.springframework.hateoas.EntityModel;
@@ -36,6 +37,13 @@ public class EventController {
         return ResponseEntity.ok(savedEvent);
     }
 
+    @GetMapping("/events/last")
+    public int getLastEventId() {
+        return eventRepository.findTopByOrderByIdDesc()
+                .map(Event::getId)
+                .orElse(null);
+    }
+
 
 
 
@@ -48,8 +56,8 @@ public class EventController {
     public List<Integer> getUsersThatSubscribedToEvent(int eventId){
         return eventRepository.findById(eventId).getUserList();
     }
-    public boolean deleteEvent(int eventId){
-        return eventRepository.delete(eventRepository.findById(eventId);
+    public void deleteEvent(int eventId){
+        eventRepository.delete(eventRepository.findById(eventId));
     }
 
     public List<Event> getEventsByOrganiser(int userId) {

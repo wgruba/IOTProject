@@ -42,7 +42,7 @@ export class UserService {
   }
 
   getLastID(): Observable<any> {
-    return this.http.get('http://localhost:8080/last');
+    return this.http.get('http://localhost:8080/users/last');
   }
 
   getCurrentUser(): User {
