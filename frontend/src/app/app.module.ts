@@ -30,6 +30,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ModeratorAcceptationSiteComponent } from './moderator-acceptation-site/moderator-acceptation-site.component';
 import { ModeratorAcceptationDetailsSiteComponent } from './moderator-acceptation-details-site/moderator-acceptation-details-site.component';
 import { ModeratorUsersSearchSiteComponent } from './moderator-users-search-site/moderator-users-search-site.component';
+import { UserSubscriptionsComponent } from './user-subscriptions/user-subscriptions.component';
 
 
 register();
@@ -56,6 +57,7 @@ register();
     ModeratorAcceptationSiteComponent,
     ModeratorAcceptationDetailsSiteComponent,
     ModeratorUsersSearchSiteComponent,
+    UserSubscriptionsComponent,
   ],
   imports: [
     BrowserModule,

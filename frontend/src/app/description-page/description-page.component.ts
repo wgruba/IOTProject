@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { EventService } from '../event.service';
 import { ActivatedRoute } from '@angular/router';
 import { Event } from '../models/event.model';
+import { UserService } from '../user.service';
 
 
 @Component({
@@ -13,10 +14,12 @@ export class DescriptionPageComponent {
   event !: Event;
   latitude: number;
   longitude: number;
+  isSubscribed = false;
 
   constructor(
     private route: ActivatedRoute, 
-    private eventService: EventService
+    private eventService: EventService,
+    private userService: UserService
   ) {
     this.latitude = 50.4300934;
     this.longitude = 22.236453;
@@ -49,5 +52,11 @@ export class DescriptionPageComponent {
   addToGoogleCalendar(event: Event): void {
     const url = this.getGoogleCalendarUrl(event);
     window.open(url, '_blank');
+  }
+
+  subscribeEvent(){
+    this.userService.subscribeEvent(this.eventService.getCurrentEvent().id).subscribe(response => {
+      this.isSubscribed = true;
+    });
   }
 }

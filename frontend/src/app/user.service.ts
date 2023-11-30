@@ -45,6 +45,25 @@ export class UserService {
     return this.http.get('http://localhost:8080/users/last');
   }
 
+  subscribeEvent(eventId: number){
+    const getUserUrl = `http://localhost:8080/users/${this.getCurrentUser().id}/subscribeEvent/${eventId}`;
+    const headers = this.authenticationService.getHeadersWithToken()
+    return this.http.patch(getUserUrl, {headers});
+  }
+
+  getSubscribedCategories(): Observable<any> {
+    const getUserUrl = `http://localhost:8080/users/${this.getCurrentUser().id}/subscribedCategories`;
+    const headers = this.authenticationService.getHeadersWithToken()
+    return this.http.get(getUserUrl, {headers});
+  }
+
+  getSubscribedEvents(): Observable<any> {
+    const getUserUrl = `http://localhost:8080/users/${this.getCurrentUser().id}/subscribedEvents`;
+    const headers = this.authenticationService.getHeadersWithToken()
+    return this.http.get(getUserUrl, {headers});
+  }
+
+
   getCurrentUser(): User {
     try {
       const userJson = localStorage.getItem('currentUser');

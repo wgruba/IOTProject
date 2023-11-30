@@ -60,6 +60,11 @@ export class EventService {
     return this.eventsSubject.asObservable();
   }
 
+  getUserEvents(): Observable<any>{
+    const headers = this.authenticationService.getHeadersWithToken()
+    return this.http.get(`${this.baseUrl}/users/${this.userService.getCurrentUser().id}/myEvents`, { headers });
+  }
+
   getAllEvents(): Observable<any> {
     return this.http.get(`${this.baseUrl}/events`);
   }

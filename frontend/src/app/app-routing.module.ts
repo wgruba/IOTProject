@@ -15,6 +15,7 @@ import { RoleGuard } from './role.guard';
 import { ModeratorAcceptationSiteComponent } from './moderator-acceptation-site/moderator-acceptation-site.component';
 import { ModeratorAcceptationDetailsSiteComponent } from './moderator-acceptation-details-site/moderator-acceptation-details-site.component';
 import { ModeratorUsersSearchSiteComponent } from './moderator-users-search-site/moderator-users-search-site.component';
+import { UserSubscriptionsComponent } from './user-subscriptions/user-subscriptions.component';
 
 
 const routes: Routes = [
@@ -29,6 +30,7 @@ const routes: Routes = [
   { path: 'event-searching', component: UserSearchingPageComponent},
   { path: 'user-profile', component: UserProfileComponent, canActivate: [AuthGuard, RoleGuard],  data: { allowedRoles:  ['VERIFIED_USER', 'UNVERIFIED_USER'] } },
   { path: 'user-events', component: UserEventsComponent, canActivate: [AuthGuard, RoleGuard],  data: { allowedRoles:  ['VERIFIED_USER', 'UNVERIFIED_USER'] } },
+  { path: 'user-subs', component: UserSubscriptionsComponent, canActivate: [AuthGuard, RoleGuard],  data: { allowedRoles:  ['VERIFIED_USER', 'UNVERIFIED_USER'] } },
   { path: 'admin-acceptance', component: ModeratorAcceptationSiteComponent, canActivate: [AuthGuard, RoleGuard],  data: { allowedRoles:  ['MODERATOR', 'ADMIN'] } },
   { path: 'admin-event-details/:id', component: ModeratorAcceptationDetailsSiteComponent, canActivate: [AuthGuard, RoleGuard],  data: { allowedRoles:  ['MODERATOR', 'ADMIN'] } },
   { path: 'admin-users', component: ModeratorUsersSearchSiteComponent, canActivate: [AuthGuard, RoleGuard],  data: { allowedRoles:  ['MODERATOR', 'ADMIN'] } },

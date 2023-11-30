@@ -12,7 +12,7 @@
                   <img [src]="event.imageUrl" alt="Event image">
                   <div>
                     <h3>{{ event.name }}</h3>
-                    <p>{{ event.description }}</p>
+                    <p>{{ event.startDate }} - {{ event.endDate }}</p>
                   </div>
                   <i class="fas fa-edit" (click)="editEvent()"></i>
                 </div>              

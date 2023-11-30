@@ -1,0 +1,45 @@
+<body>
+    <app-user-profile-aside></app-user-profile-aside>
+
+  <div class="subscriptions-container">
+    <h2>Twoje Subskrybcje</h2>
+
+
+    <h3>Subskrybowane Kategorie:</h3>
+    <ng-container *ngIf="subscribedCategoriesList.length > 0; else noSubscriptions">
+        <div class="categories-list">
+          <div  class="category" *ngFor="let category of subscribedCategoriesList">
+              <div class="card">
+                  <div>
+                    <h3>{{ category.name }}</h3>
+                  </div>
+                  <button class="remove-button" (click)="unsubscribeCategory()">
+                    <i class="fa fa-trash" aria-hidden="true"></i></button>   
+                </div>              
+          </div>
+        </div> 
+    </ng-container>
+
+    <h3>Subskrybowane Wydarzenia:</h3>
+    <ng-container *ngIf="subscribedEventsList.length > 0; else noSubscriptions">
+        <div class="event-list">
+          <div  class="event" *ngFor="let event of subscribedEventsList">
+              <div class="card">
+                  <div>
+                    <h3>{{ event.name }}</h3>
+                  </div>
+                  <button class="remove-button" (click)="unsubscribeEvent()">
+                    <i class="fa fa-trash" aria-hidden="true"></i></button>   
+                </div>              
+          </div>
+        </div> 
+    </ng-container>
+
+
+    <button (click)="addSubscription()">+ Dodaj Subskrybcje</button>
+  
+    <ng-template #noSubscriptions>
+      <p>Brak wydarzeń.</p>
+    </ng-template>
+  </div>
+</body>

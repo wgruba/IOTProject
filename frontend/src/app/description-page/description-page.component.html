@@ -17,7 +17,7 @@
             </div>
 
             <div class="event-actions">
-                <button type="button"> + Obserwuj</button>
+                <button type="button" (click)="subscribeEvent()" [class.subscribed]="isSubscribed">+ Obserwuj</button>
                 <button type="button" class="event-page-button">Strona eventu</button>
                 <button type="button" (click)="addToGoogleCalendar(event)">Importuj</button>
             </div>
