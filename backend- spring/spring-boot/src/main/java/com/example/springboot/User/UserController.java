@@ -2,30 +2,18 @@ package com.example.springboot.User;
 
 import com.example.springboot.Category.Category;
 import com.example.springboot.Category.CategoryController;
-import com.example.springboot.Event.AgeGroup;
 import com.example.springboot.Event.Event;
 import com.example.springboot.Event.EventController;
-import com.example.springboot.Event.EventStatus;
-import com.example.springboot.User.Exceptions.NotEnoughHighPermissionLevel;
-import com.example.springboot.User.Exceptions.UserExistsEx;
 import com.example.springboot.User.Exceptions.UserNotFoundEx;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.mongodb.core.aggregation.ArrayOperators;
-import org.springframework.data.mongodb.core.mapping.Document;
-import org.springframework.hateoas.CollectionModel;
-import org.springframework.hateoas.EntityModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
-
-import static com.mongodb.client.model.Aggregates.limit;
 
 
 @RestController
@@ -36,6 +24,7 @@ public class UserController {
 
     @Autowired
     private EventController eventController;
+    private final EventController eventController = new EventController();
     private final CategoryController categoryController = new CategoryController();
 
     // CRUD - Create
@@ -78,7 +67,7 @@ public class UserController {
         return UserDTO.toDTO(user);
     }
     @GetMapping("/users/list")
-    public List<User> getUsersFromList(ArrayList<Integer> idList) {
+    public static List<User> getUsersFromList(ArrayList<Integer> idList) {
         return userRepository.getUsersSubscribedToEvent(idList);
     }
     @GetMapping("/user/last")
@@ -112,7 +101,7 @@ public class UserController {
 
 
     // CRUD - Delete
-    @DeleteMapping("/users/delete/{id}")
+    @DeleteMapping("/users/{id}")
     public boolean deleteUser(@PathVariable int id) {
         userRepository.deleteById(id);
         return true;
@@ -167,6 +156,7 @@ public class UserController {
         tempList.add(eventId);
         tempUser.setSubscribedEvents(tempList);
         userRepository.save(tempUser);
+        eventController.subscribeUser(userId, eventId);
         return ResponseEntity.ok(true);
     }
 
@@ -188,6 +178,7 @@ public class UserController {
         tempList.remove(eventId);
         tempUser.setSubscribedEvents(tempList);
         userRepository.save(tempUser);
+        eventController.unsubscribeUser(userId, eventId);
         return ResponseEntity.ok(true);
     }
     @PatchMapping("/users/{userId}/unsubscribeCategory/{categoryId}")

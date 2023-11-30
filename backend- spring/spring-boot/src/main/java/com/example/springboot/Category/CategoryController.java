@@ -41,9 +41,15 @@ public class CategoryController {
 
 
 
-    public List<Category> getCategoriesFromList(List<Integer> subscribedCategories) {
+    public static List<Category> getCategoriesFromList(List<Integer> subscribedCategories) {
         return new ArrayList<>();
     }
+
+    id: number;
+    name: string;
+    subcategories: { id: number; name: string; }[];
+
+
 
 
 /*    @GetMapping("categories")
