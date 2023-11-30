@@ -61,6 +61,10 @@ export class AddEventSiteComponent {
       imageUrl: new FormControl('') 
     }, { validators: this.validateDates });
     this.loadCategories();
+
+    this.eventService.getLastID().subscribe(response => {
+      this.id = response + 1
+    });
   }
 
   validateStartTime(control: FormControl): {[key: string]: any} | null {
@@ -168,14 +172,12 @@ export class AddEventSiteComponent {
 
 
   prepareEventData(formValue: any): Event {
-    let allCategoryIds: number[] = [];
-      this.eventService.getLastID().subscribe(response => {
-        this.id = response + 1});
+    let allCategoryIds: number[] = [...this.selectedCategoryIds, ...this.selectedSubcategoryIds];
 
     return {
         id: this.id,
         name: formValue.eventName,
-        organizer: 0,
+        organizer: this.userService.getCurrentUser().id,
         categoryList: allCategoryIds,
         clientList: [],
         description: formValue.description,

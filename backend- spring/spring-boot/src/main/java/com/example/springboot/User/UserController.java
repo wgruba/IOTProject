@@ -33,7 +33,9 @@ public class UserController {
 
     @Autowired
     private UserRepository userRepository;
-    private final EventController eventController = new EventController();
+
+    @Autowired
+    private EventController eventController;
     private final CategoryController categoryController = new CategoryController();
 
     // CRUD - Create
@@ -157,26 +159,17 @@ public class UserController {
         User tempUser = userRepository.findById(userId).get();
         return ResponseEntity.ok(categoryController.getCategoriesFromList(tempUser.getSubscribedCategories()));
     }
-    public User subscribeToEventHelper(int userId, int eventId) {
-        return userRepository.findById(userId).map(user -> {
-            if (!user.getSubscribedEvents().contains(eventId)) {
-                user.getSubscribedEvents().add(eventId);
-                return userRepository.save(user);
-            } else {
-                throw new RuntimeException("User already subscribed to the event");
-            }
-        }).orElseThrow(() -> new RuntimeException("User not found with id " + userId));
+
+    @PatchMapping("/users/{userId}/subscribeEvent/{eventId}")
+    public ResponseEntity<Boolean> subscribeEvent(@PathVariable int userId, @PathVariable int eventId) {
+        User tempUser = userRepository.findById(userId).get();
+        List<Integer> tempList = tempUser.getSubscribedEvents();
+        tempList.add(eventId);
+        tempUser.setSubscribedEvents(tempList);
+        userRepository.save(tempUser);
+        return ResponseEntity.ok(true);
     }
 
-    @PatchMapping("/{userId}/subscribeEvent/{eventId}")
-    public ResponseEntity<?> subscribeEvent(@PathVariable int userId, @PathVariable Integer eventId) {
-        try {
-            User updatedUser = subscribeToEventHelper(userId, eventId);
-            return ResponseEntity.ok(updatedUser);
-        } catch (RuntimeException ex) {
-            return ResponseEntity.badRequest().body(ex.getMessage());
-        }
-    }
     @PatchMapping("/users/{userId}/subscribeCategory/{categoryId}")
     public ResponseEntity<Boolean> subscribeCategory(@PathVariable int userId, @PathVariable int categoryId) {
         User tempUser = userRepository.findById(userId).get();

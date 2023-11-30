@@ -1,14 +1,16 @@
 package com.example.springboot.Category;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.MongoId;
 
 
 import java.util.List;
 
 @Document(collection = "Category")
 public class Category {
-    @Id
-    private int id;
+
+    @MongoId
+    private Integer id;
     private String name;
     private boolean isParentCategory;
     private List<Integer> subcategories;
