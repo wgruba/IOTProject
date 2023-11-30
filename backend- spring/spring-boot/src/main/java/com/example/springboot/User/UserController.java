@@ -20,10 +20,10 @@ import java.util.stream.Collectors;
 public class UserController {
 
     @Autowired
-    private static UserRepository userRepository;
+    private UserRepository userRepository;
 
     @Autowired
-    private static EventController eventController;
+    private EventController eventController;
     private final CategoryController categoryController = new CategoryController();
 
     // CRUD - Create
@@ -66,7 +66,7 @@ public class UserController {
         return UserDTO.toDTO(user);
     }
     @GetMapping("/users/list")
-    public static List<User> getUsersFromList(ArrayList<Integer> idList) {
+    public List<User> getUsersFromList(ArrayList<Integer> idList) {
         return userRepository.getUsersSubscribedToEvent(idList);
     }
     @GetMapping("/user/last")

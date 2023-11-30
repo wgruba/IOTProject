@@ -18,7 +18,7 @@ import java.util.List;
 public class EventController {
 
     @Autowired
-    private static EventRepository eventRepository;
+    private EventRepository eventRepository;
 
     // CRUD - Create
     @PostMapping("/addEvent")
@@ -40,7 +40,7 @@ public class EventController {
         return ResponseEntity.ok(events);
     }
     @GetMapping("/events/list")
-    public static List<Event>getEventsFromList(List<Integer> ids){
+    public List<Event>getEventsFromList(List<Integer> ids){
         return eventRepository.getEventsFromList(ids);
     }
     @GetMapping("/events/eventsOrganisedBy/{userId}")
@@ -79,10 +79,11 @@ public class EventController {
 
     // Subscription Management
     @GetMapping("/events/{eventId}/subscribedUsers")
-    public ResponseEntity<List<User>> getSubscribedEvents(@PathVariable int eventId) {
+    public ResponseEntity<List<Integer>> getSubscribedEvents(@PathVariable int eventId) {
         Event tempEvent = eventRepository.findById(eventId);
-        return ResponseEntity.ok(UserController.getUsersFromList((ArrayList<Integer>) tempEvent.getUserList()));
+        return ResponseEntity.ok(tempEvent.getUserList());
     }
+
     @GetMapping("/events/{eventId}/subscribedCategories")
     public ResponseEntity<List<Category>> getSubscribedCategories(@PathVariable int eventId) {
         Event tempEvent = eventRepository.findById(eventId);
