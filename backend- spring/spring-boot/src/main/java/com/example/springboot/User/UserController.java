@@ -169,7 +169,7 @@ public class UserController {
         return ResponseEntity.ok(true);
     }
     @PatchMapping("/users/{userId}/unsubscribeEvent/{eventId}")
-    public ResponseEntity<Boolean> unsubscribeEvent(@PathVariable int userId, @PathVariable int eventId) {
+    public ResponseEntity<Boolean> unsubscribeEvent(@PathVariable int userId, @PathVariable Integer eventId) {
         if(eventController.getEventOrganiser(eventId) == userId)
             return ResponseEntity.ok(false);
         User tempUser = userRepository.findById(userId).get();
@@ -181,7 +181,7 @@ public class UserController {
         return ResponseEntity.ok(true);
     }
     @PatchMapping("/users/{userId}/unsubscribeCategory/{categoryId}")
-    public ResponseEntity<Boolean> unsubscribeCategory(@PathVariable int userId, @PathVariable int categoryId) {
+    public ResponseEntity<Boolean> unsubscribeCategory(@PathVariable int userId, @PathVariable Integer categoryId) {
         User tempUser = userRepository.findById(userId).get();
         List<Integer> tempList = tempUser.getSubscribedCategories();
         tempList.remove(categoryId);
@@ -194,8 +194,9 @@ public class UserController {
     // User's Events
     @PostMapping("/users/{userId}/createEvent")
     public ResponseEntity<Event> createEvent(@PathVariable int userId, @RequestBody Event event){
+        ResponseEntity<Event> tempEvent = eventController.addEvent(event);
         subscribeEvent(userId, event.getId());
-        return eventController.addEvent(event);
+        return tempEvent;
     }
     @PatchMapping("/users/{userId}/deleteEvent/{eventId}")
     public ResponseEntity<Boolean> deleteEvent(@PathVariable int userId, @PathVariable int eventId){

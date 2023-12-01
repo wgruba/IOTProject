@@ -9,6 +9,8 @@ import { SelectedLocation } from '../models/selectedLocation.model';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { FilterSearchService } from '../filter-search.service';
 import { Subscription } from 'rxjs';
+import { MatDialog } from '@angular/material/dialog';
+import { ConfirmationDialogComponentComponent } from '../confirmation-dialog-component/confirmation-dialog-component.component';
 
 
 @Component({
@@ -72,7 +74,7 @@ export class UserHeaderComponent implements OnInit {
   isUser: boolean = false ;
   filterParsed: any;
 
-  constructor(private router: Router, private formBuilder: FormBuilder,public authService: AuthenticationService, public userService: UserService, private _snackBar: MatSnackBar, private filterSearchService: FilterSearchService) {
+  constructor(private router: Router, private formBuilder: FormBuilder,public authService: AuthenticationService, public userService: UserService, private _snackBar: MatSnackBar, private filterSearchService: FilterSearchService, public dialog: MatDialog) {
     this.filterSub = this.filterSearchService.buttonClick$.subscribe(() => {
       this.onSearch();
     });
@@ -146,9 +148,17 @@ export class UserHeaderComponent implements OnInit {
   }
 
   logout(): void {
-    this.userService.removeCurrentUser();
-    this.authService.logout();
-    this.router.navigate(['/login-site']);
+    const dialogRef = this.dialog.open(ConfirmationDialogComponentComponent, {
+      width: '350px',
+      data: {title: 'Potwierdzenie', message: 'Czy na pewno chcesz się wylogować'}
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if(result) {
+        this.userService.removeCurrentUser();
+        this.authService.logout();
+        this.router.navigate(['/login-site']);      }
+    });
   }
 
   onSearch(): void {

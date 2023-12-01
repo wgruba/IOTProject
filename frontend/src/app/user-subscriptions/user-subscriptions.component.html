@@ -13,7 +13,7 @@
                   <div>
                     <h3>{{ category.name }}</h3>
                   </div>
-                  <button class="remove-button" (click)="unsubscribeCategory()">
+                  <button class="remove-button" (click)="unsubscribeCategory(category.id)">
                     <i class="fa fa-trash" aria-hidden="true"></i></button>   
                 </div>              
           </div>
@@ -28,8 +28,8 @@
                   <div>
                     <h3>{{ event.name }}</h3>
                   </div>
-                  <button class="remove-button" (click)="unsubscribeEvent()">
-                    <i class="fa fa-trash" aria-hidden="true"></i></button>   
+                  <button class="remove-button" (click)="openUnsubscribeCategoryModal(event.id)">
+                    <i class="fa fa-trash" aria-hidden="true"></i></button>  
                 </div>              
           </div>
         </div> 
@@ -39,7 +39,26 @@
     <button (click)="addSubscription()">+ Dodaj Subskrybcje</button>
   
     <ng-template #noSubscriptions>
-      <p>Brak wydarzeń.</p>
+      <p>Brak subskrypcji.</p>
     </ng-template>
+  </div>
+
+
+  <div class="modal fade" id="confirmationModal" tabindex="-1" aria-labelledby="confirmationModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="confirmationModalLabel">Potwierdzenie</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          Czy na pewno chcesz odsubskrybować?
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Anuluj</button>
+          <button type="button" class="btn btn-primary" >Potwierdź</button>
+        </div>
+      </div>
+    </div>
   </div>
 </body>

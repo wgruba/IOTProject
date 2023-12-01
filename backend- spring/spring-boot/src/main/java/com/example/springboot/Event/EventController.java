@@ -107,7 +107,7 @@ public class EventController {
         return ResponseEntity.ok(true);
     }
 
-    public ResponseEntity<Boolean> unsubscribeUser(@PathVariable int userId, @PathVariable int eventId) {
+    public ResponseEntity<Boolean> unsubscribeUser(@PathVariable Integer userId, @PathVariable int eventId) {
         // jest wywoływane przez UserController.subscribeEvent
         Event tempEvent = eventRepository.findById(eventId);
         List<Integer> tempList = tempEvent.getClientList();
@@ -117,7 +117,7 @@ public class EventController {
         return ResponseEntity.ok(true);
     }
 
-    public ResponseEntity<Boolean> unsubscribeCategory(@PathVariable int eventId, @PathVariable int categoryId) {
+    public ResponseEntity<Boolean> unsubscribeCategory(@PathVariable int eventId, @PathVariable Integer categoryId) {
         Event tempEvent = eventRepository.findById(eventId);
         List<Integer> tempList = tempEvent.getCategoryList();
         tempList.remove(categoryId);

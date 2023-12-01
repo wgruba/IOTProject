@@ -31,6 +31,11 @@ import { ModeratorAcceptationSiteComponent } from './moderator-acceptation-site/
 import { ModeratorAcceptationDetailsSiteComponent } from './moderator-acceptation-details-site/moderator-acceptation-details-site.component';
 import { ModeratorUsersSearchSiteComponent } from './moderator-users-search-site/moderator-users-search-site.component';
 import { UserSubscriptionsComponent } from './user-subscriptions/user-subscriptions.component';
+import {MatDialogModule} from '@angular/material/dialog';
+import { ConfirmationDialogComponentComponent } from './confirmation-dialog-component/confirmation-dialog-component.component';
+import { AddingCategoriesModalComponent } from './adding-categories-modal/adding-categories-modal.component';
+import { ChangingPasswordModalComponent } from './changing-password-modal/changing-password-modal.component';
+import { EditingEventModalComponent } from './editing-event-modal/editing-event-modal.component';
 
 
 register();
@@ -58,6 +63,10 @@ register();
     ModeratorAcceptationDetailsSiteComponent,
     ModeratorUsersSearchSiteComponent,
     UserSubscriptionsComponent,
+    ConfirmationDialogComponentComponent,
+    AddingCategoriesModalComponent,
+    ChangingPasswordModalComponent,
+    EditingEventModalComponent,
   ],
   imports: [
     BrowserModule,
@@ -68,6 +77,7 @@ register();
     HttpClientModule,
     MatSnackBarModule,
     BrowserAnimationsModule,
+    MatDialogModule
   ],
   providers: [EventService, UserService, AuthenticationService],
   bootstrap: [AppComponent],

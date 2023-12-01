@@ -42,11 +42,32 @@ export class UserService {
   }
 
   getLastID(): Observable<any> {
-    return this.http.get('http://localhost:8080/users/last');
+    return this.http.get('http://localhost:8080/user/last');
   }
 
+
+  //Zarządzanie Suubskrypcją
   subscribeEvent(eventId: number){
     const getUserUrl = `http://localhost:8080/users/${this.getCurrentUser().id}/subscribeEvent/${eventId}`;
+    const headers = this.authenticationService.getHeadersWithToken()
+    return this.http.patch(getUserUrl, {headers});
+  }
+
+  unsubscribeEvent(eventId: number){
+    const getUserUrl = `http://localhost:8080/users/${this.getCurrentUser().id}/unsubscribeEvent/${eventId}`;
+    const headers = this.authenticationService.getHeadersWithToken()
+    return this.http.patch(getUserUrl, {headers});
+  }
+
+
+  subscribeCategory(eventId: number){
+    const getUserUrl = `http://localhost:8080/users/${this.getCurrentUser().id}/subscribeCategory/${eventId}`;
+    const headers = this.authenticationService.getHeadersWithToken()
+    return this.http.patch(getUserUrl, {headers});
+  }
+
+  unsubscribeCategory(categoryId: number){
+    const getUserUrl = `http://localhost:8080/users/${this.getCurrentUser().id}/unsubscribeCategory/${categoryId}`;
     const headers = this.authenticationService.getHeadersWithToken()
     return this.http.patch(getUserUrl, {headers});
   }
@@ -73,7 +94,7 @@ export class UserService {
     } catch (error) {
       console.error('Error parsing user data from localStorage', error);
     }
-    return {id:0, name: "Adam" , mail: "a@mail.com", permissionLevel: "None", token: ""}; // Return null or a default user object
+    return {id:0, name: "Adam" , mail: "a@mail.com", permissionLevel: "None", token: ""};
   }
 
   private getUserToken(): string | null {
