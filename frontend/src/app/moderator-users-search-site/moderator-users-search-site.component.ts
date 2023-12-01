@@ -3,6 +3,7 @@ import { User } from '../models/user.model';
 import { Router } from '@angular/router';
 import { EventService } from '../event.service';
 import { UserService } from '../user.service';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-moderator-users-search-site',
@@ -12,8 +13,17 @@ import { UserService } from '../user.service';
 export class ModeratorUsersSearchSiteComponent implements OnInit{
   isAdmin: boolean = false;
   users: User[] = []
+  filterForm: FormGroup;
 
-  constructor(private router: Router, public userService: UserService) {
+  constructor(private router: Router, public userService: UserService, private formBuilder: FormBuilder) {
+    this.filterForm = this.formBuilder.group({
+      admini: true,
+      moderatorzy: true,
+      klienciVer: true,
+      klienciNieVer: true,
+      email: '',
+      imie: '',
+    })
   }
 
   ngOnInit(): void {
@@ -23,7 +33,7 @@ export class ModeratorUsersSearchSiteComponent implements OnInit{
   }
 
   applyFilters(){
-    
+    console.log(this.filterForm.value);
   }
 
   showDetails(card: User): void {
