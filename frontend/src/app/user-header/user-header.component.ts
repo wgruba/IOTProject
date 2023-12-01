@@ -29,7 +29,7 @@ export class UserHeaderComponent implements OnInit {
       ]
       },
       { 
-      id: 1,
+      id: 2,
       name: 'Kategoria 2', 
       subcategories: [
           { id: 103, name: 'Podkategoria 2.1' }, 
@@ -37,7 +37,7 @@ export class UserHeaderComponent implements OnInit {
         ]
     },
     { 
-      id: 1,
+      id: 3,
       name: 'Kategoria 3', 
       subcategories: [
           { id: 104, name: 'Podkategoria 3.1' }, 

@@ -11,10 +11,10 @@ import { Router } from '@angular/router';
 })
 
 export class AdminCategoryComponent {
-  public selectedCategory: string | null = null;
+  public selectedCategory: number | null = null;
   categoryForm: FormGroup;
 
-  public selectCategory(category: string): void {
+  public selectCategory(category: number): void {
     this.selectedCategory = this.selectedCategory === category ? null : category;
   }
 
@@ -30,42 +30,29 @@ export class AdminCategoryComponent {
 
   public categories: Category[] = [
     { 
-      name: 'Koncert 1', 
-      subcategories: ['Podkategoria 1.1', 'Podkategoria 1.2', 'Podkategoria 1.3', 'Podkategoria 1.4']
-    },
-    { 
-      name: 'Koncert 2', 
-      subcategories: ['Podkategoria 1.1', 'Podkategoria 1.2']
-    },
-    { 
-      name: 'Koncert 3', 
-      subcategories: ['Podkategoria 1.1', 'Podkategoria 1.2']
-    },
-    { 
-      name: 'Koncert 4', 
-      subcategories: ['Podkategoria 1.1', 'Podkategoria 1.2']
-    },
-    { 
+      id: 1,
       name: 'Kategoria 1', 
-      subcategories: ['Podkategoria 1.1', 'Podkategoria 1.2']
-    },
-    { 
+      subcategories: [
+          { id: 101, name: 'Podkategoria 1.1' }, 
+          { id: 102, name: 'Podkategoria 1.2' }
+      ]
+      },
+      { 
+      id: 2,
       name: 'Kategoria 2', 
-      subcategories: ['Podkategoria 1.1', 'Podkategoria 1.2']
+      subcategories: [
+          { id: 103, name: 'Podkategoria 2.1' }, 
+          { id: 106, name: 'Podkategoria 2.2' }
+        ]
     },
     { 
+      id: 3,
       name: 'Kategoria 3', 
-      subcategories: ['Podkategoria 1.1', 'Podkategoria 1.2']
-    },
-    { 
-      name: 'Kategoria 5', 
-      subcategories: ['Podkategoria 1.1', 'Podkategoria 1.2']
-    },
-    { 
-      name: 'Kategoria 9', 
-      subcategories: ['Podkategoria 9.1', 'Podkategoria 9.2']
-    },
-  ];
+      subcategories: [
+          { id: 104, name: 'Podkategoria 3.1' }, 
+          { id: 105, name: 'Podkategoria 3.2' }
+      ]
+    },]
 
   constructor(private router: Router, private formBuilder: FormBuilder) {
     this.categoryForm = this.formBuilder.group({
