@@ -11,7 +11,6 @@ import { UserFooterComponent } from './user-footer/user-footer.component';
 import { SwiperDirective } from './swiper.directive';
 import { RegisterSiteComponent } from './register-site/register-site.component';
 import { LoginSiteComponent } from './login-site/login-site.component';
-import { UserSidebarSearchComponent } from './user-sidebar-search/user-sidebar-search.component';
 import { DescriptionPageComponent } from './description-page/description-page.component';
 import { EventService } from './event.service';
 import { AuthenticationService } from './authentication.service';
@@ -37,6 +36,7 @@ import { AddingCategoriesModalComponent } from './adding-categories-modal/adding
 import { ChangingPasswordModalComponent } from './changing-password-modal/changing-password-modal.component';
 import { EditingEventModalComponent } from './editing-event-modal/editing-event-modal.component';
 import { EditEventComponent } from './edit-event/edit-event.component';
+import { AdminCategoryComponent } from './admin-category/admin-category.component';
 
 
 register();
@@ -50,7 +50,6 @@ register();
     UserHeaderComponent,
     UserFooterComponent,
     SwiperDirective,
-    UserSidebarSearchComponent,
     DescriptionPageComponent,
     MapComponent,
     AboutUsComponent,
@@ -69,6 +68,7 @@ register();
     ChangingPasswordModalComponent,
     EditingEventModalComponent,
     EditEventComponent,
+    AdminCategoryComponent,
   ],
   imports: [
     BrowserModule,
