@@ -5,7 +5,6 @@ import { UserService } from '../user.service';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmationDialogComponentComponent } from '../confirmation-dialog-component/confirmation-dialog-component.component';
 import { AddingCategoriesModalComponent } from '../adding-categories-modal/adding-categories-modal.component';
-import { Browser } from 'leaflet';
 
 
 
