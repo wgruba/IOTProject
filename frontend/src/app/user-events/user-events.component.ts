@@ -22,8 +22,9 @@ export class UserEventsComponent implements OnInit {
   }
 
 
-  editEvent(){
-    this.router.navigate(['/add-event']);
+  editEvent(event: Event){
+    this.eventService.setCurrentEvent(event);
+    this.router.navigate(['/edit-event']);
   }
 
   addEvent(): void {

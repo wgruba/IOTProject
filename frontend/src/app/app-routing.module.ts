@@ -16,6 +16,7 @@ import { ModeratorAcceptationSiteComponent } from './moderator-acceptation-site/
 import { ModeratorAcceptationDetailsSiteComponent } from './moderator-acceptation-details-site/moderator-acceptation-details-site.component';
 import { ModeratorUsersSearchSiteComponent } from './moderator-users-search-site/moderator-users-search-site.component';
 import { UserSubscriptionsComponent } from './user-subscriptions/user-subscriptions.component';
+import { EditEventComponent } from './edit-event/edit-event.component';
 
 
 const routes: Routes = [
@@ -27,6 +28,7 @@ const routes: Routes = [
   { path: 'pomoc', component:UserHelpComponent},
   { path: '', redirectTo: '/home', pathMatch: 'full'},
   { path: 'add-event', component: AddEventSiteComponent ,canActivate: [AuthGuard]},
+  { path: 'edit-event', component: EditEventComponent ,canActivate: [AuthGuard]},
   { path: 'event-searching', component: UserSearchingPageComponent},
   { path: 'user-profile', component: UserProfileComponent, canActivate: [AuthGuard, RoleGuard],  data: { allowedRoles:  ['VERIFIED_USER', 'UNVERIFIED_USER'] } },
   { path: 'user-events', component: UserEventsComponent, canActivate: [AuthGuard, RoleGuard],  data: { allowedRoles:  ['VERIFIED_USER', 'UNVERIFIED_USER'] } },

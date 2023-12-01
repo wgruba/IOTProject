@@ -89,7 +89,7 @@ public class EventController {
         Event tempEvent = eventRepository.findById(eventId);
         return ResponseEntity.ok(CategoryController.getCategoriesFromList(tempEvent.getCategoryList()));
     }
-    public ResponseEntity<Boolean> subscribeUser(@PathVariable int userId, @PathVariable int eventId) {
+    public ResponseEntity<Boolean> subscribeUser(@PathVariable Integer userId, @PathVariable int eventId) {
         // jest wywoływane przez UserController.subscribeEvent
         Event tempEvent = eventRepository.findById(eventId);
         List<Integer> tempList = tempEvent.getClientList();

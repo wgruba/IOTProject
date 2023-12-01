@@ -36,6 +36,7 @@ import { ConfirmationDialogComponentComponent } from './confirmation-dialog-comp
 import { AddingCategoriesModalComponent } from './adding-categories-modal/adding-categories-modal.component';
 import { ChangingPasswordModalComponent } from './changing-password-modal/changing-password-modal.component';
 import { EditingEventModalComponent } from './editing-event-modal/editing-event-modal.component';
+import { EditEventComponent } from './edit-event/edit-event.component';
 
 
 register();
@@ -67,6 +68,7 @@ register();
     AddingCategoriesModalComponent,
     ChangingPasswordModalComponent,
     EditingEventModalComponent,
+    EditEventComponent,
   ],
   imports: [
     BrowserModule,
