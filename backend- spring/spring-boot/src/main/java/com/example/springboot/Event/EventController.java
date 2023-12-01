@@ -1,24 +1,18 @@
 package com.example.springboot.Event;
 
-import com.example.springboot.Event.Exceptions.EventExistsEx;
-import com.example.springboot.Event.Exceptions.EventNotFoundEx;
-import com.example.springboot.User.User;
-import com.example.springboot.Category.Category;
-import com.example.springboot.Category.CategoryController;
-import com.example.springboot.User.User;
-import com.example.springboot.User.UserController;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
+
 
 @RestController
 public class EventController {
 
     @Autowired
     private EventRepository eventRepository;
+
 
     // CRUD - Create
     @PostMapping("/addEvent")
@@ -34,10 +28,15 @@ public class EventController {
         List<Event> events = eventRepository.findAll();
         return ResponseEntity.ok(events);
     }
+    @GetMapping("/events/{eventId}")
+    public ResponseEntity<Event> getEvent(@PathVariable int eventId) {
+        Event event = eventRepository.findById(eventId);
+        return ResponseEntity.ok(event);
+    }
     @GetMapping("/events/name/{name}")
-    public ResponseEntity<List<Event>> getEventByName(@PathVariable String name) {
-        List<Event> events = (List<Event>) eventRepository.getEventByName(name).get();
-        return ResponseEntity.ok(events);
+    public ResponseEntity<Event> getEventByName(@PathVariable String name) {
+        Event event = eventRepository.getEventByName(name).get();
+        return ResponseEntity.ok(event);
     }
     @GetMapping("/events/list")
     public List<Event>getEventsFromList(List<Integer> ids){
@@ -51,13 +50,39 @@ public class EventController {
     public List<Event> getEventsFromCategory(@PathVariable int categoryId) {
         return eventRepository.getEventsFromCategory(categoryId);
     }
-
     @GetMapping("/events/last")
     public int getLastEventId() {
         return eventRepository.findTopByOrderByIdDesc()
                 .map(Event::getId)
                 .orElse(null);
     }
+
+
+    // CRUD - Update
+    @PutMapping("/events/{id}")
+    public Event updateEvent(@PathVariable int id, @RequestBody Event event) {
+        return updateEventHelper(id, event);
+    }
+    public Event updateEventHelper(int eventId, Event updatedEvent) {
+        Event event = eventRepository.findById(eventId);
+        event.setName(updatedEvent.getName());
+        event.setOrganizer(updatedEvent.getOrganizer());
+        event.setCategoryList(updatedEvent.getCategoryList());
+        event.setClientList(updatedEvent.getClientList());
+        event.setOrganizer(updatedEvent.getOrganizer());
+        event.setDescription(updatedEvent.getDescription());
+        event.setSize(updatedEvent.getSize());
+        event.setLocalisation(updatedEvent.getLocalisation());
+        event.setFree(updatedEvent.isFree());
+        event.setReservationNecessary(updatedEvent.isReservationNecessary());
+        event.setAgeGroup(updatedEvent.getAgeGroup());
+        event.setStartDate(updatedEvent.getStartDate());
+        event.setEndDate(updatedEvent.getEndDate());
+        event.setEventStatus(updatedEvent.getEventStatus());
+        event.setImageUrl(updatedEvent.getImageUrl());
+        return eventRepository.save(event);
+    }
+
 
     // CRUD - Delete
     @DeleteMapping("/events/{eventId}")
@@ -67,13 +92,14 @@ public class EventController {
     }
 
 
-
     @GetMapping("/events/{eventId}/organiser")
     public int getEventOrganiser(@PathVariable int eventId){
-        return eventRepository.findById(eventId).getOrganizer();
+        Event temp = eventRepository.findById(eventId);
+//        return eventRepository.findById(eventId).getOrganizer();
+        return temp.getOrganizer();
     }
     public List<Integer> getUsersThatSubscribedToEvent(int eventId) {
-        return eventRepository.findById(eventId).getUserList();
+        return eventRepository.findById(eventId).getClientList();
     }
 
 
@@ -81,23 +107,24 @@ public class EventController {
     @GetMapping("/events/{eventId}/subscribedUsers")
     public ResponseEntity<List<Integer>> getSubscribedEvents(@PathVariable int eventId) {
         Event tempEvent = eventRepository.findById(eventId);
-        return ResponseEntity.ok(tempEvent.getUserList());
+        return ResponseEntity.ok(tempEvent.getClientList());
     }
-
     @GetMapping("/events/{eventId}/subscribedCategories")
-    public ResponseEntity<List<Category>> getSubscribedCategories(@PathVariable int eventId) {
-        Event tempEvent = eventRepository.findById(eventId);
-        return ResponseEntity.ok(CategoryController.getCategoriesFromList(tempEvent.getCategoryList()));
-    }
+    public ResponseEntity<List<Integer>> getSubscribedCategories(@PathVariable int eventId) {
+            Event tempEvent = eventRepository.findById(eventId);
+            return ResponseEntity.ok(tempEvent.getCategoryList());
+        }
+
     public ResponseEntity<Boolean> subscribeUser(@PathVariable Integer userId, @PathVariable int eventId) {
         // jest wywoływane przez UserController.subscribeEvent
         Event tempEvent = eventRepository.findById(eventId);
         List<Integer> tempList = tempEvent.getClientList();
         tempList.add(userId);
-        tempEvent.setUserList(tempList);
+        tempEvent.setClientList(tempList);
         eventRepository.save(tempEvent);
         return ResponseEntity.ok(true);
     }
+    @PatchMapping("/events/{eventId}/subscribeCategory/{categoryId}")
     public ResponseEntity<Boolean> subscribeCategory(@PathVariable int eventId, @PathVariable int categoryId) {
         Event tempEvent = eventRepository.findById(eventId);
         List<Integer> tempList = tempEvent.getCategoryList();
@@ -112,11 +139,11 @@ public class EventController {
         Event tempEvent = eventRepository.findById(eventId);
         List<Integer> tempList = tempEvent.getClientList();
         tempList.remove(userId);
-        tempEvent.setUserList(tempList);
+        tempEvent.setClientList(tempList);
         eventRepository.save(tempEvent);
         return ResponseEntity.ok(true);
     }
-
+    @PatchMapping("/events/{eventId}/unsubscribeCategory/{categoryId}")
     public ResponseEntity<Boolean> unsubscribeCategory(@PathVariable int eventId, @PathVariable Integer categoryId) {
         Event tempEvent = eventRepository.findById(eventId);
         List<Integer> tempList = tempEvent.getCategoryList();

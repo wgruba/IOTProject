@@ -1,4 +1,5 @@
 package com.example.springboot.Category;
+import ch.qos.logback.core.joran.sanity.Pair;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.MongoId;
@@ -13,8 +14,9 @@ public class Category {
     private Integer id;
     private String name;
     private boolean isParentCategory;
-    private List<Integer> subcategories;
+    private List<Pair<Integer, String>> subcategories;
     private int parentId;
+
     public int getId() {
         return id;
     }
@@ -39,11 +41,11 @@ public class Category {
         isParentCategory = parentCategory;
     }
 
-    public List<Integer> getSubcategories() {
+    public List<Pair<Integer, String>> getSubcategories() {
         return subcategories;
     }
 
-    public void setSubcategories(List<Integer> subcategories) {
+    public void setSubcategories(List<Pair<Integer, String>> subcategories) {
         this.subcategories = subcategories;
     }
 

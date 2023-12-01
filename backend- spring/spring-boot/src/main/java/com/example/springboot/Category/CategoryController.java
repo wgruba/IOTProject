@@ -1,16 +1,12 @@
 package com.example.springboot.Category;
 
-import com.example.springboot.Category.Exceptions.CategoryExistsEx;
-import com.example.springboot.Category.Exceptions.CategoryIsNotParentCategory;
-import com.example.springboot.Category.Exceptions.CategoryNotFoundEx;
-import com.example.springboot.User.Exceptions.UserNotFoundEx;
-import com.example.springboot.User.User;
+import ch.qos.logback.core.joran.sanity.Pair;
+import com.example.springboot.Event.Event;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 
@@ -20,73 +16,99 @@ public class CategoryController {
     @Autowired
     private CategoryRepository categoryRepository;
 
-    @GetMapping("categories")
-    public CollectionModel<Category> getAllUsers() {
-        List<Category> categories = categoryRepository.findAll();
-        return CollectionModel.of(categories);
-    }
 
-    @GetMapping("/categories/name/{name}")
-    public Category getCategoryByName(@PathVariable String name) throws CategoryNotFoundEx {
-        return categoryRepository.findByNameOrMail(name)
-                .orElseThrow(() -> new CategoryNotFoundEx(name));
-    }
-
+    // CRUD - Create
     @PostMapping("/addCategory")
-    public String addCategory(@RequestBody Category category) {
-        categoryRepository.save(category);
-        return "User added";
+    public ResponseEntity<Category> addCategory(@RequestBody Category category) {
+        Category  savedCategory = categoryRepository.save(category);
+        return ResponseEntity.ok(savedCategory);
     }
 
 
-
-
-    public static List<Category> getCategoriesFromList(List<Integer> subscribedCategories) {
-        return new ArrayList<>();
+    // CRUD - Read
+    @GetMapping("/categories")
+    public ResponseEntity<List<Category>> getAllCategories() {
+        List<Category> categories = categoryRepository.findAll();
+        return ResponseEntity.ok(categories);
     }
-
-    /*id: number;
-    name: string;
-    subcategories: { id: number; name: string; }[];
-*/
-
-/*    @GetMapping("categories")
-    public EntityModel<List<Category>> getAllCategories(){
-        return EntityModel.of(categoryRepository.getAllCategories());
-    }*/
-
-/*    @GetMapping("categories/parentCategories")
-    public EntityModel<List<Category>> getPArentCategories(){
-        return EntityModel.of(impl.getAllParentCategories());
+    @GetMapping("/categories/name/{name}")
+    public ResponseEntity<Category> getCategoryByName(@PathVariable String name) {
+        Category category = categoryRepository.getCategoryByName(name).get();
+        return ResponseEntity.ok(category);
+    }
+    @GetMapping("/categories/list")
+    public List<Category> getCategoriesFromList(List<Integer> ids){
+        return categoryRepository.getCategoriesFromList(ids);
+    }
+    @GetMapping("/categories/{categoryId}")
+    public ResponseEntity<Category> getCategoryById(@PathVariable int categoryId){
+        return ResponseEntity.ok(categoryRepository.findById(categoryId));
+    }
+    @GetMapping("/categories/parentCategories")
+    public ResponseEntity<List<Category>> getParentCategories(){
+        return ResponseEntity.ok(categoryRepository.findAllParentCategories());
     }
     @GetMapping("categories/{categoryId}/subcategories")
-    public EntityModel<List<Category>> getSubcategories(@PathVariable int categoryId){
-        try {
-            return EntityModel.of(impl.getAllSubCategoriesofParentCategory(categoryId));
-        } catch (CategoryNotFoundEx e) {
-            throw new RuntimeException(e);
-        } catch (CategoryIsNotParentCategory e) {
-            throw new RuntimeException(e);
-        }
+    public ResponseEntity<List<Category>> getSubcategories(@PathVariable int categoryId){
+        return ResponseEntity.ok(categoryRepository.getAllSubCategoriesOfParentCategory(categoryId));
     }
 
-    public List<Category> getUsersSubscribedCategories(List<Integer> usersEventList) {
-        try {
-            return impl.getSubscribedCategories(usersEventList);
-        } catch (CategoryNotFoundEx e) {
-            throw new RuntimeException(e);
-        }
+
+    // CRUD - Update
+    @PutMapping("/categories/{id}")
+    public Category updateCategory(@PathVariable int id, @RequestBody Category category) {
+        return updateCategoryHelper(id, category);
+    }
+    public Category updateCategoryHelper(int categoryId, Category updatedCategory) {
+        Category category = categoryRepository.findById(categoryId);
+        category.setName(updatedCategory.getName());
+        category.setParentCategory(updatedCategory.isParentCategory());
+        category.setSubcategories(updatedCategory.getSubcategories());
+        category.setParentId(updatedCategory.getParentId());
+
+        return categoryRepository.save(category);
     }
 
-    public Boolean createCategory(int id,
-                                  String name,
-                                  boolean isParentCategory,
-                                  List<Integer> subcategories,
-                                  int parentId) {
-        try {
-            return impl.addCategory(id, name, isParentCategory, subcategories, parentId);
-        } catch (CategoryExistsEx e) {
-            throw new RuntimeException(e);
-        }
-    }*/
+
+    // CRUD - Delete
+    @DeleteMapping("/categories/{id}")
+    public boolean deleteUser(@PathVariable int id) {
+        categoryRepository.deleteById(id);
+        return true;
+    }
+
+
+
+
+//    public boolean isCategoryAParentCategory(int categoryId){
+//        return categoryRepository.findById(categoryId).isParentCategory();
+//    }
+//    public boolean makeNewCategoryConnection(int parentCategoryId, int subCategoryId){
+//        Category subCategory = categoryRepository.findById(subCategoryId);
+//        Category parentCategory = categoryRepository.findById(parentCategoryId);
+//        Pair tempPair = new Pair<Integer, String>();
+//        //(subCategoryId, subCategory.getName());
+//        if(parentCategory.getSubcategories().contains(tempPair)){
+//            //jest error
+//        }
+//        else if(subCategory.getParentId().isnull){
+//
+//        }
+
+//        sub isparent false
+//                parent isparent true
+//                parent add subCategory
+//                sub make parentid parentid
+
+//        return true;
+//    }
+
+
+    /*
+
+    boolean makeNewCategoryConnection(int parentCategoryId, int subCategoryId) throws CategoryNotFoundEx, CategoryIsNotParentCategory;
+    boolean deleteCategoryConnection(int parentCategoryId, int subCategoryId) throws CategoryIsNotSubcategoryEx, CategoryNotFoundEx;
+
+*/
+
 }

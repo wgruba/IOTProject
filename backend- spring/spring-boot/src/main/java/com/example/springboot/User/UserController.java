@@ -21,10 +21,10 @@ public class UserController {
 
     @Autowired
     private UserRepository userRepository;
-
     @Autowired
     private EventController eventController;
-    private final CategoryController categoryController = new CategoryController();
+    @Autowired
+    private CategoryController categoryController;
 
     // CRUD - Create
     @PostMapping("/addUser")
@@ -78,7 +78,7 @@ public class UserController {
 
 
     // CRUD - Update
-    @PutMapping("/{id}")
+    @PutMapping("/users/{id}")
     public User updateUser(@PathVariable int id, @RequestBody User user) {
         return updateUserHelper(id, user);
     }
@@ -147,7 +147,6 @@ public class UserController {
         User tempUser = userRepository.findById(userId).get();
         return ResponseEntity.ok(categoryController.getCategoriesFromList(tempUser.getSubscribedCategories()));
     }
-
     @PatchMapping("/users/{userId}/subscribeEvent/{eventId}")
     public ResponseEntity<Boolean> subscribeEvent(@PathVariable int userId, @PathVariable int eventId) {
         User tempUser = userRepository.findById(userId).get();
@@ -158,7 +157,6 @@ public class UserController {
         eventController.subscribeUser(userId, eventId);
         return ResponseEntity.ok(true);
     }
-
     @PatchMapping("/users/{userId}/subscribeCategory/{categoryId}")
     public ResponseEntity<Boolean> subscribeCategory(@PathVariable int userId, @PathVariable int categoryId) {
         User tempUser = userRepository.findById(userId).get();

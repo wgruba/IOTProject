@@ -101,14 +101,6 @@ public class Event {
         this.clientList = clientList;
     }
 
-    public List<Integer> getUserList() {
-        return clientList;
-    }
-
-    public void setUserList(List<Integer> clientList) {
-        this.clientList = clientList;
-    }
-
     public String getDescription() {
         return description;
     }
