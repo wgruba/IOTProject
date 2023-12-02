@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 
 @RestController
@@ -78,7 +79,21 @@ public class EventController {
     public ResponseEntity<List<Event>> getRecentEvents() {
         return ResponseEntity.ok(eventRepository.findTop10ByOrderByIdDesc());
     }
+    @GetMapping("/events/getRandom")
+    public ResponseEntity<List<Event>> getRandomEvents(){
+        List<Integer> randomIntList = new ArrayList<>();
+        Random random = new Random();
+        int min = 1;
+        int max = getLastEventId();
+        int size=10;
 
+        for (int i = 0; i < size; i++) {
+            int randomInt = random.nextInt((max - min) + 1) + min;
+            if(!randomIntList.contains(randomInt))
+                randomIntList.add(randomInt);
+        }
+        return ResponseEntity.ok(getEventsFromList(randomIntList));
+    }
 
     // CRUD - Update
     @PutMapping("/events/{id}")
@@ -136,7 +151,6 @@ public class EventController {
             Event tempEvent = eventRepository.findById(eventId);
             return ResponseEntity.ok(tempEvent.getCategoryList());
         }
-
     public ResponseEntity<Boolean> subscribeUser(@PathVariable Integer userId, @PathVariable int eventId) {
         // jest wywoływane przez UserController.subscribeEvent
         Event tempEvent = eventRepository.findById(eventId);
