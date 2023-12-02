@@ -56,6 +56,11 @@ public class EventController {
                 .map(Event::getId)
                 .orElse(null);
     }
+    @GetMapping("/events/toAcceptance")
+    public ResponseEntity<List<Event>> getEventsToAcceptance(){
+        List<Event> events = eventRepository.getEventsToAcceptance();
+        return ResponseEntity.ok(events);
+    }
 
 
     // CRUD - Update

@@ -195,7 +195,6 @@ public class UserController {
         userRepository.save(tempUser);
         return ResponseEntity.ok(true);
     }
-
     @PatchMapping("/users/{userId}/unsubscribeEvent/{eventId}")
     public ResponseEntity<Boolean> unsubscribeEvent(@PathVariable int userId, @PathVariable Integer eventId) {
         if(eventController.getEventOrganiser(eventId) == userId)

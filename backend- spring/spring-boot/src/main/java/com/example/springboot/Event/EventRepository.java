@@ -28,6 +28,8 @@ public interface EventRepository extends MongoRepository<Event, String> {
     List<Event> getEventsOrganisedByUser(@Param("id") int userId);
     @Query("{?0': {'$in': 'categoryList'}")
     List<Event> getEventsFromCategory(int id);
+    @Query("{'eventStatus': TO_ACCEPTANCE}")
+    List<Event> getEventsToAcceptance();
 
 
     // CRUD - Delete
