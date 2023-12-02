@@ -137,7 +137,6 @@ public class UserController {
             throw new RuntimeException(e);
         }
     }
-
     public ResponseEntity<PermissionLevel> getPermissionLevel(int userId){
         return ResponseEntity.ok(userRepository.findById(userId).get().getPermissionLevel());
     }
@@ -258,6 +257,7 @@ public class UserController {
     }
 
 
+    // Moderator options
     @PostMapping("/users/{userId}/createCategory")
     public ResponseEntity<Category> createUser(@PathVariable int userId, @RequestBody Category category){
         ResponseEntity<Category> tempCategory = (ResponseEntity<Category>) categoryController.addCategory(category);

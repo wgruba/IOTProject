@@ -41,25 +41,4 @@ public interface EventRepository extends MongoRepository<Event, String> {
     // Account Management
     @Query("{'$or': [{'name': ?0}, {'mail': ?0}]}")
     Optional<Event> login(String nameOrMail, String password) throws EventNotFoundEx;
-
-    /*
-    List<Event> getFilteredEvents(String name,
-                                  int categoryId,
-                                  int sizeMin,
-                                  int sizeMax,
-                                  String localisation,
-                                  int isFree,
-                                  int isReservationNecessary,
-                                  String ageGroupMin,
-                                  LocalDateTime startDate,
-                                  LocalDateTime endDate,
-                                  boolean isFullEventIncludedInDate);
-
-
-    //manage events' updates
-    boolean changeEventStatus(int eventId, EventStatus eventStatus) throws EventNotFoundEx;
-    boolean verifyEditedEvent(int eventId, int event2Id) throws EventNotFoundEx;
-    boolean isEventActive(int id) throws EventNotFoundEx;
-
-    boolean isFullEventIncludedInDate(int id, LocalDateTime startDate, LocalDateTime endDate) throws EventNotFoundEx;*/
 }

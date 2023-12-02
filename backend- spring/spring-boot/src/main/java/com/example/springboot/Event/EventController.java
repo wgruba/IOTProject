@@ -63,12 +63,7 @@ public class EventController {
         return ResponseEntity.ok(events);
     }
     @GetMapping("/events/fromCategories")
-    public ResponseEntity<List<Event>> getEventsFromCategories(){//List<Integer> categoriesId){
-        List<Integer> categoriesIds = new ArrayList<>();
-        categoriesIds.add(1);
-        categoriesIds.add(2);
-        categoriesIds.add(3);
-
+    public ResponseEntity<List<Event>> getEventsFromCategories(List<Integer> categoriesIds){
         List<Integer> tempEventList = new ArrayList<>();
         for(int categoryId: categoriesIds){
             List<Event> tempList = eventRepository.getEventsFromCategory(categoryId);
@@ -181,38 +176,24 @@ public class EventController {
     }
 
 
+//    @GetMapping("/events/search")
+//    public ResponseEntity<List<Event>> searchForEvents(String name,
+//                                                       int categoryId,
+//                                                       int sizeMin,
+//                                                       int sizeMax,
+//                                                       String localisation,
+//                                                       int isFree,
+//                                                       int isReservationNecessary,
+//                                                       String ageGroupMin,
+//                                                       LocalDateTime startDate,
+//                                                       LocalDateTime endDate,
+//                                                       boolean isFullEventIncludedInDate){
+//        List<Event> tempList = eventRepository.findAll();
+//
+//
+//    }
+
 
 /*
-    @GetMapping
-    public EntityModel<List<Event>> getRandomEvents(){
-        //todo
-        return null;
-    }
-
-
-    @GetMapping("events/search")
-    public EntityModel<List<Event>> getSearchedEvents(String name,
-                                                                   int categoryId,
-                                                                   int sizeMin,
-                                                                   int sizeMax,
-                                                                   String localisation,
-                                                                   int isFree,
-                                                                   int isReservationNecessary,
-                                                                   String ageGroupMin,
-                                                                   LocalDateTime startDate,
-                                                                   LocalDateTime endDate,
-                                                                   boolean isFullEventIncludedInDate){
-        return EntityModel.of(impl.getFilteredEvents(name,
-                categoryId,
-                sizeMin,
-                sizeMax,
-                localisation,
-                isFree,
-                isReservationNecessary,
-                ageGroupMin,
-                startDate,
-                endDate,
-                isFullEventIncludedInDate));
-    }
-*/
+    boolean isFullEventIncludedInDate(int id, LocalDateTime startDate, LocalDateTime endDate) throws EventNotFoundEx;*/
 }
