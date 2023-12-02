@@ -79,6 +79,10 @@ public class EventController {
         }
         return ResponseEntity.ok(getEventsFromList(tempEventList));
     }
+    @GetMapping("/events/recent")
+    public ResponseEntity<List<Event>> getRecentEvents() {
+        return ResponseEntity.ok(eventRepository.findTop10ByOrderByIdDesc());
+    }
 
 
     // CRUD - Update

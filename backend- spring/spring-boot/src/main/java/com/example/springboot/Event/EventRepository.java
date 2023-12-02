@@ -18,6 +18,7 @@ public interface EventRepository extends MongoRepository<Event, String> {
     List<Event> findAll();
     Event findById(int id);
     Optional<Event> findTopByOrderByIdDesc();
+    List<Event> findTop10ByOrderByIdDesc();
     @Query("{'id': ?0}")
     Optional<Event> getEventById(int eventId);
     @Query("{'name': ?0}")
