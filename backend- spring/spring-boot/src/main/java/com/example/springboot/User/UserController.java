@@ -26,6 +26,7 @@ public class UserController {
     @Autowired
     private CategoryController categoryController;
 
+
     // CRUD - Create
     @PostMapping("/addUser")
     public ResponseEntity<?> addUser(@RequestBody User user) {
@@ -265,27 +266,4 @@ public class UserController {
     public ResponseEntity<?> updateCategory(@PathVariable int userId, @RequestBody Category category){
         return ResponseEntity.ok(categoryController.updateCategory(category.getId(), category));
     }
-
-
-/*
-    // moderator operations
-    @GetMapping("users/{userId}/editedEvents")
-    public EntityModel<List<Event>> getEditedEvents(@PathVariable int userId){
-        try {
-            PermissionLevel tempPermission = impl.getPermissionLevel(userId);
-            if(tempPermission == PermissionLevel.ADMIN || tempPermission == PermissionLevel.MODERATOR){
-                return EntityModel.of(eventController.getEditedEvents());
-            }else{
-                throw new NotEnoughHighPermissionLevel(tempPermission);
-            }
-
-        } catch (UserNotFoundEx e) {
-            throw new RuntimeException(e);
-        } catch (NotEnoughHighPermissionLevel e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    }*/
-
 }

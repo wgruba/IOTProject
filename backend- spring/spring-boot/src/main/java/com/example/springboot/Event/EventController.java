@@ -192,8 +192,5 @@ public class EventController {
                 endDate,
                 isFullEventIncludedInDate));
     }
-
-    public List<Event> getEditedEvents() {
-        return impl.getEditedEvents();
-    }*/
+*/
 }
