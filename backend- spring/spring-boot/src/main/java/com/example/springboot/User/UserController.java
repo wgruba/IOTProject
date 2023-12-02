@@ -182,6 +182,20 @@ public class UserController {
         userRepository.save(tempUser);
         return ResponseEntity.ok(true);
     }
+    @PatchMapping("/users/{userId}/subscribeCategories")
+    public ResponseEntity<Boolean> subscribeCategory(@PathVariable int userId, List<Integer> categoryList) {
+        User tempUser = userRepository.findById(userId).get();
+        List<Integer> tempList = tempUser.getSubscribedCategories();
+
+        for(Integer categoryId: categoryList){
+            if(!tempList.contains(categoryId))
+                tempList.add(categoryId);
+            
+        tempUser.setSubscribedCategories(tempList);
+        userRepository.save(tempUser);
+        return ResponseEntity.ok(true);
+    }
+
     @PatchMapping("/users/{userId}/unsubscribeEvent/{eventId}")
     public ResponseEntity<Boolean> unsubscribeEvent(@PathVariable int userId, @PathVariable Integer eventId) {
         if(eventController.getEventOrganiser(eventId) == userId)
