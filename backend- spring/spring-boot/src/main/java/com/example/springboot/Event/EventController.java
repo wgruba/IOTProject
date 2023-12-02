@@ -141,6 +141,8 @@ public class EventController {
         // jest wywoływane przez UserController.subscribeEvent
         Event tempEvent = eventRepository.findById(eventId);
         List<Integer> tempList = tempEvent.getClientList();
+        if(tempList.contains(userId))
+            return ResponseEntity.ok(false);
         tempList.add(userId);
         tempEvent.setClientList(tempList);
         eventRepository.save(tempEvent);
@@ -150,16 +152,19 @@ public class EventController {
     public ResponseEntity<Boolean> subscribeCategory(@PathVariable int eventId, @PathVariable int categoryId) {
         Event tempEvent = eventRepository.findById(eventId);
         List<Integer> tempList = tempEvent.getCategoryList();
+        if(tempList.contains(categoryId))
+            return ResponseEntity.ok(false);
         tempList.add(categoryId);
         tempEvent.setCategoryList(tempList);
         eventRepository.save(tempEvent);
         return ResponseEntity.ok(true);
     }
-
     public ResponseEntity<Boolean> unsubscribeUser(@PathVariable Integer userId, @PathVariable int eventId) {
         // jest wywoływane przez UserController.subscribeEvent
         Event tempEvent = eventRepository.findById(eventId);
         List<Integer> tempList = tempEvent.getClientList();
+        if(!tempList.contains(userId))
+            return ResponseEntity.ok(false);
         tempList.remove(userId);
         tempEvent.setClientList(tempList);
         eventRepository.save(tempEvent);
@@ -169,6 +174,8 @@ public class EventController {
     public ResponseEntity<Boolean> unsubscribeCategory(@PathVariable int eventId, @PathVariable Integer categoryId) {
         Event tempEvent = eventRepository.findById(eventId);
         List<Integer> tempList = tempEvent.getCategoryList();
+        if(!tempList.contains(categoryId))
+            return ResponseEntity.ok(false);
         tempList.remove(categoryId);
         tempEvent.setCategoryList(tempList);
         eventRepository.save(tempEvent);
