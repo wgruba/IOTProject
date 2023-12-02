@@ -187,10 +187,10 @@ public class UserController {
         User tempUser = userRepository.findById(userId).get();
         List<Integer> tempList = tempUser.getSubscribedCategories();
 
-        for(Integer categoryId: categoryList){
+        for(Integer categoryId: categoryList)
             if(!tempList.contains(categoryId))
                 tempList.add(categoryId);
-            
+
         tempUser.setSubscribedCategories(tempList);
         userRepository.save(tempUser);
         return ResponseEntity.ok(true);
