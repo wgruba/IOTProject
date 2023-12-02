@@ -1,13 +1,12 @@
 package com.example.springboot.Category;
 
-import ch.qos.logback.core.joran.sanity.Pair;
-import com.example.springboot.Event.Event;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.hateoas.EntityModel;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 
 @RestController
@@ -19,8 +18,14 @@ public class CategoryController {
 
     // CRUD - Create
     @PostMapping("/addCategory")
-    public ResponseEntity<Category> addCategory(@RequestBody Category category) {
-        Category  savedCategory = categoryRepository.save(category);
+    public ResponseEntity<?> addCategory(@RequestBody Category category) {
+        Optional<Category> existingCategory = categoryRepository.getCategoryByName(category.getName());
+        if (existingCategory.isPresent()) {
+            return ResponseEntity
+                    .status(HttpStatus.CONFLICT)
+                    .body("Category with the same name already exists");
+        }
+        Category savedCategory = categoryRepository.save(category);
         return ResponseEntity.ok(savedCategory);
     }
 
@@ -78,28 +83,28 @@ public class CategoryController {
     }
 
 
+    public boolean isCategoryAParentCategory(int categoryId){
+        return categoryRepository.findById(categoryId).isParentCategory();
+    }
 
 
-//    public boolean isCategoryAParentCategory(int categoryId){
-//        return categoryRepository.findById(categoryId).isParentCategory();
-//    }
 //    public boolean makeNewCategoryConnection(int parentCategoryId, int subCategoryId){
 //        Category subCategory = categoryRepository.findById(subCategoryId);
 //        Category parentCategory = categoryRepository.findById(parentCategoryId);
-//        Pair tempPair = new Pair<Integer, String>();
 //        //(subCategoryId, subCategory.getName());
-//        if(parentCategory.getSubcategories().contains(tempPair)){
+//        if(subCategory.getParentId() == parentCategoryId){
 //            //jest error
 //        }
-//        else if(subCategory.getParentId().isnull){
-//
+//        else{
+//            List<Pair<Integer, String>> tempList = parentCategory.getSubcategories();
+//            Pair<Integer, String> tempPair = new Pair<>(subCategoryId, subCategory.getName());
 //        }
-
-//        sub isparent false
-//                parent isparent true
-//                parent add subCategory
-//                sub make parentid parentid
-
+//
+////        sub isparent false
+////                parent isparent true
+////                parent add subCategory
+////                sub make parentid parentid
+//
 //        return true;
 //    }
 

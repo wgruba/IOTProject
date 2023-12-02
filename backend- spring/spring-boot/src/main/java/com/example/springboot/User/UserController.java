@@ -100,9 +100,20 @@ public class UserController {
 
 
     // CRUD - Delete
-    @DeleteMapping("/users/{id}")
-    public boolean deleteUser(@PathVariable int id) {
-        userRepository.deleteById(id);
+    @DeleteMapping("/users/{userId}")
+    public boolean deleteUser(@PathVariable int userId) {
+        User tempUser = userRepository.getUserById(userId).get();
+        List<Event> tempList = eventController.getEventsByOrganiser(userId);
+        for (Event event:tempList) {
+            deleteEvent(userId, event.getId());
+        }
+
+        List<Integer> subscribedEvents = tempUser.getSubscribedEvents();
+        for (Integer eventId: subscribedEvents) {
+            unsubscribeEvent(userId, eventId);
+        }
+
+        userRepository.deleteById(userId);
         return true;
     }
 
@@ -133,6 +144,11 @@ public class UserController {
                     user.setPermissionLevel(permissionLevel);
         return ResponseEntity.ok(true);});
         return ResponseEntity.ok(false);
+    }
+    @GetMapping("/users/{userId}/getName")
+    public ResponseEntity<String> getUsersName(@PathVariable int userid){
+        User tempUser = userRepository.getUserById(userid).get();
+        return ResponseEntity.ok(tempUser.getName());
     }
 
 
@@ -219,11 +235,26 @@ public class UserController {
     public ResponseEntity<List<Event>> getEventsOrganisedByUser(@PathVariable int userId){
         return ResponseEntity.ok(eventController.getEventsByOrganiser(userId));
     }
+    @PatchMapping("/users/{userId}/updateEvent")
+    public ResponseEntity<?> updateEvent(@PathVariable int userId, @RequestBody Event event){
+        if(eventController.getEventOrganiser(event.getId()) != userId)
+            return ResponseEntity.ok(false);
+        return ResponseEntity.ok(eventController.updateEvent(event.getId(), event));
+    }
 
+
+    @PostMapping("/users/{userId}/createCategory")
+    public ResponseEntity<Category> createUser(@PathVariable int userId, @RequestBody Category category){
+        ResponseEntity<Category> tempCategory = (ResponseEntity<Category>) categoryController.addCategory(category);
+        return tempCategory;
+    }
+    @PatchMapping("/users/{userId}/updateCategory")
+    public ResponseEntity<?> updateCategory(@PathVariable int userId, @RequestBody Category category){
+        return ResponseEntity.ok(categoryController.updateCategory(category.getId(), category));
+    }
 
 
 /*
-
     // moderator operations
     @GetMapping("users/{userId}/editedEvents")
     public EntityModel<List<Event>> getEditedEvents(@PathVariable int userId){
@@ -241,26 +272,7 @@ public class UserController {
             throw new RuntimeException(e);
         }
     }
-    @GetMapping("users/{userId}/createCategory")
-    public EntityModel<Boolean> createCategory(@PathVariable int userId,
-                                               int id,
-                                               String name,
-                                               boolean isParentCategory,
-                                               List<Integer> subcategories,
-                                               int parentId){
-        try {
-            PermissionLevel tempPermission = impl.getPermissionLevel(userId);
-            if(tempPermission == PermissionLevel.ADMIN || tempPermission == PermissionLevel.MODERATOR){
-                return EntityModel.of(categoryController.createCategory(id, name, isParentCategory, subcategories, parentId));
-            }else{
-                throw new NotEnoughHighPermissionLevel(tempPermission);
-            }
 
-        } catch (UserNotFoundEx e) {
-            throw new RuntimeException(e);
-        } catch (NotEnoughHighPermissionLevel e) {
-            throw new RuntimeException(e);
-        }
     }*/
 
 }

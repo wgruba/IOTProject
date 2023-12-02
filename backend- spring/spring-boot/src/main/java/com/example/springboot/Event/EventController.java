@@ -155,116 +155,13 @@ public class EventController {
 
 
 
-    /*
-     *//***
-     * usage: main page; giving list of random events
-     * @return list of some events for user
-     *//*
+/*
     @GetMapping
     public EntityModel<List<Event>> getRandomEvents(){
         //todo
         return null;
     }
-    /*
-    @GetMapping("users/{userId}")
-    public EntityModel<Boolean> createEvent(int id,
-                                                            String name,
-                                                            int organizer,
-                                                            List<Integer> categoryList,
-                                                            String description,
-                                                            int size,
-                                                            String localisation,
-                                                            boolean isFree,
-                                                            boolean isReservationNecessary,
-                                                            AgeGroup ageGroup,
-                                                            LocalDateTime startDate,
-                                                            LocalDateTime endDate)
-    {
-        try {
-            return EntityModel.of(impl.addEvent(id,
-                    name,
-                    organizer,
-                    categoryList,
-                    new ArrayList<Integer>(),
-                    description,
-                    size,
-                    localisation,
-                    isFree,
-                    isReservationNecessary,
-                    ageGroup,
-                    startDate,
-                    endDate,
-                    EventStatus.ACCEPTED) && impl.subscribeUser(id, organizer));
-        } catch (EventExistsEx e) {
-            throw new RuntimeException(e);
-        } catch (EventNotFoundEx e) {
-            throw new RuntimeException(e);
-        }
-    }
 
-    *//***
-     * getUsersSubscribedEvents- returns list of events, that user has subscribed to
-     *
-     * @param usersEventList
-     * @return
-     *//*
-    public List<Event> getUsersSubscribedEvents(List<Integer> usersEventList) {
-        return impl.getUsersSubscribedEvents(usersEventList);
-    }
-
-    public List<Event> getEventsByOrganiser(int id) {
-        return impl.getEventsByOrganiser(id);
-
-
-    // Subscription Management
-    @GetMapping("/events/{eventId}/subscribedUsers")
-    public ResponseEntity<List<User>> getSubscribedEvents(@PathVariable int eventId) {
-        Event tempEvent = eventRepository.findById(eventId);
-        return ResponseEntity.ok(UserController.getUsersFromList((ArrayList<Integer>) tempEvent.getUserList()));
-    }
-    @GetMapping("/events/{eventId}/subscribedCategories")
-    public ResponseEntity<List<Category>> getSubscribedCategories(@PathVariable int eventId) {
-        Event tempEvent = eventRepository.findById(eventId);
-        return ResponseEntity.ok(CategoryController.getCategoriesFromList(tempEvent.getCategoryList()));
-    }
-    public ResponseEntity<Boolean> subscribeUser(@PathVariable int userId, @PathVariable int eventId) {
-        // jest wywoływane przez UserController.subscribeEvent
-        Event tempEvent = eventRepository.findById(eventId);
-        List<Integer> tempList = tempEvent.getClientList();
-        tempList.add(userId);
-        tempEvent.setUserList(tempList);
-        eventRepository.save(tempEvent);
-        return ResponseEntity.ok(true);
-    }
-    public ResponseEntity<Boolean> subscribeCategory(@PathVariable int eventId, @PathVariable int categoryId) {
-        Event tempEvent = eventRepository.findById(eventId);
-        List<Integer> tempList = tempEvent.getCategoryList();
-        tempList.add(categoryId);
-        tempEvent.setCategoryList(tempList);
-        eventRepository.save(tempEvent);
-        return ResponseEntity.ok(true);
-    }
-    public ResponseEntity<Boolean> unsubscribeUser(@PathVariable int userId, @PathVariable int eventId) {
-        // jest wywoływane przez UserController.subscribeEvent
-        Event tempEvent = eventRepository.findById(eventId);
-        List<Integer> tempList = tempEvent.getClientList();
-        tempList.remove(userId);
-        tempEvent.setUserList(tempList);
-        eventRepository.save(tempEvent);
-        return ResponseEntity.ok(true);
-    }
-    public ResponseEntity<Boolean> unsubscribeCategory(@PathVariable int eventId, @PathVariable int categoryId) {
-        Event tempEvent = eventRepository.findById(eventId);
-        List<Integer> tempList = tempEvent.getCategoryList();
-        tempList.remove(categoryId);
-        tempEvent.setCategoryList(tempList);
-        eventRepository.save(tempEvent);
-        return ResponseEntity.ok(true);
-    }
-
-
-
-/*
 
     @GetMapping("events/search")
     public EntityModel<List<Event>> getSearchedEvents(String name,
