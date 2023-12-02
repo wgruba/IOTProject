@@ -82,10 +82,19 @@
     }
   }
 
-  @keyframes subscribed-animation {
-    0% { background-color: orange; }
-    50% { background-color: limegreen; }
-    100% { background-color: orange; }
+  @keyframes checkmark-animation {
+    0% { opacity: 0; transform: scale(0); }
+    50% { opacity: 1; transform: scale(1.2); }
+    100% { opacity: 1; transform: scale(1); }
+}
+
+.checkmark {
+    color: limegreen;
+    font-size: 24px;
+    animation: checkmark-animation 1s ease;
+    position: absolute;
+    top: 10px;
+    right: 10px;
 }
 
 .subscribed {

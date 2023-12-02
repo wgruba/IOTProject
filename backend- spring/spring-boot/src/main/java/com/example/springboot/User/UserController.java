@@ -137,6 +137,7 @@ public class UserController {
             throw new RuntimeException(e);
         }
     }
+
     public ResponseEntity<PermissionLevel> getPermissionLevel(int userId){
         return ResponseEntity.ok(userRepository.findById(userId).get().getPermissionLevel());
     }
@@ -151,7 +152,6 @@ public class UserController {
         User tempUser = userRepository.getUserById(userid).get();
         return ResponseEntity.ok(tempUser.getName());
     }
-
 
     // Subscription Management
     @GetMapping("/users/{userId}/subscribedEvents")
@@ -184,7 +184,7 @@ public class UserController {
         return ResponseEntity.ok(true);
     }
     @PatchMapping("/users/{userId}/subscribeCategories")
-    public ResponseEntity<Boolean> subscribeCategory(@PathVariable int userId, List<Integer> categoryList) {
+    public ResponseEntity<Boolean> subscribeCategory(@PathVariable int userId, @RequestBody List<Integer> categoryList) {
         User tempUser = userRepository.findById(userId).get();
         List<Integer> tempList = tempUser.getSubscribedCategories();
 
@@ -196,6 +196,7 @@ public class UserController {
         userRepository.save(tempUser);
         return ResponseEntity.ok(true);
     }
+
     @PatchMapping("/users/{userId}/unsubscribeEvent/{eventId}")
     public ResponseEntity<Boolean> unsubscribeEvent(@PathVariable int userId, @PathVariable Integer eventId) {
         if(eventController.getEventOrganiser(eventId) == userId)

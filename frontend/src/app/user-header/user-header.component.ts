@@ -11,6 +11,7 @@ import { FilterSearchService } from '../filter-search.service';
 import { Subscription } from 'rxjs';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmationDialogComponentComponent } from '../confirmation-dialog-component/confirmation-dialog-component.component';
+import { CategoryService } from '../category.service';
 
 
 @Component({
@@ -19,31 +20,7 @@ import { ConfirmationDialogComponentComponent } from '../confirmation-dialog-com
   styleUrls: ['./user-header.component.scss']
 })
 export class UserHeaderComponent implements OnInit {
-  categories: Category[] = [
-    { 
-      id: 1,
-      name: 'Kategoria 1', 
-      subcategories: [
-          { id: 101, name: 'Podkategoria 1.1' }, 
-          { id: 102, name: 'Podkategoria 1.2' }
-      ]
-      },
-      { 
-      id: 2,
-      name: 'Kategoria 2', 
-      subcategories: [
-          { id: 103, name: 'Podkategoria 2.1' }, 
-          { id: 106, name: 'Podkategoria 2.2' }
-        ]
-    },
-    { 
-      id: 3,
-      name: 'Kategoria 3', 
-      subcategories: [
-          { id: 104, name: 'Podkategoria 3.1' }, 
-          { id: 105, name: 'Podkategoria 3.2' }
-      ]
-    },]
+  categories !: Category[];
   localisations: Category[] = [
     {
       id: 3,
@@ -74,7 +51,7 @@ export class UserHeaderComponent implements OnInit {
   isUser: boolean = false ;
   filterParsed: any;
 
-  constructor(private router: Router, private formBuilder: FormBuilder,public authService: AuthenticationService, public userService: UserService, private _snackBar: MatSnackBar, private filterSearchService: FilterSearchService, public dialog: MatDialog) {
+  constructor(private categoryService: CategoryService ,private router: Router, private formBuilder: FormBuilder,public authService: AuthenticationService, public userService: UserService, private _snackBar: MatSnackBar, private filterSearchService: FilterSearchService, public dialog: MatDialog) {
     this.filterSub = this.filterSearchService.buttonClick$.subscribe(() => {
       this.onSearch();
     });
@@ -93,6 +70,10 @@ export class UserHeaderComponent implements OnInit {
       this.isUser = (!this.isAdmin)
     }
     this.roleClass = user.permissionLevel === 'VERIFIED_USER' ? 'admin-header' : 'user-header';
+
+    this.categoryService.getCategoriesFromDatabase().subscribe(response => {
+      this.categories = response;
+    });
   }
   ngOnDestroy(): void {
     this.filterSub.unsubscribe();

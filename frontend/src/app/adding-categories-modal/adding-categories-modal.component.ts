@@ -2,6 +2,7 @@ import { Component, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { Category } from '../models/Category.model';
 import { UserService } from '../user.service';
+import { CategoryService } from '../category.service';
 
 @Component({
   selector: 'app-adding-categories-modal',
@@ -9,39 +10,21 @@ import { UserService } from '../user.service';
   styleUrls: ['./adding-categories-modal.component.scss']
 })
 export class AddingCategoriesModalComponent {
-  categories: Category[] = [
-    { 
-      id: 1,
-      name: 'Kategoria 1', 
-      subcategories: [
-          { id: 101, name: 'Podkategoria 1.1' }, 
-          { id: 102, name: 'Podkategoria 1.2' }
-      ]
-      },
-      { 
-      id: 2,
-      name: 'Kategoria 2', 
-      subcategories: [
-          { id: 103, name: 'Podkategoria 2.1' }, 
-          { id: 106, name: 'Podkategoria 2.2' }
-        ]
-    },
-    { 
-      id: 3,
-      name: 'Kategoria 3', 
-      subcategories: [
-          { id: 104, name: 'Podkategoria 3.1' }, 
-          { id: 105, name: 'Podkategoria 3.2' }
-      ]
-    },]
+  categories!: Category[];
   selectedCategoryIds: number[] = [];
   selectedSubcategoryIds: number[] = [];
 
   constructor(
     public dialogRef: MatDialogRef<AddingCategoriesModalComponent>,
     public userService: UserService,
+    public categoryService: CategoryService,
     @Inject(MAT_DIALOG_DATA) public data: DialogData
-  ) {}
+  ) {
+
+    this.categoryService.getCategoriesFromDatabase().subscribe(response => {
+      this.categories = response;
+    });
+  }
 
   onNoClick(): void {
     this.dialogRef.close(false);
@@ -50,8 +33,8 @@ export class AddingCategoriesModalComponent {
   onYesClick(): void {
     let allCategoryIds: number[] = [...this.selectedCategoryIds, ...this.selectedSubcategoryIds];
     console.log(allCategoryIds)
-    allCategoryIds.forEach(async (val) => { this.userService.subscribeCategory(val).subscribe(response => 
-      {console.log(response)})})
+    this.userService.subscribeCategory(allCategoryIds).subscribe(response => 
+      {console.log(response)})
     this.dialogRef.close(true);
   }
 
@@ -91,7 +74,6 @@ export class AddingCategoriesModalComponent {
       return '';
     });
   }
-
 
   getCategoryByName(name: string): Category | undefined {
     return this.categories.find(category => category.name === name);

@@ -28,9 +28,8 @@ export class DescriptionPageComponent {
   ngOnInit(): void {
     const eventId = this.route.snapshot.params['id'];
     this.event = this.eventService.getCurrentEvent();
-    // Optional: check if the ID from the route matches the event ID, or fetch it from a backend
+    this.isSubscribed = this.userService.getCurrentUser().subscribedEvents.includes(this.event.id)
     if (this.event.id !== parseInt(eventId, 10)) {
-      // Handle the mismatch, possibly fetch the event by ID from a backend
     }
   }
 
@@ -55,8 +54,12 @@ export class DescriptionPageComponent {
   }
 
   subscribeEvent(){
-    this.userService.subscribeEvent(this.eventService.getCurrentEvent().id).subscribe(response => {
+    const currentEventId = this.eventService.getCurrentEvent().id;
+    this.userService.subscribeEvent(currentEventId).subscribe(response => {
       this.isSubscribed = true;
+      const user = this.userService.getCurrentUser();
+      user.subscribedEvents.push(currentEventId)
+      this.userService.setCurrentUser(user)
     });
   }
 }

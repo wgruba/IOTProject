@@ -4,4 +4,5 @@ export interface User {
     mail: string;
     permissionLevel: string;
     token: string;
+    subscribedEvents: number[]
 }

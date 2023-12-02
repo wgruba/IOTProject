@@ -17,7 +17,8 @@
             </div>
 
             <div class="event-actions">
-                <button type="button" (click)="subscribeEvent()" [class.subscribed]="isSubscribed">+ Obserwuj</button>
+                <button type="button" (click)="subscribeEvent()" [class.subscribed]="isSubscribed"> <div  *ngIf="!isSubscribed" >+ Obserwuj</div> <div  *ngIf="isSubscribed">Już Obserwujesz</div> <i *ngIf="isSubscribed" class="checkmark">✔</i>
+                </button>
                 <button type="button" class="event-page-button">Strona eventu</button>
                 <button type="button" (click)="addToGoogleCalendar(event)">Importuj</button>
             </div>

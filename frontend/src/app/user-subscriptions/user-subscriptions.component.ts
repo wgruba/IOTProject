@@ -18,7 +18,7 @@ export class UserSubscriptionsComponent implements OnInit {
   subscribedEventsList! : Event[];
 
   constructor(private userService: UserService, public dialog: MatDialog) {
-    
+
   }
 
   ngOnInit(): void {
@@ -32,7 +32,7 @@ export class UserSubscriptionsComponent implements OnInit {
 
   addSubscription(){
     const dialogRef = this.dialog.open(AddingCategoriesModalComponent, {
-      width: '350px',
+      width: '500px',
       data: {title: 'Dodaj Kategorie: ', message: 'Wybierz kategorie jakie chcesz dodać: '}
     });
     dialogRef.afterClosed().subscribe(result => {
@@ -61,7 +61,7 @@ export class UserSubscriptionsComponent implements OnInit {
       }
     });
   }
-  
+
   unsubscribeEvent(eventId: number){
     this.userService.unsubscribeEvent(eventId).subscribe(response => {
 

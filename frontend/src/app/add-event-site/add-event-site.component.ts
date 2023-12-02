@@ -5,6 +5,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { UserService } from '../user.service';
 import { Event } from '../models/event.model';
 import { Category } from '../models/Category.model';
+import { CategoryService } from '../category.service';
 
 @Component({
   selector: 'app-add-event-site',
@@ -13,38 +14,14 @@ import { Category } from '../models/Category.model';
 })
 export class AddEventSiteComponent {
   eventForm !: FormGroup;
-  categories: Category[] = [
-    { 
-      id: 1,
-      name: 'Kategoria 1', 
-      subcategories: [
-          { id: 101, name: 'Podkategoria 1.1' }, 
-          { id: 102, name: 'Podkategoria 1.2' }
-      ]
-      },
-      { 
-      id: 2,
-      name: 'Kategoria 2', 
-      subcategories: [
-          { id: 103, name: 'Podkategoria 2.1' }, 
-          { id: 106, name: 'Podkategoria 2.2' }
-        ]
-    },
-    { 
-      id: 3,
-      name: 'Kategoria 3', 
-      subcategories: [
-          { id: 104, name: 'Podkategoria 3.1' }, 
-          { id: 105, name: 'Podkategoria 3.2' }
-      ]
-    },]
+  categories! : Category[];
   selectedCategoryIds: number[] = [];
   selectedSubcategoryIds: number[] = [];
   id: number = 0;
 
 
 
-  constructor(private eventService: EventService, private snackBar: MatSnackBar, public userService: UserService){}
+  constructor(private eventService: EventService, private snackBar: MatSnackBar, public userService: UserService, public categoryService: CategoryService){}
 
   ngOnInit(): void {
     this.eventForm = new FormGroup({
@@ -64,6 +41,10 @@ export class AddEventSiteComponent {
 
     this.eventService.getLastID().subscribe(response => {
       this.id = response + 1
+    });
+
+    this.categoryService.getCategoriesFromDatabase().subscribe(response => {
+      this.categories = response;
     });
   }
 

@@ -60,10 +60,10 @@ export class UserService {
   }
 
 
-  subscribeCategory(eventId: number){
-    const getUserUrl = `http://localhost:8080/users/${this.getCurrentUser().id}/subscribeCategory/${eventId}`;
+  subscribeCategory(eventId: number[]){
+    const getUserUrl = `http://localhost:8080/users/${this.getCurrentUser().id}/subscribeCategories`;
     const headers = this.authenticationService.getHeadersWithToken()
-    return this.http.patch(getUserUrl, {headers});
+    return this.http.patch(getUserUrl, eventId, {headers});
   }
 
   unsubscribeCategory(categoryId: number){
@@ -94,7 +94,7 @@ export class UserService {
     } catch (error) {
       console.error('Error parsing user data from localStorage', error);
     }
-    return {id:0, name: "Adam" , mail: "a@mail.com", permissionLevel: "None", token: ""};
+    return {id:0, name: "Adam" , mail: "a@mail.com", permissionLevel: "None", token: "", subscribedEvents: []};
   }
 
   private getUserToken(): string | null {
