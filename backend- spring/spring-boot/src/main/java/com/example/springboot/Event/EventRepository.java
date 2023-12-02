@@ -26,7 +26,8 @@ public interface EventRepository extends MongoRepository<Event, String> {
     List<Event> getEventsFromList(@Param("ids") List<Integer> ids);
     @Query("{'organizer': ?0}")
     List<Event> getEventsOrganisedByUser(@Param("id") int userId);
-    @Query("{?0': {'$in': 'categoryList'}")
+//    @Query("{?0': {'$in': 'categoryList'}")
+    @Query("{'categoryList': {'$elemMatch': {'$eq': ?0}}}")
     List<Event> getEventsFromCategory(int id);
     @Query("{'eventStatus': TO_ACCEPTANCE}")
     List<Event> getEventsToAcceptance();
@@ -41,7 +42,6 @@ public interface EventRepository extends MongoRepository<Event, String> {
     Optional<Event> login(String nameOrMail, String password) throws EventNotFoundEx;
 
     /*
-    List<Event> getEditedEvents();
     List<Event> getFilteredEvents(String name,
                                   int categoryId,
                                   int sizeMin,

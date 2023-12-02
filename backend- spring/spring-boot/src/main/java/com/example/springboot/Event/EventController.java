@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -61,6 +62,23 @@ public class EventController {
         List<Event> events = eventRepository.getEventsToAcceptance();
         return ResponseEntity.ok(events);
     }
+    @GetMapping("/events/fromCategories")
+    public ResponseEntity<List<Event>> getEventsFromCategories(){//List<Integer> categoriesId){
+        List<Integer> categoriesIds = new ArrayList<>();
+        categoriesIds.add(1);
+        categoriesIds.add(2);
+        categoriesIds.add(3);
+
+        List<Integer> tempEventList = new ArrayList<>();
+        for(int categoryId: categoriesIds){
+            List<Event> tempList = eventRepository.getEventsFromCategory(categoryId);
+            for (Event event: tempList) {
+                if (!tempEventList.contains(event.getId()))
+                    tempEventList.add(event.getId());
+            }
+        }
+        return ResponseEntity.ok(getEventsFromList(tempEventList));
+    }
 
 
     // CRUD - Update
@@ -68,7 +86,7 @@ public class EventController {
     public Event updateEvent(@PathVariable int id, @RequestBody Event event) {
         return updateEventHelper(id, event);
     }
-    public Event updateEventHelper(int eventId, Event updatedEvent) {
+    public Event updateEventHelper(int eventId, Event updatedEvent){
         Event event = eventRepository.findById(eventId);
         event.setName(updatedEvent.getName());
         event.setOrganizer(updatedEvent.getOrganizer());
