@@ -4,7 +4,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 
 @RestController
@@ -61,14 +63,44 @@ public class EventController {
         List<Event> events = eventRepository.getEventsToAcceptance();
         return ResponseEntity.ok(events);
     }
+    @GetMapping("/events/fromCategories")
+    public ResponseEntity<List<Event>> getEventsFromCategories(List<Integer> categoriesIds){
+        List<Integer> tempEventList = new ArrayList<>();
+        for(int categoryId: categoriesIds){
+            List<Event> tempList = eventRepository.getEventsFromCategory(categoryId);
+            for (Event event: tempList) {
+                if (!tempEventList.contains(event.getId()))
+                    tempEventList.add(event.getId());
+            }
+        }
+        return ResponseEntity.ok(getEventsFromList(tempEventList));
+    }
+    @GetMapping("/events/recent")
+    public ResponseEntity<List<Event>> getRecentEvents() {
+        return ResponseEntity.ok(eventRepository.findTop10ByOrderByIdDesc());
+    }
+    @GetMapping("/events/getRandom")
+    public ResponseEntity<List<Event>> getRandomEvents(){
+        List<Integer> randomIntList = new ArrayList<>();
+        Random random = new Random();
+        int min = 1;
+        int max = getLastEventId();
+        int size=10;
 
+        for (int i = 0; i < size; i++) {
+            int randomInt = random.nextInt((max - min) + 1) + min;
+            if(!randomIntList.contains(randomInt))
+                randomIntList.add(randomInt);
+        }
+        return ResponseEntity.ok(getEventsFromList(randomIntList));
+    }
 
     // CRUD - Update
     @PutMapping("/events/{id}")
     public Event updateEvent(@PathVariable int id, @RequestBody Event event) {
         return updateEventHelper(id, event);
     }
-    public Event updateEventHelper(int eventId, Event updatedEvent) {
+    public Event updateEventHelper(int eventId, Event updatedEvent){
         Event event = eventRepository.findById(eventId);
         event.setName(updatedEvent.getName());
         event.setOrganizer(updatedEvent.getOrganizer());
@@ -119,11 +151,12 @@ public class EventController {
             Event tempEvent = eventRepository.findById(eventId);
             return ResponseEntity.ok(tempEvent.getCategoryList());
         }
-
     public ResponseEntity<Boolean> subscribeUser(@PathVariable Integer userId, @PathVariable int eventId) {
         // jest wywoływane przez UserController.subscribeEvent
         Event tempEvent = eventRepository.findById(eventId);
         List<Integer> tempList = tempEvent.getClientList();
+        if(tempList.contains(userId))
+            return ResponseEntity.ok(false);
         tempList.add(userId);
         tempEvent.setClientList(tempList);
         eventRepository.save(tempEvent);
@@ -133,16 +166,19 @@ public class EventController {
     public ResponseEntity<Boolean> subscribeCategory(@PathVariable int eventId, @PathVariable int categoryId) {
         Event tempEvent = eventRepository.findById(eventId);
         List<Integer> tempList = tempEvent.getCategoryList();
+        if(tempList.contains(categoryId))
+            return ResponseEntity.ok(false);
         tempList.add(categoryId);
         tempEvent.setCategoryList(tempList);
         eventRepository.save(tempEvent);
         return ResponseEntity.ok(true);
     }
-
     public ResponseEntity<Boolean> unsubscribeUser(@PathVariable Integer userId, @PathVariable int eventId) {
         // jest wywoływane przez UserController.subscribeEvent
         Event tempEvent = eventRepository.findById(eventId);
         List<Integer> tempList = tempEvent.getClientList();
+        if(!tempList.contains(userId))
+            return ResponseEntity.ok(false);
         tempList.remove(userId);
         tempEvent.setClientList(tempList);
         eventRepository.save(tempEvent);
@@ -152,6 +188,8 @@ public class EventController {
     public ResponseEntity<Boolean> unsubscribeCategory(@PathVariable int eventId, @PathVariable Integer categoryId) {
         Event tempEvent = eventRepository.findById(eventId);
         List<Integer> tempList = tempEvent.getCategoryList();
+        if(!tempList.contains(categoryId))
+            return ResponseEntity.ok(false);
         tempList.remove(categoryId);
         tempEvent.setCategoryList(tempList);
         eventRepository.save(tempEvent);
@@ -159,38 +197,24 @@ public class EventController {
     }
 
 
+//    @GetMapping("/events/search")
+//    public ResponseEntity<List<Event>> searchForEvents(String name,
+//                                                       int categoryId,
+//                                                       int sizeMin,
+//                                                       int sizeMax,
+//                                                       String localisation,
+//                                                       int isFree,
+//                                                       int isReservationNecessary,
+//                                                       String ageGroupMin,
+//                                                       LocalDateTime startDate,
+//                                                       LocalDateTime endDate,
+//                                                       boolean isFullEventIncludedInDate){
+//        List<Event> tempList = eventRepository.findAll();
+//
+//
+//    }
+
 
 /*
-    @GetMapping
-    public EntityModel<List<Event>> getRandomEvents(){
-        //todo
-        return null;
-    }
-
-
-    @GetMapping("events/search")
-    public EntityModel<List<Event>> getSearchedEvents(String name,
-                                                                   int categoryId,
-                                                                   int sizeMin,
-                                                                   int sizeMax,
-                                                                   String localisation,
-                                                                   int isFree,
-                                                                   int isReservationNecessary,
-                                                                   String ageGroupMin,
-                                                                   LocalDateTime startDate,
-                                                                   LocalDateTime endDate,
-                                                                   boolean isFullEventIncludedInDate){
-        return EntityModel.of(impl.getFilteredEvents(name,
-                categoryId,
-                sizeMin,
-                sizeMax,
-                localisation,
-                isFree,
-                isReservationNecessary,
-                ageGroupMin,
-                startDate,
-                endDate,
-                isFullEventIncludedInDate));
-    }
-*/
+    boolean isFullEventIncludedInDate(int id, LocalDateTime startDate, LocalDateTime endDate) throws EventNotFoundEx;*/
 }

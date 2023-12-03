@@ -134,7 +134,6 @@ public class UserController {
             throw new RuntimeException(e);
         }
     }
-
     public ResponseEntity<PermissionLevel> getPermissionLevel(int userId){
         return ResponseEntity.ok(userRepository.findById(userId).get().getPermissionLevel());
     }
@@ -149,6 +148,7 @@ public class UserController {
         User tempUser = userRepository.getUserById(userid).get();
         return ResponseEntity.ok(tempUser.getName());
     }
+
 
     // Subscription Management
     @GetMapping("/users/{userId}/subscribedEvents")
@@ -165,6 +165,8 @@ public class UserController {
     public ResponseEntity<Boolean> subscribeEvent(@PathVariable int userId, @PathVariable int eventId) {
         User tempUser = userRepository.findById(userId).get();
         List<Integer> tempList = tempUser.getSubscribedEvents();
+        if(tempList.contains(eventId))
+            return ResponseEntity.ok(false);
         tempList.add(eventId);
         tempUser.setSubscribedEvents(tempList);
         userRepository.save(tempUser);
@@ -175,6 +177,8 @@ public class UserController {
     public ResponseEntity<Boolean> subscribeCategory(@PathVariable int userId, @PathVariable int categoryId) {
         User tempUser = userRepository.findById(userId).get();
         List<Integer> tempList = tempUser.getSubscribedCategories();
+        if(tempList.contains(categoryId))
+            return ResponseEntity.ok(false);
         tempList.add(categoryId);
         tempUser.setSubscribedCategories(tempList);
         userRepository.save(tempUser);
@@ -193,13 +197,14 @@ public class UserController {
         userRepository.save(tempUser);
         return ResponseEntity.ok(true);
     }
-
     @PatchMapping("/users/{userId}/unsubscribeEvent/{eventId}")
     public ResponseEntity<Boolean> unsubscribeEvent(@PathVariable int userId, @PathVariable Integer eventId) {
         if(eventController.getEventOrganiser(eventId) == userId)
             return ResponseEntity.ok(false);
         User tempUser = userRepository.findById(userId).get();
         List<Integer> tempList = tempUser.getSubscribedEvents();
+        if(!tempList.contains(eventId))
+            return ResponseEntity.ok(false);
         tempList.remove(eventId);
         tempUser.setSubscribedEvents(tempList);
         userRepository.save(tempUser);
@@ -210,6 +215,8 @@ public class UserController {
     public ResponseEntity<Boolean> unsubscribeCategory(@PathVariable int userId, @PathVariable Integer categoryId) {
         User tempUser = userRepository.findById(userId).get();
         List<Integer> tempList = tempUser.getSubscribedCategories();
+        if(!tempList.contains(categoryId))
+            return ResponseEntity.ok(false);
         tempList.remove(categoryId);
         tempUser.setSubscribedCategories(tempList);
         userRepository.save(tempUser);
@@ -255,6 +262,7 @@ public class UserController {
     }
 
 
+    // Moderator options
     @PostMapping("/users/{userId}/createCategory")
     public ResponseEntity<Category> createUser(@PathVariable int userId, @RequestBody Category category){
         ResponseEntity<Category> tempCategory = (ResponseEntity<Category>) categoryController.addCategory(category);

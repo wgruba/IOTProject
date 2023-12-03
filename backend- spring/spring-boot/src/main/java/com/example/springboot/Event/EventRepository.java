@@ -18,6 +18,7 @@ public interface EventRepository extends MongoRepository<Event, String> {
     List<Event> findAll();
     Event findById(int id);
     Optional<Event> findTopByOrderByIdDesc();
+    List<Event> findTop10ByOrderByIdDesc();
     @Query("{'id': ?0}")
     Optional<Event> getEventById(int eventId);
     @Query("{'name': ?0}")
@@ -26,7 +27,8 @@ public interface EventRepository extends MongoRepository<Event, String> {
     List<Event> getEventsFromList(@Param("ids") List<Integer> ids);
     @Query("{'organizer': ?0}")
     List<Event> getEventsOrganisedByUser(@Param("id") int userId);
-    @Query("{?0': {'$in': 'categoryList'}")
+//    @Query("{?0': {'$in': 'categoryList'}")
+    @Query("{'categoryList': {'$elemMatch': {'$eq': ?0}}}")
     List<Event> getEventsFromCategory(int id);
     @Query("{'eventStatus': TO_ACCEPTANCE}")
     List<Event> getEventsToAcceptance();
@@ -39,26 +41,4 @@ public interface EventRepository extends MongoRepository<Event, String> {
     // Account Management
     @Query("{'$or': [{'name': ?0}, {'mail': ?0}]}")
     Optional<Event> login(String nameOrMail, String password) throws EventNotFoundEx;
-
-    /*
-    List<Event> getEditedEvents();
-    List<Event> getFilteredEvents(String name,
-                                  int categoryId,
-                                  int sizeMin,
-                                  int sizeMax,
-                                  String localisation,
-                                  int isFree,
-                                  int isReservationNecessary,
-                                  String ageGroupMin,
-                                  LocalDateTime startDate,
-                                  LocalDateTime endDate,
-                                  boolean isFullEventIncludedInDate);
-
-
-    //manage events' updates
-    boolean changeEventStatus(int eventId, EventStatus eventStatus) throws EventNotFoundEx;
-    boolean verifyEditedEvent(int eventId, int event2Id) throws EventNotFoundEx;
-    boolean isEventActive(int id) throws EventNotFoundEx;
-
-    boolean isFullEventIncludedInDate(int id, LocalDateTime startDate, LocalDateTime endDate) throws EventNotFoundEx;*/
 }
