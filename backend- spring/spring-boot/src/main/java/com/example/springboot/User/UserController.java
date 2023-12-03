@@ -8,6 +8,7 @@ import com.example.springboot.User.Exceptions.UserNotFoundEx;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -25,6 +26,8 @@ public class UserController {
     private EventController eventController;
     @Autowired
     private CategoryController categoryController;
+    @Autowired
+    private BCryptPasswordEncoder passwordEncoder;
 
 
     // CRUD - Create
@@ -33,12 +36,14 @@ public class UserController {
         Optional<User> existingUser = userRepository.getUserByNameOrMail(user.getName());
         if (existingUser.isPresent()) {
             return ResponseEntity
-                .status(HttpStatus.CONFLICT)
-                .body("User with the same name or email already exists");
+                    .status(HttpStatus.CONFLICT)
+                    .body("User with the same name or email already exists");
         }
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         userRepository.save(user);
         return ResponseEntity.ok(null);
     }
+
 
 
     // CRUD - Read
@@ -120,19 +125,11 @@ public class UserController {
 
 
     // Account management
-    public boolean loginUser(String loginOrMail, String password) {
-        Optional<User> userOptional = userRepository.getUserByNameOrMail(loginOrMail);
-        if (userOptional.isPresent()) {
-            User user = userOptional.get();
-            return password.equals(user.getPassword());
-        }
-        return false;
-    }
     @GetMapping("users/login")
     public ResponseEntity<Boolean> tryToLoginUser(String loginOrMail, String password){
         try {
             boolean result = userRepository.login(loginOrMail, password).isPresent();
-            return ResponseEntity.ok(result); // trzeba dodać user ID żeby się wysyłało
+            return ResponseEntity.ok(result);
         } catch (UserNotFoundEx e) {
             throw new RuntimeException(e);
         }

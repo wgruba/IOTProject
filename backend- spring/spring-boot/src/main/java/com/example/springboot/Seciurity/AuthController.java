@@ -16,13 +16,14 @@ public class AuthController {
     private UserRepository userRepository;
     @Autowired
     private JwtUtils jwtUtils;
+    @Autowired
+    private BCryptPasswordEncoder passwordEncoder;
 
     @PostMapping("/login")
     public ResponseEntity<?> authenticateUser(@RequestBody LoginRequest loginRequest) {
         Optional<User> user = userRepository.getUserByNameOrMail(loginRequest.getUsername());
         if(user.isPresent()) {
-            BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-            if (loginRequest.getPassword().equals(user.get().getPassword())) {
+            if (passwordEncoder.matches(loginRequest.getPassword(), user.get().getPassword())) {
                 String token = jwtUtils.generateJwtToken(user.get());
                 return ResponseEntity.ok(new AuthResponse(token));
             }
