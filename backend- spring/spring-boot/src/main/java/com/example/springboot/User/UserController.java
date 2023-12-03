@@ -144,8 +144,8 @@ public class UserController {
         return ResponseEntity.ok(false);
     }
     @GetMapping("/users/{userId}/getName")
-    public ResponseEntity<String> getUsersName(@PathVariable int userid){
-        User tempUser = userRepository.getUserById(userid).get();
+    public ResponseEntity<String> getUsersName(@PathVariable int userId){
+        User tempUser = userRepository.getUserById(userId).get();
         return ResponseEntity.ok(tempUser.getName());
     }
 

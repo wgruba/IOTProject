@@ -69,6 +69,18 @@ export class EventService {
     return this.http.get(`${this.baseUrl}/events`);
   }
 
+  getRecomendedEvents(): Observable<any> {
+    return this.http.get(`${this.baseUrl}/events/getRandom`);
+  }
+
+  getRecentEvents(): Observable<any> {
+    return this.http.get(`${this.baseUrl}/events/recent`);
+  }
+
+  getOrganizerName(organizerId: number): Observable<any> {
+    return this.http.get(`${this.baseUrl}/users/${organizerId}/getName`, { responseType: 'text' });
+  }
+
   addEvent(eventData: Event): Observable<any> {
     const headers = this.authenticationService.getHeadersWithToken()
     return this.http.post(`${this.baseUrl}/users/${this.userService.getCurrentUser().id}/createEvent`, eventData, { headers });

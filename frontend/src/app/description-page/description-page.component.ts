@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { EventService } from '../event.service';
 import { ActivatedRoute } from '@angular/router';
 import { Event } from '../models/event.model';
@@ -10,19 +10,19 @@ import { UserService } from '../user.service';
   templateUrl: './description-page.component.html',
   styleUrls: ['./description-page.component.scss']
 })
-export class DescriptionPageComponent {
+export class DescriptionPageComponent implements OnInit{
   event !: Event;
-  latitude: number;
-  longitude: number;
+  latitude!: number;
+  longitude!: number;
   isSubscribed = false;
+  organizerName: Organizer = {name: ""};
 
   constructor(
     private route: ActivatedRoute, 
     private eventService: EventService,
     private userService: UserService
   ) {
-    this.latitude = 50.4300934;
-    this.longitude = 22.236453;
+
   }
 
   ngOnInit(): void {
@@ -31,6 +31,7 @@ export class DescriptionPageComponent {
     this.isSubscribed = this.userService.getCurrentUser().subscribedEvents.includes(this.event.id)
     if (this.event.id !== parseInt(eventId, 10)) {
     }
+    this.getOrganizerUsername();
   }
 
   getGoogleCalendarUrl(event: Event): string {
@@ -42,6 +43,12 @@ export class DescriptionPageComponent {
     const title = encodeURIComponent(event.name);
   
     return `https://calendar.google.com/calendar/r/eventedit?text=${title}&dates=${startTime}/${endTime}&details=${details}&location=${location}`;
+  }
+
+  getOrganizerUsername() {
+    this.eventService.getOrganizerName(this.event.organizer).subscribe(data => {
+      this.organizerName.name = data
+    }, error => console.error(error));
   }
 
   formatDateToGoogleCalendar(date: Date): string {
@@ -62,4 +69,9 @@ export class DescriptionPageComponent {
       this.userService.setCurrentUser(user)
     });
   }
+}
+
+export class Organizer {
+  constructor(
+    public name: string) { }
 }
