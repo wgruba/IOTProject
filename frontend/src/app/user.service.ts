@@ -46,7 +46,8 @@ export class UserService {
   }
 
 
-  //Zarządzanie Suubskrypcją
+  //Zarządzanie Subskrypcją
+  
   subscribeEvent(eventId: number){
     const getUserUrl = `http://localhost:8080/users/${this.getCurrentUser().id}/subscribeEvent/${eventId}`;
     const headers = this.authenticationService.getHeadersWithToken()

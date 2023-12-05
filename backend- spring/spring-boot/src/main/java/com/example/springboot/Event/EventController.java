@@ -135,6 +135,20 @@ public class EventController {
 //        return eventRepository.findById(eventId).getOrganizer();
         return temp.getOrganizer();
     }
+
+    @GetMapping("/events/accept/{eventId}")
+    public ResponseEntity<Boolean> acceptEvent(@PathVariable int eventId){
+        try {
+            Event temp = eventRepository.findById(eventId);
+            temp.setEventStatus(EventStatus.ACCEPTED);
+            eventRepository.save(temp);
+            return ResponseEntity.ok(true);
+        }
+        catch (Exception e){
+            return ResponseEntity.ok(false);
+        }
+    }
+
     public List<Integer> getUsersThatSubscribedToEvent(int eventId) {
         return eventRepository.findById(eventId).getClientList();
     }

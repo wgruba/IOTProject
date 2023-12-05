@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { Category } from '../models/Category.model';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { Router } from '@angular/router';
+import { CategoryService } from '../category.service';
 
 
 @Component({
@@ -28,36 +29,16 @@ export class AdminCategoryComponent {
     console.log(newSubcategory);
   }
 
-  public categories: Category[] = [
-    { 
-      id: 1,
-      name: 'Kategoria 1', 
-      subcategories: [
-          { id: 101, name: 'Podkategoria 1.1' }, 
-          { id: 102, name: 'Podkategoria 1.2' }
-      ]
-      },
-      { 
-      id: 2,
-      name: 'Kategoria 2', 
-      subcategories: [
-          { id: 103, name: 'Podkategoria 2.1' }, 
-          { id: 106, name: 'Podkategoria 2.2' }
-        ]
-    },
-    { 
-      id: 3,
-      name: 'Kategoria 3', 
-      subcategories: [
-          { id: 104, name: 'Podkategoria 3.1' }, 
-          { id: 105, name: 'Podkategoria 3.2' }
-      ]
-    },]
+  public categories: Category[] = [];
 
-  constructor(private router: Router, private formBuilder: FormBuilder) {
+  constructor(private router: Router, private formBuilder: FormBuilder, private categoryService: CategoryService) {
     this.categoryForm = this.formBuilder.group({
       categoryName: [''],
       subcategoryName: ['']
+    });
+
+    this.categoryService.getCategoriesFromDatabase().subscribe(response => {
+      this.categories = response;
     });
   }
 }
