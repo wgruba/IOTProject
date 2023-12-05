@@ -24,7 +24,7 @@ export class AdminService {
   acceptEvent(eventId: number): Observable<any>{
     const getUserUrl = `http://localhost:8080/events/accept/${eventId}`;
     const headers = this.authenticationService.getHeadersWithToken()
-    return this.http.delete(getUserUrl, { headers });
+    return this.http.get(getUserUrl, { headers });
   }
 
   getEventsToAcceptance(): Observable<any> {

@@ -27,9 +27,7 @@ export class UserProfileComponent implements OnInit{
     });
     dialogRef.afterClosed().subscribe(result => {
       if(result) {
-        
       }
     });
   }
-  
 }

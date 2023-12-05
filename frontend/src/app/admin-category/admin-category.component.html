@@ -1,5 +1,3 @@
-
-
 <div class="accordion" [formGroup]="categoryForm">
     <div *ngFor="let item of categories" class="category" [class.selected]="selectedCategory === item.id">
         <div (click)="selectCategory(item.id)">
@@ -9,9 +7,9 @@
             <div *ngFor="let subItem of item.subcategories" class="subcategory">
                 {{ subItem.name }}
             </div>
-            <div class="addSubcategory">
+            <div class="addSubcategory" *ngIf="selectedCategory === item.id">
                 <input type="text" placeholder="Nowa podkategoria" formControlName="subcategoryName">
-                <button (click)="addSubcategory(item.name)">+</button>
+                <button (click)="addSubcategory(item.id)">+</button>
             </div>
         </div>
     </div>

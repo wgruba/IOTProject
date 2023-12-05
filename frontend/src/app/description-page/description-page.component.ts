@@ -28,8 +28,11 @@ export class DescriptionPageComponent implements OnInit{
   ngOnInit(): void {
     const eventId = this.route.snapshot.params['id'];
     this.event = this.eventService.getCurrentEvent();
-    this.isSubscribed = this.userService.getCurrentUser().subscribedEvents.includes(this.event.id)
-    if (this.event.id !== parseInt(eventId, 10)) {
+    const currentUser = this.userService.getCurrentUser();
+    if (currentUser && Array.isArray(currentUser.subscribedEvents)) {
+      this.isSubscribed = currentUser.subscribedEvents.includes(this.event.id);
+    } else {
+      this.isSubscribed = false;
     }
     this.getOrganizerUsername();
   }

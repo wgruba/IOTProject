@@ -14,22 +14,49 @@ import { CategoryService } from '../category.service';
 export class AdminCategoryComponent {
   public selectedCategory: number | null = null;
   categoryForm: FormGroup;
+  public categories: Category[] = [];
+
 
   public selectCategory(category: number): void {
     this.selectedCategory = this.selectedCategory === category ? null : category;
   }
 
+  private loadCategories(): void {
+    this.categoryService.getCategoriesFromDatabase().subscribe(response => {
+      this.categories = response;
+    });
+  }
+
   public addCategory(): void {
-    const newCategory = { category: this.categoryForm.value.categoryName, subcategory: null };
-    console.log(newCategory);
+    const newCategoryId = this.getNewCategoryId();
+    const newCategory: CategoryToAdd = {
+      id: newCategoryId,
+      name: this.categoryForm.value.categoryName,
+      isParentCategory: true,
+      subcategories: [],
+      parentId: null
+    };
   }
 
-  public addSubcategory(catName: string): void {
-    const newSubcategory = { category: catName, subcategory: this.categoryForm.value.subcategoryName };
-    console.log(newSubcategory);
+
+  public addSubcategory(parentId: number): void {
+    const newCategoryId = this.getNewCategoryId();
+    const newSubcategory: CategoryToAdd = {
+      id: newCategoryId,
+      name: this.categoryForm.value.subcategoryName,
+      isParentCategory: false,
+      subcategories: [],
+      parentId: parentId
+    };
+    this.categoryService.addCategory(newSubcategory).subscribe(() => {
+      this.loadCategories();
+    });
   }
 
-  public categories: Category[] = [];
+  private getNewCategoryId(): number {
+    const maxId = this.categories.reduce((max, category) => Math.max(max, category.id), 0);
+    return maxId + 1;
+  }
 
   constructor(private router: Router, private formBuilder: FormBuilder, private categoryService: CategoryService) {
     this.categoryForm = this.formBuilder.group({
@@ -37,8 +64,19 @@ export class AdminCategoryComponent {
       subcategoryName: ['']
     });
 
-    this.categoryService.getCategoriesFromDatabase().subscribe(response => {
-      this.categories = response;
-    });
+    this.loadCategories();
   }
+}
+
+export interface CategoryToAdd {
+  id: number | null;
+  name: string; 
+  isParentCategory: boolean;
+  subcategories: Subcategory[];
+  parentId: number | null;
+}
+
+export interface Subcategory {
+  id: number;
+  name: string;
 }

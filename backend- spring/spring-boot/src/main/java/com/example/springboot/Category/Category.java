@@ -15,7 +15,7 @@ public class Category {
     private String name;
     private boolean isParentCategory;
     private List<Pair<Integer, String>> subcategories;
-    private int parentId;
+    private Integer parentId;
 
     public int getId() {
         return id;
@@ -49,7 +49,7 @@ public class Category {
         this.subcategories = subcategories;
     }
 
-    public int getParentId() {
+    public Integer getParentId() {
         return parentId;
     }
 
