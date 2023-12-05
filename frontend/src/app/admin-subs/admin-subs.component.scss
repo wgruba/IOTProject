@@ -6,7 +6,7 @@ body{
   
   .sidebar {
     margin: 20px;
-    background: linear-gradient(#FF9505 ,#cfa706);
+    background: linear-gradient(#52A5E9 ,#62abe6);
     filter: brightness(110%);
     flex: 0 0 250px;
     padding: 20px;
@@ -14,7 +14,7 @@ body{
     height: 100vh;
   
     nav a {
-      color: white; 
+      color: black; 
       text-decoration: none;
       margin-bottom: 1rem;
       font-size: 1.2rem;
@@ -40,7 +40,7 @@ body{
       margin-top: 20px; 
       
     .card {
-      background: linear-gradient(#FFF8E1 ,#ffffff);
+      background: linear-gradient(#e1f4ff ,#ffffff);
       width: 100%; 
       max-width: 100%;
       margin: 20px 0; 
