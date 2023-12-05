@@ -20,6 +20,12 @@ export class UserService {
     return this.http.get<User>(getUserUrl, { headers });
   }
 
+  getUserFromDatabaseByName(name: string): Observable<any> {
+    const getUserUrl = `http://localhost:8080/users/name/${name}`;
+    const headers = this.authenticationService.getHeadersWithToken()
+    return this.http.get<User>(getUserUrl, { headers });
+  }
+
   getAllUsers(): Observable<User[]>{
     const getUserUrl = `http://localhost:8080/users`;
     const headers = this.authenticationService.getHeadersWithToken()
@@ -77,9 +83,19 @@ export class UserService {
     const headers = this.authenticationService.getHeadersWithToken()
     return this.http.get(getUserUrl, {headers});
   }
+  getSubscribedCategoriesById(id: number): Observable<any> {
+    const getUserUrl = `http://localhost:8080/users/${id}/subscribedCategories`;
+    const headers = this.authenticationService.getHeadersWithToken()
+    return this.http.get(getUserUrl, {headers});
+  }
 
   getSubscribedEvents(): Observable<any> {
     const getUserUrl = `http://localhost:8080/users/${this.getCurrentUser().id}/subscribedEvents`;
+    const headers = this.authenticationService.getHeadersWithToken()
+    return this.http.get(getUserUrl, {headers});
+  }
+  getSubscribedEventsById(id: number): Observable<any> {
+    const getUserUrl = `http://localhost:8080/users/${id}/subscribedEvents`;
     const headers = this.authenticationService.getHeadersWithToken()
     return this.http.get(getUserUrl, {headers});
   }
