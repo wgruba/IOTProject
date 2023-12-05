@@ -83,9 +83,19 @@ export class UserService {
     const headers = this.authenticationService.getHeadersWithToken()
     return this.http.get(getUserUrl, {headers});
   }
+  getSubscribedCategoriesById(id: number): Observable<any> {
+    const getUserUrl = `http://localhost:8080/users/${id}/subscribedCategories`;
+    const headers = this.authenticationService.getHeadersWithToken()
+    return this.http.get(getUserUrl, {headers});
+  }
 
   getSubscribedEvents(): Observable<any> {
     const getUserUrl = `http://localhost:8080/users/${this.getCurrentUser().id}/subscribedEvents`;
+    const headers = this.authenticationService.getHeadersWithToken()
+    return this.http.get(getUserUrl, {headers});
+  }
+  getSubscribedEventsById(id: number): Observable<any> {
+    const getUserUrl = `http://localhost:8080/users/${id}/subscribedEvents`;
     const headers = this.authenticationService.getHeadersWithToken()
     return this.http.get(getUserUrl, {headers});
   }
