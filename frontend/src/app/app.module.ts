@@ -38,6 +38,8 @@ import { EditingEventModalComponent } from './editing-event-modal/editing-event-
 import { EditEventComponent } from './edit-event/edit-event.component';
 import { AdminCategoryComponent } from './admin-category/admin-category.component';
 import { AdminProfileComponent } from './admin-profile/admin-profile.component';
+import { AdminEventsComponent } from './admin-events/admin-events.component';
+import { AdminSubsComponent } from './admin-subs/admin-subs.component';
 
 
 register();
@@ -71,6 +73,8 @@ register();
     EditEventComponent,
     AdminCategoryComponent,
     AdminProfileComponent,
+    AdminEventsComponent,
+    AdminSubsComponent,
   ],
   imports: [
     BrowserModule,

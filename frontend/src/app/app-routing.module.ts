@@ -19,6 +19,8 @@ import { UserSubscriptionsComponent } from './user-subscriptions/user-subscripti
 import { EditEventComponent } from './edit-event/edit-event.component';
 import { AdminCategoryComponent } from './admin-category/admin-category.component';
 import { AdminProfileComponent } from './admin-profile/admin-profile.component';
+import { AdminEventsComponent } from './admin-events/admin-events.component';
+import { AdminSubsComponent } from './admin-subs/admin-subs.component';
 
 
 const routes: Routes = [
@@ -40,6 +42,8 @@ const routes: Routes = [
   { path: 'admin-users', component: ModeratorUsersSearchSiteComponent, canActivate: [AuthGuard, RoleGuard],  data: { allowedRoles:  ['MODERATOR', 'ADMIN'] } },
   { path: 'category-management', component: AdminCategoryComponent, canActivate: [AuthGuard, RoleGuard],  data: { allowedRoles:  ['ADMIN'] } },
   { path: 'admin-profile/:name', component: AdminProfileComponent, canActivate: [AuthGuard, RoleGuard],  data: { allowedRoles:  ['ADMIN'] } },
+  { path: 'admin-events/:name', component: AdminEventsComponent, canActivate: [AuthGuard, RoleGuard],  data: { allowedRoles:  ['ADMIN'] } },
+  { path: 'admin-subs/:name', component: AdminSubsComponent, canActivate: [AuthGuard, RoleGuard],  data: { allowedRoles:  ['ADMIN'] } },
   
 ];
 

@@ -36,8 +36,7 @@ export class ModeratorUsersSearchSiteComponent implements OnInit{
     console.log(this.filterForm.value);
   }
 
-  showDetails(card: User): void {
-    // this.userService.setCurrentEvent(card);
-    // this.router.navigate(['/admin-event-details', card.id]);
+  showDetails(card: string): void {
+    this.router.navigate(['/admin-profile', card]);
   }
 }
