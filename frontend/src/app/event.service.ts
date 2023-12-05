@@ -65,6 +65,11 @@ export class EventService {
     return this.http.get(`${this.baseUrl}/users/${this.userService.getCurrentUser().id}/myEvents`, { headers });
   }
 
+  getUserEventsByName(id: number): Observable<any>{
+    const headers = this.authenticationService.getHeadersWithToken()
+    return this.http.get(`${this.baseUrl}/users/${id}/myEvents`, { headers });
+  }
+
   getAllEvents(): Observable<any> {
     return this.http.get(`${this.baseUrl}/events`);
   }
