@@ -20,6 +20,12 @@ export class UserService {
     return this.http.get<User>(getUserUrl, { headers });
   }
 
+  getUserFromDatabaseByName(name: string): Observable<any> {
+    const getUserUrl = `http://localhost:8080/users/name/${name}`;
+    const headers = this.authenticationService.getHeadersWithToken()
+    return this.http.get<User>(getUserUrl, { headers });
+  }
+
   getAllUsers(): Observable<User[]>{
     const getUserUrl = `http://localhost:8080/users`;
     const headers = this.authenticationService.getHeadersWithToken()

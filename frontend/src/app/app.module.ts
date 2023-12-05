@@ -37,6 +37,7 @@ import { ChangingPasswordModalComponent } from './changing-password-modal/changi
 import { EditingEventModalComponent } from './editing-event-modal/editing-event-modal.component';
 import { EditEventComponent } from './edit-event/edit-event.component';
 import { AdminCategoryComponent } from './admin-category/admin-category.component';
+import { AdminProfileComponent } from './admin-profile/admin-profile.component';
 
 
 register();
@@ -69,6 +70,7 @@ register();
     EditingEventModalComponent,
     EditEventComponent,
     AdminCategoryComponent,
+    AdminProfileComponent,
   ],
   imports: [
     BrowserModule,
