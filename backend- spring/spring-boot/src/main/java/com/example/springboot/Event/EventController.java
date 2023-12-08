@@ -214,17 +214,17 @@ public class EventController {
     }
 
 
-    @GetMapping("/categories/filter")
+    @GetMapping("/events/filter")
     public ResponseEntity<List<Event>> getAllFilteredCategories(
             @RequestParam(required = false, defaultValue = "") String name,
             @RequestParam(required = false, defaultValue = "") List<Integer> categoryList,
             @RequestParam(required = false, defaultValue = "") String localisation,
             @RequestParam(required = false, defaultValue = "") String startDate,
             @RequestParam(required = false, defaultValue = "") String endDate,
-            @RequestParam boolean isFinished,
-            @RequestParam int reservation,
-            @RequestParam int isFree,
-            @RequestParam AgeGroup ageGroup
+            @RequestParam(required = false) Boolean isFinished,
+            @RequestParam(required = false) Integer reservation,
+            @RequestParam(required = false) Integer isFree,
+            @RequestParam(required = false, defaultValue = "FAMILY_FRIENDLY") AgeGroup ageGroup
     )
     {
         List<Event> allEvents = getEventsFromCategories(categoryList).getBody();

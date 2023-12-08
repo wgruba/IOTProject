@@ -395,9 +395,9 @@ export class UserHeaderComponent implements OnInit {
     else {
       this.filterParsed = JSON.parse(filterData)
     }
-    console.log(filterData)
     const formData = {...this.searchForm.value, ...this.selectedLocalisation, ...this.selectedItems, ...this.filterParsed}
     console.log(formData)
+    this.filterSearchService.getFillteredEvents(formData).subscribe(response => {});
     this.router.navigate(['/event-searching']);
   }
 }
