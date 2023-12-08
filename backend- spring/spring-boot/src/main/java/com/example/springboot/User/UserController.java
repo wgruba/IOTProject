@@ -137,6 +137,33 @@ public class UserController {
             return userRepository.save(updatedUser);
         });
     }
+    @PutMapping("/users/{id}/updatePermissions")
+    public User updateUserPermissions(@PathVariable Integer id, @RequestBody Integer permissionLevel) {
+        PermissionLevel temp = null;
+        switch (permissionLevel) {
+            case 4:
+                temp = PermissionLevel.UNVERIFIED_USER;
+                break;
+            case 3:
+                temp = PermissionLevel.VERIFIED_USER;
+                break;
+            case 2:
+                temp = PermissionLevel.MODERATOR;
+                break;
+            case 1:
+                temp = PermissionLevel.ADMIN;
+                break;
+            default:
+                break;
+        }
+        final PermissionLevel finalTemp = temp;
+        return userRepository.findById(id).map(user -> {
+            user.setPermissionLevel(finalTemp);
+            return userRepository.save(user);
+        }).orElseGet(() -> {
+            return null;
+        });
+    }
 
 
     // CRUD - Delete

@@ -2,6 +2,8 @@ import { Component } from '@angular/core';
 import { User } from '../models/user.model';
 import { UserService } from '../user.service';
 import { Router, ActivatedRoute } from '@angular/router';
+import { Location } from '@angular/common';
+
 
 @Component({
   selector: 'app-admin-profile',
@@ -12,7 +14,7 @@ export class AdminProfileComponent {
   user!: User;
   areYouSureVisible = false;
   permissionChange = 0;
-  constructor(private route: ActivatedRoute, public userService: UserService) {
+  constructor(private route: ActivatedRoute, public userService: UserService, private location: Location) {
   }
 
   ngOnInit(): void {
@@ -29,9 +31,10 @@ export class AdminProfileComponent {
   }
 
   changePermissionConfirm(): void {
-    // this.userService.changePermission(this.user.id, type).subscribe(data => {
-    //   this.user = data;
-    // }, error => console.error(error));
+    this.userService.updateUserPermissions(this.user.id, this.permissionChange);
+    this.areYouSureVisible = false;
+    setTimeout(() => {
+    window.location.reload();}, 500);
   }
 
   changePermissionCancel(): void {

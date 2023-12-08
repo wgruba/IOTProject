@@ -58,6 +58,13 @@ export class UserService {
     return this.http.get('http://localhost:8080/user/last');
   }
 
+  updateUserPermissions(id: number, permissionLevel: number): void {
+    const getUserUrl = `http://localhost:8080/users/${id}/updatePermissions`;
+    const params = permissionLevel;
+    const headers = this.authenticationService.getHeadersWithToken()
+    this.http.put(getUserUrl, params, {headers}).subscribe();
+  }
+
 
   //Zarządzanie Subskrypcją
   
