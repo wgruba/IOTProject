@@ -40,6 +40,7 @@ import { AdminCategoryComponent } from './admin-category/admin-category.componen
 import { AdminProfileComponent } from './admin-profile/admin-profile.component';
 import { AdminEventsComponent } from './admin-events/admin-events.component';
 import { AdminSubsComponent } from './admin-subs/admin-subs.component';
+import { ModProfileComponent } from './mod-profile/mod-profile.component';
 
 
 register();
@@ -75,6 +76,7 @@ register();
     AdminProfileComponent,
     AdminEventsComponent,
     AdminSubsComponent,
+    ModProfileComponent,
   ],
   imports: [
     BrowserModule,

@@ -55,6 +55,40 @@ public class UserController {
                 .collect(Collectors.toList());
         return ResponseEntity.ok(userDTOs);
     }
+    @GetMapping("/users/filter")
+    public ResponseEntity<List<UserDTO>> getAllUsersFiltered(
+        @RequestParam(required = false, defaultValue = "") String name,
+        @RequestParam(required = false, defaultValue = "") String mail,
+        @RequestParam boolean admin,
+        @RequestParam boolean mod,
+        @RequestParam boolean ver,
+        @RequestParam boolean nonver
+        )
+    {
+        List<User> users = userRepository.findAll();
+        List<User> filteredUsers = new ArrayList<>();
+        for(User user: users){
+            int tot = 0;
+            if(user.getName().toLowerCase().contains(name.toLowerCase()))
+                tot++;
+            if(user.getMail().toLowerCase().contains(mail.toLowerCase()))
+                tot++;
+            if(user.getPermissionLevel() == PermissionLevel.ADMIN && admin)
+                tot++;
+            if(user.getPermissionLevel() == PermissionLevel.MODERATOR && mod)
+                tot++;
+            if(user.getPermissionLevel() == PermissionLevel.VERIFIED_USER && ver)
+                tot++;
+            if(user.getPermissionLevel() == PermissionLevel.UNVERIFIED_USER && nonver)
+                tot++;
+            if(tot == 3)
+                filteredUsers.add(user);
+        }
+        List<UserDTO> userDTOs = filteredUsers.stream()
+                .map(UserDTO::toDTO)
+                .collect(Collectors.toList());
+        return ResponseEntity.ok(userDTOs);
+    }
     @GetMapping("/users/{id}")
     public ResponseEntity<UserDTO> getUser(@PathVariable int id) throws UserNotFoundEx{
         try {
@@ -101,6 +135,33 @@ public class UserController {
         }).orElseGet(() -> {
             updatedUser.setId(userId);
             return userRepository.save(updatedUser);
+        });
+    }
+    @PutMapping("/users/{id}/updatePermissions")
+    public User updateUserPermissions(@PathVariable Integer id, @RequestBody Integer permissionLevel) {
+        PermissionLevel temp = null;
+        switch (permissionLevel) {
+            case 4:
+                temp = PermissionLevel.UNVERIFIED_USER;
+                break;
+            case 3:
+                temp = PermissionLevel.VERIFIED_USER;
+                break;
+            case 2:
+                temp = PermissionLevel.MODERATOR;
+                break;
+            case 1:
+                temp = PermissionLevel.ADMIN;
+                break;
+            default:
+                break;
+        }
+        final PermissionLevel finalTemp = temp;
+        return userRepository.findById(id).map(user -> {
+            user.setPermissionLevel(finalTemp);
+            return userRepository.save(user);
+        }).orElseGet(() -> {
+            return null;
         });
     }
 

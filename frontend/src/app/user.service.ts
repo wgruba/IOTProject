@@ -32,6 +32,13 @@ export class UserService {
     return this.http.get<User[]>(getUserUrl, { headers });
   }
 
+  getAllUsersFiltered(name: string, mail: string, admin: boolean, mod: boolean, ver: boolean, nonver: boolean): Observable<User[]> {
+    const params = {name: name, mail: mail, admin: admin.toString(), mod: mod.toString(), ver: ver.toString(), nonver: nonver.toString()};
+    const getUserUrl = `http://localhost:8080/users/filter`;
+    const headers = this.authenticationService.getHeadersWithToken()
+    return this.http.get<User[]>(getUserUrl, { headers, params });
+  }
+
   setCurrentUser(user: User): void {
     localStorage.setItem('currentUser', JSON.stringify(user));
     localStorage.setItem('username', user.name); 
@@ -49,6 +56,13 @@ export class UserService {
 
   getLastID(): Observable<any> {
     return this.http.get('http://localhost:8080/user/last');
+  }
+
+  updateUserPermissions(id: number, permissionLevel: number): void {
+    const getUserUrl = `http://localhost:8080/users/${id}/updatePermissions`;
+    const params = permissionLevel;
+    const headers = this.authenticationService.getHeadersWithToken()
+    this.http.put(getUserUrl, params, {headers}).subscribe();
   }
 
 
