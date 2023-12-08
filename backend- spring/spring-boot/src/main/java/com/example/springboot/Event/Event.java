@@ -26,8 +26,6 @@ public class Event {
 
     private int size;
 
-    //    todo localisation as localisation
-
     private String localisation;
 
     private boolean isFree; //not paid

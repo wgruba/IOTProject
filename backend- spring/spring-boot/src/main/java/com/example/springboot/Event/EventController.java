@@ -1,9 +1,11 @@
 package com.example.springboot.Event;
 
+import com.example.springboot.Category.Category;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -94,6 +96,7 @@ public class EventController {
         }
         return ResponseEntity.ok(getEventsFromList(randomIntList));
     }
+
 
     // CRUD - Update
     @PutMapping("/events/{id}")
@@ -208,6 +211,64 @@ public class EventController {
         tempEvent.setCategoryList(tempList);
         eventRepository.save(tempEvent);
         return ResponseEntity.ok(true);
+    }
+
+
+    @GetMapping("/categories/filter")
+    public ResponseEntity<List<Event>> getAllFilteredCategories(
+            @RequestParam(required = false, defaultValue = "") String name,
+            @RequestParam(required = false, defaultValue = "") List<Integer> categoryList,
+            @RequestParam(required = false, defaultValue = "") String localisation,
+            @RequestParam(required = false, defaultValue = "") String startDate,
+            @RequestParam(required = false, defaultValue = "") String endDate,
+            @RequestParam boolean isFinished,
+            @RequestParam int reservation,
+            @RequestParam int isFree,
+            @RequestParam AgeGroup ageGroup
+    )
+    {
+        List<Event> allEvents = getEventsFromCategories(categoryList).getBody();
+        List<Event> filteredEvents = new ArrayList<>();
+
+        for(Event event: allEvents){
+            if(event.getName().toLowerCase().contains(name.toLowerCase()))
+                if(event.getLocalisation().toLowerCase().contains(localisation.toLowerCase()))
+                    if(event.getEndDate().isAfter(LocalDateTime.now()) && !isFinished || event.getEndDate().isBefore(LocalDateTime.now()) && isFinished)
+                        if(reservation == 0 || (event.isReservationNecessary() && reservation == 1) || (!event.isReservationNecessary() && reservation == 2))
+                            if(isFree == 0 || (event.isFree() && isFree == 1) || (!event.isFree() && isFree == 2))
+                                if(ageGroup == AgeGroup.FAMILY_FRIENDLY ||
+                                        ageGroup == AgeGroup.OVER12 && (event.getAgeGroup() == AgeGroup.OVER12 || event.getAgeGroup() == AgeGroup.OVER12 || event.getAgeGroup() == AgeGroup.OVER16 || event.getAgeGroup() == AgeGroup.OVER18) ||
+                                        ageGroup == AgeGroup.OVER16 && (event.getAgeGroup() == AgeGroup.OVER12 || event.getAgeGroup() == AgeGroup.OVER16 || event.getAgeGroup() == AgeGroup.OVER18) ||
+                                        ageGroup == AgeGroup.OVER18 && (event.getAgeGroup() == AgeGroup.OVER16 || event.getAgeGroup() == AgeGroup.OVER18)){
+                                    LocalDateTime startDateTime, endDateTime;
+                                    if(startDate.equals(""))
+                                        if(endDate.equals(""))
+                                            filteredEvents.add(event);
+                                        else{
+                                            endDateTime = LocalDateTime.parse(endDate);
+                                            if(endDateTime.isAfter(event.getEndDate()))
+                                                filteredEvents.add(event);
+                                        }
+                                    else {
+                                        startDateTime = LocalDateTime.parse(startDate);
+                                        if(startDateTime.isBefore(event.getStartDate()))
+                                            if (endDate.equals("")) {
+                                                filteredEvents.add(event);
+                                            }
+                                            else {
+                                                endDateTime = LocalDateTime.parse(endDate);
+                                                if (endDateTime.isAfter(event.getEndDate())) {
+                                                    filteredEvents.add(event);
+                                                }
+                                            }
+                                    }
+
+                                filteredEvents.add(event);
+
+                            }
+        }
+
+        return ResponseEntity.ok(filteredEvents);
     }
 
 
