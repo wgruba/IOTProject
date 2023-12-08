@@ -55,6 +55,40 @@ public class UserController {
                 .collect(Collectors.toList());
         return ResponseEntity.ok(userDTOs);
     }
+    @GetMapping("/users/filter")
+    public ResponseEntity<List<UserDTO>> getAllUsersFiltered(
+        @RequestParam(required = false, defaultValue = "") String name,
+        @RequestParam(required = false, defaultValue = "") String mail,
+        @RequestParam boolean admin,
+        @RequestParam boolean mod,
+        @RequestParam boolean ver,
+        @RequestParam boolean nonver
+        )
+    {
+        List<User> users = userRepository.findAll();
+        List<User> filteredUsers = new ArrayList<>();
+        for(User user: users){
+            int tot = 0;
+            if(user.getName().toLowerCase().contains(name.toLowerCase()))
+                tot++;
+            if(user.getMail().toLowerCase().contains(mail.toLowerCase()))
+                tot++;
+            if(user.getPermissionLevel() == PermissionLevel.ADMIN && admin)
+                tot++;
+            if(user.getPermissionLevel() == PermissionLevel.MODERATOR && mod)
+                tot++;
+            if(user.getPermissionLevel() == PermissionLevel.VERIFIED_USER && ver)
+                tot++;
+            if(user.getPermissionLevel() == PermissionLevel.UNVERIFIED_USER && nonver)
+                tot++;
+            if(tot == 3)
+                filteredUsers.add(user);
+        }
+        List<UserDTO> userDTOs = filteredUsers.stream()
+                .map(UserDTO::toDTO)
+                .collect(Collectors.toList());
+        return ResponseEntity.ok(userDTOs);
+    }
     @GetMapping("/users/{id}")
     public ResponseEntity<UserDTO> getUser(@PathVariable int id) throws UserNotFoundEx{
         try {

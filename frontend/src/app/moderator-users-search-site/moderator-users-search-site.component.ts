@@ -27,13 +27,14 @@ export class ModeratorUsersSearchSiteComponent implements OnInit{
   }
 
   ngOnInit(): void {
-    this.userService.getAllUsers().subscribe(data => {
+    console.log(this.filterForm.value)
+    this.userService.getAllUsersFiltered(this.filterForm.value.imie, this.filterForm.value.email, this.filterForm.value.admini, this.filterForm.value.moderatorzy, this.filterForm.value.klienciVer, this.filterForm.value.klienciNieVer).subscribe(data => {
       this.users = data;
     }, error => console.error(error));
   }
 
   applyFilters(){
-    console.log(this.filterForm.value);
+    this.ngOnInit();
   }
 
   showDetails(card: string): void {
