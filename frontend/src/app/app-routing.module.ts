@@ -21,6 +21,7 @@ import { AdminCategoryComponent } from './admin-category/admin-category.componen
 import { AdminProfileComponent } from './admin-profile/admin-profile.component';
 import { AdminEventsComponent } from './admin-events/admin-events.component';
 import { AdminSubsComponent } from './admin-subs/admin-subs.component';
+import { ModProfileComponent } from './mod-profile/mod-profile.component';
 
 
 const routes: Routes = [
@@ -35,6 +36,7 @@ const routes: Routes = [
   { path: 'edit-event', component: EditEventComponent ,canActivate: [AuthGuard]},
   { path: 'event-searching', component: UserSearchingPageComponent},
   { path: 'user-profile', component: UserProfileComponent, canActivate: [AuthGuard, RoleGuard],  data: { allowedRoles:  ['VERIFIED_USER', 'UNVERIFIED_USER'] } },
+  { path: 'mod-profile', component: ModProfileComponent, canActivate: [AuthGuard, RoleGuard],  data: { allowedRoles:  ['MODERATOR', 'ADMIN'] }},
   { path: 'user-events', component: UserEventsComponent, canActivate: [AuthGuard, RoleGuard],  data: { allowedRoles:  ['VERIFIED_USER', 'UNVERIFIED_USER'] } },
   { path: 'user-subs', component: UserSubscriptionsComponent, canActivate: [AuthGuard, RoleGuard],  data: { allowedRoles:  ['VERIFIED_USER', 'UNVERIFIED_USER'] } },
   { path: 'admin-acceptance', component: ModeratorAcceptationSiteComponent, canActivate: [AuthGuard, RoleGuard],  data: { allowedRoles:  ['MODERATOR', 'ADMIN'] } },

@@ -21,7 +21,8 @@
         <div class="right-section">
             <ng-container *ngIf="authService.isLoggedIn$ | async; else loggedOutTemplate">
               <button (click)="logout()" class="logout-button"><i class="fas fa-sign-out-alt"></i> Wyloguj</button>
-              <button routerLink="/user-profile" class="profile-button"><i class="fas fa-user"></i> Profil</button>
+              <button *ngIf="isUser" routerLink="/user-profile" class="profile-button"><i class="fas fa-user"></i> Profil</button>
+              <button *ngIf="isAdmin" routerLink="/mod-profile" class="profile-button"><i class="fas fa-user"></i> Profil</button>
             </ng-container>
           
             <ng-template #loggedOutTemplate>
