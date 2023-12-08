@@ -24,13 +24,13 @@ import { AdminSubsComponent } from './admin-subs/admin-subs.component';
 
 
 const routes: Routes = [
-  { path: 'home', component: MainSiteComponent},
+  { path: '', redirectTo: '/home', pathMatch: 'full'},
+  { path: 'home', component: MainSiteComponent,  data: { allowedRoles:  ['VERIFIED_USER', 'UNVERIFIED_USER'] }},
   { path: 'login-site', component:LoginSiteComponent},
   { path: 'register-site', component:RegisterSiteComponent},
   { path: 'event-details/:id', component: DescriptionPageComponent},
   { path: 'o-nas', component:AboutUsComponent},
   { path: 'pomoc', component:UserHelpComponent},
-  { path: '', redirectTo: '/home', pathMatch: 'full'},
   { path: 'add-event', component: AddEventSiteComponent ,canActivate: [AuthGuard]},
   { path: 'edit-event', component: EditEventComponent ,canActivate: [AuthGuard]},
   { path: 'event-searching', component: UserSearchingPageComponent},
