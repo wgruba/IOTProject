@@ -28,17 +28,12 @@
           <!-- selector min wieku -->
           <div>
             Wymagany wiek:<br>
-            <input type="radio" class="sidebar-checkbox" name="wiek" value=0 formControlName="wiek" checked>
-            <label for="wiek">Rodzinne</label><br>
-            <input type="radio" class="sidebar-checkbox" name="wiek" value=1 formControlName="wiek">
-            <label for="wiek">7+</label><br>
-            <input type="radio" class="sidebar-checkbox" name="wiek" value=2 formControlName="wiek">
-            <label for="wiek">13+</label><br>
-            <input type="radio" class="sidebar-checkbox" name="wiek" value=3 formControlName="wiek">
-            <label for="wiek">16+</label><br>
-            <input type="radio" class="sidebar-checkbox" name="wiek" value=4 formControlName="wiek">
-            <label for="wiek">18+</label><br>
+            <label><input  class="sidebar-checkbox" name="wiek" formControlName="wiek" type="radio" value="FAMILY_FRIENDLY"> Rodzinne</label><br>
+            <label><input  class="sidebar-checkbox" name="wiek" formControlName="wiek" type="radio" value="OVER12"> 13+</label><br>
+            <label><input  class="sidebar-checkbox" name="wiek" formControlName="wiek" type="radio" value="OVER16"> 16+</label><br>
+            <label><input  class="sidebar-checkbox" name="wiek" formControlName="wiek" type="radio" value="OVER18"> 18+</label><br>
           </div>
+          
           <!-- selector miejsc NIE DZIAŁA NIE WIEM DLACZEGO -->
           <div>
             <label for="miejscaMin">Ilość miejsc od</label>

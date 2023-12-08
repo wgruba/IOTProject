@@ -21,7 +21,6 @@ export class EditEventComponent {
   id: number = 0;
 
 
-
   constructor(private eventService: EventService, private snackBar: MatSnackBar, public userService: UserService, public categoryService: CategoryService){}
 
   ngOnInit(): void {
@@ -52,6 +51,7 @@ export class EditEventComponent {
   }
   
   patchFormValues(): void {
+    this.selectedCategoryIds = this.event.categoryList;
     this.eventForm.patchValue({
       eventName: this.event.name,
       participants: this.event.size,
@@ -200,7 +200,7 @@ export class EditEventComponent {
         this.eventService.addEvent(eventData).subscribe(
           response => {
             console.log('Event added:', response);
-            this.snackBar.open("Wydarzenie zostało dodane", 'Zamknij', {
+            this.snackBar.open("Wydarzenie zostało edytowane", 'Zamknij', {
               duration: 3000,
               horizontalPosition: 'right',
               verticalPosition: 'top', });
