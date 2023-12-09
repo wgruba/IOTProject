@@ -31,17 +31,28 @@ public class CategoryController {
         return ResponseEntity.ok(savedCategory);
     }
     @PostMapping("/addSubCategory")
-    public ResponseEntity<?> addSubCategory(@RequestBody Category subcategory){
-        Category parentCategory = categoryRepository.findById(subcategory.getParentId());
+    public ResponseEntity<?> addSubCategory(@RequestBody Category subcategory) {
+        Optional<Category> existingCategory = categoryRepository.findById(subcategory.getParentId());
+        if (existingCategory.isPresent()) {
+            Optional<Category> existingCategory2 = categoryRepository.getCategoryByName(subcategory.getName());
+            if (existingCategory2.isPresent()) {
+                return ResponseEntity
+                        .status(HttpStatus.CONFLICT)
+                        .body("Category with the same name already exists");
+            }
+            Category parentCategory = existingCategory.get();
+            List<Pair<Integer, String>> tempList = parentCategory.getSubcategories();
+            Pair<Integer, String> tempPair = Pair.of(subcategory.getId(), subcategory.getName());
+            tempList.add(tempPair);
+            parentCategory.setSubcategories(tempList);
+            categoryRepository.save(parentCategory);
 
-        List<Pair<Integer, String>> tempList = parentCategory.getSubcategories();
-        Pair tempPair = Pair.of(subcategory.getId(), subcategory.getName());
-        tempList.add(tempPair);
-        parentCategory.setSubcategories(tempList);
-        categoryRepository.save(parentCategory);
-
-        Category savedCategory = categoryRepository.save(subcategory);
-        return ResponseEntity.ok(savedCategory);
+            Category savedCategory = categoryRepository.save(subcategory);
+            return ResponseEntity.ok(savedCategory);
+        }
+        return ResponseEntity
+                .status(HttpStatus.NOT_FOUND)
+                .body("Cannot find parent category of such id");
     }
 
 
@@ -52,48 +63,66 @@ public class CategoryController {
         return ResponseEntity.ok(categories);
     }
     @GetMapping("/categories/name/{name}")
-    public ResponseEntity<Category> getCategoryByName(@PathVariable String name) {
-        Category category = categoryRepository.getCategoryByName(name).get();
-        return ResponseEntity.ok(category);
+    public ResponseEntity<?> getCategoryByName(@PathVariable String name) {
+        Optional<Category> existingCategory = categoryRepository.getCategoryByName(name);
+        if (existingCategory.isPresent()) {
+            Category category = existingCategory.get();
+            return ResponseEntity.ok(category);
+        }
+        return ResponseEntity
+            .status(HttpStatus.NOT_FOUND)
+            .body("Cannot find category with given name");
     }
     @GetMapping("/categories/list")
-    public List<Category> getCategoriesFromList(List<Integer> ids){
+    public List<Category> getCategoriesFromList(List<Integer> ids) {
         return categoryRepository.getCategoriesFromList(ids);
     }
     @GetMapping("/categories/{categoryId}")
-    public ResponseEntity<Category> getCategoryById(@PathVariable int categoryId){
-        return ResponseEntity.ok(categoryRepository.findById(categoryId));
+    public ResponseEntity<?> getCategoryById(@PathVariable int categoryId) {
+        Optional<Category> existingCategory = categoryRepository.findById(categoryId);
+        if (existingCategory.isPresent()) {
+            return ResponseEntity.ok(existingCategory.get());
+        }
+        return ResponseEntity
+                .status(HttpStatus.NOT_FOUND)
+                .body("Cannot find category with given id");
     }
     @GetMapping("/categories/parentCategories")
-    public ResponseEntity<List<Category>> getParentCategories(){
-        return ResponseEntity.ok(categoryRepository.findAllParentCategories());
+    public ResponseEntity<List<Category>> getParentCategories() {
+        return ResponseEntity.ok(categoryRepository.getAllParentCategories());
     }
     @GetMapping("categories/{categoryId}/subcategories")
-    public ResponseEntity<List<Category>> getSubcategories(@PathVariable int categoryId){
-        return ResponseEntity.ok(categoryRepository.getAllSubCategoriesOfParentCategory(categoryId));
+    public ResponseEntity<List<Category>> getSubcategories(@PathVariable int categoryId) {
+        List<Category> x = categoryRepository.getAllSubCategoriesOfParentCategory(categoryId);
+        return ResponseEntity.ok(x);
     }
 
 
     // CRUD - Update
-    @PutMapping("/categories/{id}")
-    public Category updateCategory(@PathVariable int id, @RequestBody Category category) {
-        return updateCategoryHelper(id, category);
-    }
-    public Category updateCategoryHelper(int categoryId, Category updatedCategory) {
-        Category category = categoryRepository.findById(categoryId);
-        category.setName(updatedCategory.getName());
-        category.setParentCategory(updatedCategory.isParentCategory());
-        category.setSubcategories(updatedCategory.getSubcategories());
-        category.setParentId(updatedCategory.getParentId());
+    @PutMapping("/categories/{categoryId}")
+    public Category updateCategory(@PathVariable int categoryId, @RequestBody Category category) {
+        Optional<Category> existingCategory = categoryRepository.findById(categoryId);
+        if (existingCategory.isPresent()) {
+            Category tempCategory = existingCategory.get();
+            tempCategory.setName(category.getName());
+            tempCategory.setParentCategory(category.isParentCategory());
+            tempCategory.setSubcategories(category.getSubcategories());
+            tempCategory.setParentId(category.getParentId());
 
-        return categoryRepository.save(category);
+            return categoryRepository.save(tempCategory);
+        }
+        return null;
     }
 
 
     // CRUD - Delete
-    @DeleteMapping("/categories/{id}")
-    public boolean deleteUser(@PathVariable int id) {
-        categoryRepository.deleteById(id);
-        return true;
+    @DeleteMapping("/categories/{categoryId}")
+    public boolean deleteUser(@PathVariable int categoryId) {
+        Optional<Category> existingCategory = categoryRepository.findById(categoryId);
+        if (existingCategory.isPresent()) {
+            categoryRepository.deleteById(categoryId);
+            return true;
+        }
+        return false;
     }
 }

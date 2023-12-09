@@ -15,13 +15,13 @@ public interface CategoryRepository extends MongoRepository<Category, String> {
 
     // CRUD - Read
     List<Category> findAll();
-    Category findById(int id);
+    Optional<Category> findById(int id);
     @Query("{'name': ?0}")
     Optional<Category> getCategoryByName(String name);
     @Query("{'isParentCategory': true}")
-    List<Category> findAllParentCategories();
-    @Query("{'parentId': parentId")
-    List<Category> getAllSubCategoriesOfParentCategory(int parentId);
+    List<Category> getAllParentCategories();
+    @Query("{'parentId': ?0}")
+    List<Category> getAllSubCategoriesOfParentCategory(Integer parentId);
     @Query("{'id': {'$in': ?0}}")
     List<Category> getCategoriesFromList(@Param("ids") List<Integer> ids);
 
