@@ -1,6 +1,5 @@
 package com.example.springboot.Event;
 
-import com.example.springboot.Category.Category;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -215,79 +214,61 @@ public class EventController {
 
 
     @GetMapping("/events/filter")
-    public ResponseEntity<List<Event>> getAllFilteredCategories(
-            @RequestParam(required = false, defaultValue = "") String name,
-            @RequestParam(required = false, defaultValue = "") List<Integer> categoryList,
-            @RequestParam(required = false, defaultValue = "") String localisation,
-            @RequestParam(required = false, defaultValue = "") String startDate,
-            @RequestParam(required = false, defaultValue = "") String endDate,
-            @RequestParam(required = false) Boolean isFinished,
-            @RequestParam(required = false) Integer reservation,
-            @RequestParam(required = false) Integer isFree,
-            @RequestParam(required = false, defaultValue = "FAMILY_FRIENDLY") AgeGroup ageGroup
-    )
+    public ResponseEntity<List<Event>> getAllFilteredCategories(@RequestBody FilteredEventParameters filteredEventParameters)
     {
+        String name = filteredEventParameters.getName();
+        List<Integer> categoryList = filteredEventParameters.getCategoryList();
+        String localisation = filteredEventParameters.getLocalisation();
+        String startDate = filteredEventParameters.getStartDate();
+        String endDate = filteredEventParameters.getEndDate();
+        Boolean isFinished = filteredEventParameters.getFinished();
+        Integer reservation = filteredEventParameters.getReservation();
+        Integer isFree = filteredEventParameters.getIsFree();
+        AgeGroup ageGroup = filteredEventParameters.getAgeGroup();
+        LocalDateTime startDateTime, endDateTime;
+        boolean startDateRelevant, endDateRelevant;
+
+        if (startDate.equals("")) {
+            startDateTime = LocalDateTime.now();
+            startDateRelevant=false;
+        }
+        else {
+            startDateTime = LocalDateTime.parse(startDate);
+            startDateRelevant = true;
+        }
+
+        if (endDate.equals("")) {
+            endDateTime = LocalDateTime.now();
+            endDateRelevant=false;
+        }
+        else {
+            endDateTime = LocalDateTime.parse(endDate);
+            endDateRelevant = true;
+        }
+
+
         List<Event> allEvents = getEventsFromCategories(categoryList).getBody();
         List<Event> filteredEvents = new ArrayList<>();
 
         for(Event event: allEvents){
-            if(event.getName().toLowerCase().contains(name.toLowerCase()))
-                if(event.getLocalisation().toLowerCase().contains(localisation.toLowerCase()))
-                    if(event.getEndDate().isAfter(LocalDateTime.now()) && !isFinished || event.getEndDate().isBefore(LocalDateTime.now()) && isFinished)
-                        if(reservation == 0 || (event.isReservationNecessary() && reservation == 1) || (!event.isReservationNecessary() && reservation == 2))
-                            if(isFree == 0 || (event.isFree() && isFree == 1) || (!event.isFree() && isFree == 2))
-                                if(ageGroup == AgeGroup.FAMILY_FRIENDLY ||
-                                        ageGroup == AgeGroup.OVER12 && (event.getAgeGroup() == AgeGroup.OVER12 || event.getAgeGroup() == AgeGroup.OVER12 || event.getAgeGroup() == AgeGroup.OVER16 || event.getAgeGroup() == AgeGroup.OVER18) ||
-                                        ageGroup == AgeGroup.OVER16 && (event.getAgeGroup() == AgeGroup.OVER12 || event.getAgeGroup() == AgeGroup.OVER16 || event.getAgeGroup() == AgeGroup.OVER18) ||
-                                        ageGroup == AgeGroup.OVER18 && (event.getAgeGroup() == AgeGroup.OVER16 || event.getAgeGroup() == AgeGroup.OVER18)){
-                                    LocalDateTime startDateTime, endDateTime;
-                                    if(startDate.equals(""))
-                                        if(endDate.equals(""))
-                                            filteredEvents.add(event);
-                                        else{
-                                            endDateTime = LocalDateTime.parse(endDate);
-                                            if(endDateTime.isAfter(event.getEndDate()))
+            if(event.getEventStatus() == EventStatus.ACCEPTED || event.getEventStatus() == EventStatus.EDITED)
+                if(event.getName().toLowerCase().contains(name.toLowerCase()))
+                    if(event.getLocalisation().toLowerCase().contains(localisation.toLowerCase()))
+    //                    if(event.getEndDate().isAfter(LocalDateTime.now()) && !isFinished || event.getEndDate().isBefore(LocalDateTime.now()) && isFinished)
+                            if(reservation == 0 || (event.isReservationNecessary() && reservation == 1) || (!event.isReservationNecessary() && reservation == 2))
+                                if(isFree == 0 || (event.isFree() && isFree == 1) || (!event.isFree() && isFree == 2))
+                                    if(ageGroup == AgeGroup.FAMILY_FRIENDLY ||
+                                            ageGroup == AgeGroup.OVER12 && (event.getAgeGroup() == AgeGroup.OVER12 || event.getAgeGroup() == AgeGroup.OVER16 || event.getAgeGroup() == AgeGroup.OVER18) ||
+                                            ageGroup == AgeGroup.OVER16 && (event.getAgeGroup() == AgeGroup.OVER16 || event.getAgeGroup() == AgeGroup.OVER18) ||
+                                            ageGroup == AgeGroup.OVER18 && (event.getAgeGroup() == AgeGroup.OVER18))
+                                        if(!startDateRelevant || startDateTime.isBefore(event.getStartDate()))
+                                            if(!endDateRelevant || endDateTime.isAfter(event.getEndDate()))
                                                 filteredEvents.add(event);
-                                        }
-                                    else {
-                                        startDateTime = LocalDateTime.parse(startDate);
-                                        if(startDateTime.isBefore(event.getStartDate()))
-                                            if (endDate.equals("")) {
-                                                filteredEvents.add(event);
-                                            }
-                                            else {
-                                                endDateTime = LocalDateTime.parse(endDate);
-                                                if (endDateTime.isAfter(event.getEndDate())) {
-                                                    filteredEvents.add(event);
-                                                }
-                                            }
-                                    }
 
-                                filteredEvents.add(event);
-
-                            }
         }
 
         return ResponseEntity.ok(filteredEvents);
     }
-
-
-//    @GetMapping("/events/search")
-//    public ResponseEntity<List<Event>> searchForEvents(String name,
-//                                                       int categoryId,
-//                                                       int sizeMin,
-//                                                       int sizeMax,
-//                                                       String localisation,
-//                                                       int isFree,
-//                                                       int isReservationNecessary,
-//                                                       String ageGroupMin,
-//                                                       LocalDateTime startDate,
-//                                                       LocalDateTime endDate,
-//                                                       boolean isFullEventIncludedInDate){
-//        List<Event> tempList = eventRepository.findAll();
-//
-//
-//    }
 
 
 /*
