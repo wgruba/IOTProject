@@ -1,6 +1,7 @@
 package com.example.springboot.Category;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.util.Pair;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -25,7 +26,21 @@ public class CategoryController {
                     .status(HttpStatus.CONFLICT)
                     .body("Category with the same name already exists");
         }
+        category.setParentCategory(true);
         Category savedCategory = categoryRepository.save(category);
+        return ResponseEntity.ok(savedCategory);
+    }
+    @PostMapping("/addSubCategory")
+    public ResponseEntity<?> addSubCategory(@RequestBody Category subcategory){
+        Category parentCategory = categoryRepository.findById(subcategory.getParentId());
+
+        List<Pair<Integer, String>> tempList = parentCategory.getSubcategories();
+        Pair tempPair = Pair.of(subcategory.getId(), subcategory.getName());
+        tempList.add(tempPair);
+        parentCategory.setSubcategories(tempList);
+        categoryRepository.save(parentCategory);
+
+        Category savedCategory = categoryRepository.save(subcategory);
         return ResponseEntity.ok(savedCategory);
     }
 
@@ -81,39 +96,4 @@ public class CategoryController {
         categoryRepository.deleteById(id);
         return true;
     }
-
-
-    public boolean isCategoryAParentCategory(int categoryId){
-        return categoryRepository.findById(categoryId).isParentCategory();
-    }
-
-
-//    public boolean makeNewCategoryConnection(int parentCategoryId, int subCategoryId){
-//        Category subCategory = categoryRepository.findById(subCategoryId);
-//        Category parentCategory = categoryRepository.findById(parentCategoryId);
-//        //(subCategoryId, subCategory.getName());
-//        if(subCategory.getParentId() == parentCategoryId){
-//            //jest error
-//        }
-//        else{
-//            List<Pair<Integer, String>> tempList = parentCategory.getSubcategories();
-//            Pair<Integer, String> tempPair = new Pair<>(subCategoryId, subCategory.getName());
-//        }
-//
-////        sub isparent false
-////                parent isparent true
-////                parent add subCategory
-////                sub make parentid parentid
-//
-//        return true;
-//    }
-
-
-    /*
-
-    boolean makeNewCategoryConnection(int parentCategoryId, int subCategoryId) throws CategoryNotFoundEx, CategoryIsNotParentCategory;
-    boolean deleteCategoryConnection(int parentCategoryId, int subCategoryId) throws CategoryIsNotSubcategoryEx, CategoryNotFoundEx;
-
-*/
-
 }

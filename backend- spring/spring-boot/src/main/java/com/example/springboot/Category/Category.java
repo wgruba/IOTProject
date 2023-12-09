@@ -1,8 +1,7 @@
 package com.example.springboot.Category;
-import ch.qos.logback.core.joran.sanity.Pair;
-import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.MongoId;
+import org.springframework.data.util.Pair;
 
 
 import java.util.List;
