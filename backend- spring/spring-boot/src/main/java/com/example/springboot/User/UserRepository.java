@@ -1,7 +1,5 @@
 package com.example.springboot.User;
 
-import com.example.springboot.User.Exceptions.UserExistsEx;
-import com.example.springboot.User.Exceptions.UserNotFoundEx;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.data.mongodb.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -33,5 +31,5 @@ public interface UserRepository extends MongoRepository<User, Integer> {
 
     // Account Management
     @Query("{'$or': [{'name': ?0}, {'mail': ?0}]}")
-    Optional<User> login(String nameOrMail, String password) throws UserNotFoundEx;
+    Optional<User> login(String nameOrMail, String password);
 }

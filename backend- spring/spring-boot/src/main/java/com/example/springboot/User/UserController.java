@@ -4,7 +4,7 @@ import com.example.springboot.Category.Category;
 import com.example.springboot.Category.CategoryController;
 import com.example.springboot.Event.Event;
 import com.example.springboot.Event.EventController;
-import com.example.springboot.User.Exceptions.UserNotFoundEx;
+//import com.example.springboot.User.Exceptions.UserNotFoundEx;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -90,19 +90,13 @@ public class UserController {
         return ResponseEntity.ok(userDTOs);
     }
     @GetMapping("/users/{id}")
-    public ResponseEntity<UserDTO> getUser(@PathVariable int id) throws UserNotFoundEx{
-        try {
-            User user = userRepository.getUserById(id)
-                    .orElseThrow(() -> new UserNotFoundEx(id));
-            return ResponseEntity.ok(UserDTO.toDTO(user));
-        } catch (Exception e) {
-            throw new UserNotFoundEx(id);
-        }
+    public ResponseEntity<UserDTO> getUser(@PathVariable int id){
+        User user = userRepository.getUserById(id).get();
+        return ResponseEntity.ok(UserDTO.toDTO(user));
     }
     @GetMapping("/users/name/{nameOrMail}")
-    public UserDTO getUserByName(@PathVariable String nameOrMail) throws UserNotFoundEx {
-        User user = userRepository.getUserByNameOrMail(nameOrMail)
-                .orElseThrow(() -> new UserNotFoundEx(nameOrMail));
+    public UserDTO getUserByName(@PathVariable String nameOrMail) {
+        User user = userRepository.getUserByNameOrMail(nameOrMail).get();
         return UserDTO.toDTO(user);
     }
     @GetMapping("/users/list")
@@ -188,12 +182,8 @@ public class UserController {
     // Account management
     @GetMapping("users/login")
     public ResponseEntity<Boolean> tryToLoginUser(String loginOrMail, String password){
-        try {
-            boolean result = userRepository.login(loginOrMail, password).isPresent();
-            return ResponseEntity.ok(result);
-        } catch (UserNotFoundEx e) {
-            throw new RuntimeException(e);
-        }
+        boolean result = userRepository.login(loginOrMail, password).isPresent();
+        return ResponseEntity.ok(result);
     }
     public ResponseEntity<PermissionLevel> getPermissionLevel(int userId){
         return ResponseEntity.ok(userRepository.findById(userId).get().getPermissionLevel());
