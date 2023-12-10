@@ -4,7 +4,6 @@ import com.example.springboot.Category.Category;
 import com.example.springboot.Category.CategoryController;
 import com.example.springboot.Event.Event;
 import com.example.springboot.Event.EventController;
-//import com.example.springboot.User.Exceptions.UserNotFoundEx;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -34,16 +33,15 @@ public class UserController {
     @PostMapping("/addUser")
     public ResponseEntity<?> addUser(@RequestBody User user) {
         Optional<User> existingUser = userRepository.getUserByNameOrMail(user.getName());
-        if (existingUser.isPresent()) {
+        Optional<User> existingUser2 = userRepository.getUserByNameOrMail(user.getMail());
+        if (existingUser.isPresent() || existingUser2.isPresent()) {
             return ResponseEntity
                     .status(HttpStatus.CONFLICT)
                     .body("User with the same name or email already exists");
         }
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        userRepository.save(user);
-        return ResponseEntity.ok(null);
+        return ResponseEntity.ok(userRepository.save(user));
     }
-
 
 
     // CRUD - Read
@@ -91,91 +89,90 @@ public class UserController {
     }
     @GetMapping("/users/{id}")
     public ResponseEntity<UserDTO> getUser(@PathVariable int id){
-        User user = userRepository.getUserById(id).get();
-        return ResponseEntity.ok(UserDTO.toDTO(user));
+        Optional<User> existingUser = userRepository.getUserById(id);
+        if (existingUser.isPresent()) {
+            User user = existingUser.get();
+            return ResponseEntity.ok(UserDTO.toDTO(user));
+        }
+        return ResponseEntity.ok(null);
     }
     @GetMapping("/users/name/{nameOrMail}")
     public UserDTO getUserByName(@PathVariable String nameOrMail) {
-        User user = userRepository.getUserByNameOrMail(nameOrMail).get();
-        return UserDTO.toDTO(user);
+        Optional<User> existingUser = userRepository.getUserByNameOrMail(nameOrMail);
+        if (existingUser.isPresent()) {
+            User user = existingUser.get();
+            return UserDTO.toDTO(user);
+        }
+        return null;
     }
     @GetMapping("/users/list")
     public List<User> getUsersFromList(ArrayList<Integer> idList) {
-        return userRepository.getUsersSubscribedToEvent(idList);
+        return userRepository.getUsersFromList(idList);
     }
     @GetMapping("/user/last")
     public int getLastUser() {
         return userRepository.findTopByOrderByIdDesc()
                 .map(User::getId)
-                .orElse(null);
+                .orElse(1);
     }
 
 
     // CRUD - Update
-    @PutMapping("/users/{id}")
-    public User updateUser(@PathVariable int id, @RequestBody User user) {
-        return updateUserHelper(id, user);
-    }
-    public User updateUserHelper(int userId, User updatedUser) {
-        return userRepository.findById(userId).map(user -> {
-            user.setName(updatedUser.getName());
-            user.setMail(updatedUser.getMail());
-            user.setName(updatedUser.getName());
-            user.setPassword(updatedUser.getPassword());
-            user.setPermissionLevel(updatedUser.getPermissionLevel());
-            user.setSubscribedEvents(updatedUser.getSubscribedEvents());
-            user.setSubscribedCategories(updatedUser.getSubscribedCategories());
-            return userRepository.save(user);
-        }).orElseGet(() -> {
-            updatedUser.setId(userId);
-            return userRepository.save(updatedUser);
-        });
-    }
-    @PutMapping("/users/{id}/updatePermissions")
-    public User updateUserPermissions(@PathVariable Integer id, @RequestBody Integer permissionLevel) {
-        PermissionLevel temp = null;
-        switch (permissionLevel) {
-            case 4:
-                temp = PermissionLevel.UNVERIFIED_USER;
-                break;
-            case 3:
-                temp = PermissionLevel.VERIFIED_USER;
-                break;
-            case 2:
-                temp = PermissionLevel.MODERATOR;
-                break;
-            case 1:
-                temp = PermissionLevel.ADMIN;
-                break;
-            default:
-                break;
+    @PutMapping("/users/{userId}")
+    public User updateUser(@PathVariable int userId, @RequestBody User user) {
+        Optional<User> existingUser = userRepository.findById(userId);
+        if (existingUser.isPresent()) {
+            User tempUser = existingUser.get();
+            tempUser.setMail(user.getMail());
+            tempUser.setName(user.getName());
+            tempUser.setPassword(user.getPassword());
+            tempUser.setPermissionLevel(user.getPermissionLevel());
+            tempUser.setSubscribedEvents(user.getSubscribedEvents());
+            tempUser.setSubscribedCategories(user.getSubscribedCategories());
+            return userRepository.save(tempUser);
         }
-        final PermissionLevel finalTemp = temp;
-        return userRepository.findById(id).map(user -> {
-            user.setPermissionLevel(finalTemp);
-            return userRepository.save(user);
-        }).orElseGet(() -> {
-            return null;
-        });
+        user.setId(userId);
+        return userRepository.save(user);
+    }
+    @PutMapping("/users/{userId}/updatePermissions")
+    public User updateUserPermissions(@PathVariable Integer userId, @RequestBody Integer permissionLevel) {
+        Optional<User> existingUser = userRepository.findById(userId);
+        if (existingUser.isPresent()) {
+            User tempUser = existingUser.get();
+            switch (permissionLevel) {
+                case 4 -> tempUser.setPermissionLevel(PermissionLevel.UNVERIFIED_USER);
+                case 3 -> tempUser.setPermissionLevel(PermissionLevel.VERIFIED_USER);
+                case 2 -> tempUser.setPermissionLevel(PermissionLevel.MODERATOR);
+                case 1 -> tempUser.setPermissionLevel(PermissionLevel.ADMIN);
+                default -> {
+                }
+            }
+            return userRepository.save(tempUser);
+        }
+        return null;
     }
 
 
     // CRUD - Delete
     @DeleteMapping("/users/{userId}")
     public boolean deleteUser(@PathVariable int userId) {
-        User tempUser = userRepository.getUserById(userId).get();
-        List<Event> tempList = eventController.getEventsByOrganiser(userId);
-        for (Event event:tempList) {
-            deleteEvent(userId, event.getId());
-        }
+        Optional<User> existingUser = userRepository.getUserById(userId);
+        if (existingUser.isPresent()) {
+            User tempUser = existingUser.get();
+            List<Event> tempList = eventController.getEventsByOrganiser(userId);
+            for (Event event : tempList) {
+                deleteEvent(userId, event.getId());
+            }
 
-        List<Integer> subscribedEvents = tempUser.getSubscribedEvents();
-        for (Integer eventId: subscribedEvents) {
-            unsubscribeEvent(userId, eventId);
-        }
+            List<Integer> subscribedEvents = tempUser.getSubscribedEvents();
+            for (Integer eventId : subscribedEvents) {
+                unsubscribeEvent(userId, eventId);
+            }
 
-        userRepository.deleteById(userId);
-        return true;
+            userRepository.deleteById(userId);
+            return true;
+        }
+        return false;
     }
 
 
@@ -185,10 +182,14 @@ public class UserController {
         boolean result = userRepository.login(loginOrMail, password).isPresent();
         return ResponseEntity.ok(result);
     }
-    public ResponseEntity<PermissionLevel> getPermissionLevel(int userId){
-        return ResponseEntity.ok(userRepository.findById(userId).get().getPermissionLevel());
+    @GetMapping("/users/{userId}/getPermissionLevel")
+    public ResponseEntity<PermissionLevel> getPermissionLevel(@PathVariable int userId){
+        Optional<User> existingUser = userRepository.getUserById(userId);
+        return existingUser.map(user -> ResponseEntity.ok(user.getPermissionLevel()))
+                .orElseGet(() -> ResponseEntity.ok(PermissionLevel.UNVERIFIED_USER));
     }
-    public ResponseEntity<Boolean> changePermissionLevel(int userId, PermissionLevel permissionLevel){
+    @PutMapping("/users/{userId}/changePermissions")
+    public ResponseEntity<Boolean> changePermissionLevel(@PathVariable int userId, @RequestBody PermissionLevel permissionLevel){
         userRepository.findById(userId).map(user -> {
                     user.setPermissionLevel(permissionLevel);
         return ResponseEntity.ok(true);});
@@ -196,82 +197,115 @@ public class UserController {
     }
     @GetMapping("/users/{userId}/getName")
     public ResponseEntity<String> getUsersName(@PathVariable int userId){
-        User tempUser = userRepository.getUserById(userId).get();
-        return ResponseEntity.ok(tempUser.getName());
+        Optional<User> existingUser = userRepository.getUserById(userId);
+        if (existingUser.isPresent()) {
+            User tempUser = existingUser.get();
+            return ResponseEntity.ok(tempUser.getName());
+        }
+        return ResponseEntity.ok("");
     }
 
 
     // Subscription Management
     @GetMapping("/users/{userId}/subscribedEvents")
     public ResponseEntity<List<Event>> getSubscribedEvents(@PathVariable int userId) {
-        User tempUser = userRepository.findById(userId).get();
-        return ResponseEntity.ok(eventController.getEventsFromList(tempUser.getSubscribedEvents()));
+        Optional<User> existingUser = userRepository.getUserById(userId);
+        if (existingUser.isPresent()) {
+            User tempUser = existingUser.get();
+            return ResponseEntity.ok(eventController.getEventsFromList(tempUser.getSubscribedEvents()));
+        }
+        return ResponseEntity.ok(new ArrayList<>());
     }
     @GetMapping("/users/{userId}/subscribedCategories")
     public ResponseEntity<List<Category>> getSubscribedCategories(@PathVariable int userId) {
-        User tempUser = userRepository.findById(userId).get();
-        return ResponseEntity.ok(categoryController.getCategoriesFromList(tempUser.getSubscribedCategories()));
+        Optional<User> existingUser = userRepository.getUserById(userId);
+        if (existingUser.isPresent()) {
+            User tempUser = existingUser.get();
+            return ResponseEntity.ok(categoryController.getCategoriesFromList(tempUser.getSubscribedCategories()));
+        }
+        return ResponseEntity.ok(new ArrayList<>());
     }
     @PatchMapping("/users/{userId}/subscribeEvent/{eventId}")
     public ResponseEntity<Boolean> subscribeEvent(@PathVariable int userId, @PathVariable int eventId) {
-        User tempUser = userRepository.findById(userId).get();
-        List<Integer> tempList = tempUser.getSubscribedEvents();
-        if(tempList.contains(eventId))
-            return ResponseEntity.ok(false);
-        tempList.add(eventId);
-        tempUser.setSubscribedEvents(tempList);
-        userRepository.save(tempUser);
-        eventController.subscribeUser(userId, eventId);
-        return ResponseEntity.ok(true);
+        Optional<User> existingUser = userRepository.getUserById(userId);
+        if (existingUser.isPresent()) {
+            User tempUser = existingUser.get();
+            List<Integer> tempList = tempUser.getSubscribedEvents();
+            if(tempList.contains(eventId))
+                return ResponseEntity.ok(false);
+            tempList.add(eventId);
+            tempUser.setSubscribedEvents(tempList);
+            userRepository.save(tempUser);
+            eventController.subscribeUser(userId, eventId);
+            return ResponseEntity.ok(true);
+        }
+        return ResponseEntity.ok(false);
     }
     @PatchMapping("/users/{userId}/subscribeCategory/{categoryId}")
     public ResponseEntity<Boolean> subscribeCategory(@PathVariable int userId, @PathVariable int categoryId) {
-        User tempUser = userRepository.findById(userId).get();
-        List<Integer> tempList = tempUser.getSubscribedCategories();
-        if(tempList.contains(categoryId))
-            return ResponseEntity.ok(false);
-        tempList.add(categoryId);
-        tempUser.setSubscribedCategories(tempList);
-        userRepository.save(tempUser);
-        return ResponseEntity.ok(true);
+        Optional<User> existingUser = userRepository.getUserById(userId);
+        if (existingUser.isPresent()) {
+            User tempUser = existingUser.get();
+            List<Integer> tempList = tempUser.getSubscribedCategories();
+            if(tempList.contains(categoryId))
+                return ResponseEntity.ok(false);
+            tempList.add(categoryId);
+            tempUser.setSubscribedCategories(tempList);
+            userRepository.save(tempUser);
+            return ResponseEntity.ok(true);
+        }
+        return ResponseEntity.ok(false);
     }
     @PatchMapping("/users/{userId}/subscribeCategories")
-    public ResponseEntity<Boolean> subscribeCategory(@PathVariable int userId, @RequestBody List<Integer> categoryList) {
-        User tempUser = userRepository.findById(userId).get();
-        List<Integer> tempList = tempUser.getSubscribedCategories();
+    public ResponseEntity<Boolean> subscribeCategories(@PathVariable int userId, @RequestBody List<Integer> categoryList) {
+        Optional<User> existingUser = userRepository.getUserById(userId);
+        if (existingUser.isPresent()) {
+            User tempUser = existingUser.get();
+            List<Integer> tempList = tempUser.getSubscribedCategories();
 
-        for(Integer categoryId: categoryList)
-            if(!tempList.contains(categoryId))
-                tempList.add(categoryId);
+            for(Integer categoryId: categoryList)
+                if(!tempList.contains(categoryId))
+                    tempList.add(categoryId);
 
-        tempUser.setSubscribedCategories(tempList);
-        userRepository.save(tempUser);
-        return ResponseEntity.ok(true);
+            tempUser.setSubscribedCategories(tempList);
+            userRepository.save(tempUser);
+            return ResponseEntity.ok(true);
+        }
+        return ResponseEntity.ok(false);
+
     }
     @PatchMapping("/users/{userId}/unsubscribeEvent/{eventId}")
     public ResponseEntity<Boolean> unsubscribeEvent(@PathVariable int userId, @PathVariable Integer eventId) {
-        if(eventController.getEventOrganiser(eventId) == userId)
-            return ResponseEntity.ok(false);
-        User tempUser = userRepository.findById(userId).get();
-        List<Integer> tempList = tempUser.getSubscribedEvents();
-        if(!tempList.contains(eventId))
-            return ResponseEntity.ok(false);
-        tempList.remove(eventId);
-        tempUser.setSubscribedEvents(tempList);
-        userRepository.save(tempUser);
-        eventController.unsubscribeUser(userId, eventId);
-        return ResponseEntity.ok(true);
+        Optional<User> existingUser = userRepository.getUserById(userId);
+        if (existingUser.isPresent()) {
+            if(eventController.getEventOrganiser(eventId) == userId)
+                return ResponseEntity.ok(false);
+            User tempUser = existingUser.get();
+            List<Integer> tempList = tempUser.getSubscribedEvents();
+            if(!tempList.contains(eventId))
+                return ResponseEntity.ok(false);
+            tempList.remove(eventId);
+            tempUser.setSubscribedEvents(tempList);
+            userRepository.save(tempUser);
+            eventController.unsubscribeUser(userId, eventId);
+            return ResponseEntity.ok(true);
+        }
+        return ResponseEntity.ok(false);
     }
     @PatchMapping("/users/{userId}/unsubscribeCategory/{categoryId}")
     public ResponseEntity<Boolean> unsubscribeCategory(@PathVariable int userId, @PathVariable Integer categoryId) {
-        User tempUser = userRepository.findById(userId).get();
-        List<Integer> tempList = tempUser.getSubscribedCategories();
-        if(!tempList.contains(categoryId))
-            return ResponseEntity.ok(false);
-        tempList.remove(categoryId);
-        tempUser.setSubscribedCategories(tempList);
-        userRepository.save(tempUser);
-        return ResponseEntity.ok(true);
+        Optional<User> existingUser = userRepository.getUserById(userId);
+        if (existingUser.isPresent()) {
+            User tempUser = existingUser.get();
+            List<Integer> tempList = tempUser.getSubscribedCategories();
+            if(!tempList.contains(categoryId))
+                return ResponseEntity.ok(false);
+            tempList.remove(categoryId);
+            tempUser.setSubscribedCategories(tempList);
+            userRepository.save(tempUser);
+            return ResponseEntity.ok(true);
+        }
+        return ResponseEntity.ok(false);
     }
 
 
@@ -283,7 +317,7 @@ public class UserController {
         return tempEvent;
     }
     @PatchMapping("/users/{userId}/deleteEvent/{eventId}")
-    public ResponseEntity<Boolean> deleteEvent(@PathVariable int userId, @PathVariable int eventId){
+    public ResponseEntity<Boolean> deleteEvent(@PathVariable int userId, @PathVariable Integer eventId){
         if(eventController.getEventOrganiser(eventId) != userId)
             return ResponseEntity.ok(false);
         List<Integer> userList = eventController.getUsersThatSubscribedToEvent(eventId);
@@ -293,13 +327,18 @@ public class UserController {
 
         eventController.deleteEvent(eventId);
 
-        User tempUser = userRepository.findById(userId).get();
-        List<Integer> tempList = tempUser.getSubscribedEvents();
-        tempList.remove(eventId);
-        tempUser.setSubscribedEvents(tempList);
-        userRepository.save(tempUser);
+        Optional<User> exitingUser = userRepository.findById(userId);
+        if (exitingUser.isPresent()) {
+            User tempUser = exitingUser.get();
+            List<Integer> tempList = tempUser.getSubscribedEvents();
+            tempList.remove(eventId);
+            tempUser.setSubscribedEvents(tempList);
+            userRepository.save(tempUser);
+            return ResponseEntity.ok(true);
+        }
 
-        return ResponseEntity.ok(true);
+        return ResponseEntity.ok(false);
+
     }
     @GetMapping("users/{userId}/myEvents")
     public ResponseEntity<List<Event>> getEventsOrganisedByUser(@PathVariable int userId){
@@ -315,12 +354,21 @@ public class UserController {
 
     // Moderator options
     @PostMapping("/users/{userId}/createCategory")
-    public ResponseEntity<Category> createUser(@PathVariable int userId, @RequestBody Category category){
-        ResponseEntity<Category> tempCategory = (ResponseEntity<Category>) categoryController.addCategory(category);
-        return tempCategory;
+    public ResponseEntity<?> createCategory(@PathVariable int userId, @RequestBody Category category){
+        if (getPermissionLevel(userId).getBody() == PermissionLevel.MODERATOR || getPermissionLevel(userId).getBody() == PermissionLevel.ADMIN)
+            return ResponseEntity.ok(categoryController.addCategory(category));
+        return ResponseEntity.ok(null);
+    }
+    @PostMapping("/users/{userId}/createSubCategory")
+    public ResponseEntity<?> createSubCategory(@PathVariable int userId, @RequestBody Category subCategory){
+        if (getPermissionLevel(userId).getBody() == PermissionLevel.MODERATOR || getPermissionLevel(userId).getBody() == PermissionLevel.ADMIN)
+            return ResponseEntity.ok(categoryController.addSubCategory(subCategory));
+        return ResponseEntity.ok(null);
     }
     @PatchMapping("/users/{userId}/updateCategory")
     public ResponseEntity<?> updateCategory(@PathVariable int userId, @RequestBody Category category){
-        return ResponseEntity.ok(categoryController.updateCategory(category.getId(), category));
+        if (getPermissionLevel(userId).getBody() == PermissionLevel.MODERATOR || getPermissionLevel(userId).getBody() == PermissionLevel.ADMIN)
+            return ResponseEntity.ok(categoryController.updateCategory(category.getId(), category));
+        return ResponseEntity.ok(null);
     }
 }

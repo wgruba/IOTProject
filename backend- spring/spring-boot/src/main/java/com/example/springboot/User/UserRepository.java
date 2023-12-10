@@ -22,7 +22,7 @@ public interface UserRepository extends MongoRepository<User, Integer> {
     @Query("{'$or': [{'name': ?0}, {'mail': ?0}]}")
     Optional<User> getUserByNameOrMail(String nameOrMail);
     @Query("{'id': {'$in': ?0}}")
-    List<User> getUsersSubscribedToEvent(@Param("ids") List<Integer> ids);
+    List<User> getUsersFromList(@Param("ids") List<Integer> ids);
 
 
     // CRUD - Delete
