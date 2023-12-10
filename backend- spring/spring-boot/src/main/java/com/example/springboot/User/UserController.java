@@ -355,8 +355,9 @@ public class UserController {
                 case UNVERIFIED_USER:
                     event.setId(-event.getId());
                     event.setEventStatus(EventStatus.TO_ACCEPTANCE);
+                    event.setOrganizer(0);
                     createEvent(0, event);
-                    break;
+                    return ResponseEntity.ok(true);
                 default:
                     return ResponseEntity.ok(eventController.updateEvent(event.getId(), event));
             }
@@ -392,10 +393,11 @@ public class UserController {
 
         if (existingEvent.getBody() instanceof Event && existingEvent2.getBody() instanceof Event) {
             Event originalEvent = (Event) existingEvent.getBody();
-            Event copyEvent = (Event) existingEvent.getBody();
+            Event copyEvent = (Event) existingEvent2.getBody();
 
             copyEvent.setOrganizer(originalEvent.getOrganizer());
             copyEvent.setEventStatus(EventStatus.ACCEPTED);
+            copyEvent.setClientList(originalEvent.getClientList());
             copyEvent.setId(eventId);
 
             eventController.deleteEvent(-eventId);
