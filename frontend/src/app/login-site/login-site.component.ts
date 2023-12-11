@@ -28,7 +28,7 @@ export class LoginSiteComponent {
           this.login(response)
         },
         error: (error) => {
-          this.errorMessage = 'Login failed: ' + error.message;
+          this.errorMessage = 'Niepoprawna Nazwa użytkownika lub hasło';
         }
       });
   }

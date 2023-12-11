@@ -25,10 +25,10 @@ export class CategoryService {
     return this.http.post<Category>(url, category, {headers});
   }
 
-  addSubcategory(category: CategoryToAdd): Observable<Category> {
+  addSubcategory(Subcategory: CategoryToAdd): Observable<Category> {
     const url = `http://localhost:8080/addSubCategory`;
     const headers = this.authenticationService.getHeadersWithToken()
-    return this.http.post<Category>(url, category, {headers});
+    return this.http.post<Category>(url, Subcategory, {headers});
   }
 
 }

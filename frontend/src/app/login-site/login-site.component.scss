@@ -54,6 +54,12 @@ button[type=submit]{
     padding-bottom: 20px;
 }
 
+.error-message{
+    color: red;
+    font-size: 20px;
+    white-space: pre;
+}
+
 input, button{
     margin: 20px;
 }

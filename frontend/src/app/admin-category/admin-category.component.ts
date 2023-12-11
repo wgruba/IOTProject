@@ -36,7 +36,7 @@ export class AdminCategoryComponent {
       subcategories: [],
       parentId: null
     };
-    this.categoryService.addSubcategory(newCategory).subscribe(() => {
+    this.categoryService.addCategory(newCategory).subscribe(() => {
       this.loadCategories();
     });
   }

@@ -25,6 +25,7 @@ export class EditEventComponent {
 
   ngOnInit(): void {
     this.event = this.eventService.getCurrentEvent();
+    this.id = this.event.id;
     this.initForm();
     this.patchFormValues();
     this.loadCategories();
