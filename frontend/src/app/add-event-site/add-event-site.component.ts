@@ -6,6 +6,8 @@ import { UserService } from '../user.service';
 import { Event } from '../models/event.model';
 import { Category } from '../models/Category.model';
 import { CategoryService } from '../category.service';
+import { Router } from '@angular/router';
+
 
 @Component({
   selector: 'app-add-event-site',
@@ -21,7 +23,7 @@ export class AddEventSiteComponent {
 
 
 
-  constructor(private eventService: EventService, private snackBar: MatSnackBar, public userService: UserService, public categoryService: CategoryService){}
+  constructor(private eventService: EventService, private snackBar: MatSnackBar, public userService: UserService, public categoryService: CategoryService, private router: Router){}
 
   ngOnInit(): void {
     this.eventForm = new FormGroup({
@@ -182,9 +184,10 @@ export class AddEventSiteComponent {
           response => {
             console.log('Event added:', response);
             this.snackBar.open("Wydarzenie zostało dodane", 'Zamknij', {
-              duration: 3000,
+              duration: 4000,
               horizontalPosition: 'right',
               verticalPosition: 'top', });
+              this.router.navigate(['/user-events']);
           },
           error => {
             console.error('Error adding event:', error);

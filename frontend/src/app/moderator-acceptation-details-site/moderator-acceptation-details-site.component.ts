@@ -5,6 +5,10 @@ import { Event } from '../models/event.model';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmationDialogComponentComponent } from '../confirmation-dialog-component/confirmation-dialog-component.component';
 import { AdminService } from '../admin.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { Router } from '@angular/router';
+
+
 
 
 @Component({
@@ -21,7 +25,9 @@ export class ModeratorAcceptationDetailsSiteComponent {
     private route: ActivatedRoute, 
     private eventService: EventService,
     public dialog: MatDialog,
-    private adminService: AdminService
+    private adminService: AdminService,
+    private snackBar: MatSnackBar,
+    private router: Router
   ) {
   }
 
@@ -43,10 +49,17 @@ export class ModeratorAcceptationDetailsSiteComponent {
       if(result) {
         this.adminService.acceptEvent(this.event.id).subscribe(
           response => {
-            // obsługa odpowiedzi
-          },
+            this.snackBar.open("Wydarzenie zostało zaakceptowane", 'Zamknij', {
+              duration: 4000,
+              horizontalPosition: 'right',
+              verticalPosition: 'top', });
+              this.router.navigate(['/admin-acceptance']);
+                    },
           error => {
-            // obsługa błędu
+            this.snackBar.open("coś poszło nie tak spróbuj ponownie", 'Zamknij', {
+              duration: 4000,
+              horizontalPosition: 'right',
+              verticalPosition: 'top', });
           }
         );
       }
@@ -62,11 +75,18 @@ export class ModeratorAcceptationDetailsSiteComponent {
       if(result) {
         this.adminService.denyEvent(this.event.id).subscribe(
           response => {
-            // obsługa odpowiedzi
-          },
+            this.snackBar.open("Wydarzenie zostało odrzucone", 'Zamknij', {
+              duration: 4000,
+              horizontalPosition: 'right',
+              verticalPosition: 'top', });
+              this.router.navigate(['/admin-acceptance']);
+            },
           error => {
-            // obsługa błędu
-          }
+            this.snackBar.open("coś poszło nie tak spróbuj ponownie", 'Zamknij', {
+              duration: 4000,
+              horizontalPosition: 'right',
+              verticalPosition: 'top', });
+            }
         );
       }
     });

@@ -45,12 +45,12 @@ login(response: User){
         const event_ids = this.subscribedEvents.map(event => event.id);
         data['subscribedEvents'] = event_ids
         this.userService.setCurrentUser(data);
+        this.router.navigate(['/home']);
       });
       this.snackBar.open("Zalogowano pomyślnie", 'Zamknij', {
         duration: 3000,
         horizontalPosition: 'right',
         verticalPosition: 'top', });
-      this.router.navigate(['/home']);
     }, error => console.error(error));
   } else {
     this.errorMessage = 'Login failed: Invalid username or password';
