@@ -5,7 +5,7 @@
         </div>
         <div [ngClass]="{'shownAnswer': selectedCategory === item.id, 'hiddenAnswer': selectedCategory !== item.id}">
             <div *ngFor="let subItem of item.subcategories" class="subcategory">
-                {{ subItem.name }}
+                {{ subItem.second }}
             </div>
             <div class="addSubcategory" *ngIf="selectedCategory === item.id">
                 <input type="text" placeholder="Nowa podkategoria" formControlName="subcategoryName">

@@ -299,9 +299,9 @@ export class UserHeaderComponent implements OnInit {
     });
 
     this.searchForm = this.formBuilder.group({
-      searchQuery: [''],
-      dateFrom: [''],
-      dateTo: [''],
+      name: [''],
+      startDate: [''],
+      endDate: ['']
     });
   }
 
@@ -397,7 +397,7 @@ export class UserHeaderComponent implements OnInit {
     }
     const formData = {...this.searchForm.value, ...this.selectedLocalisation, ...this.selectedItems, ...this.filterParsed}
     console.log(formData)
-    this.filterSearchService.getFillteredEvents(formData).subscribe(response => {});
+    this.filterSearchService.getFillteredEvents(this.searchForm).subscribe(response => {});
     this.router.navigate(['/event-searching']);
   }
 }

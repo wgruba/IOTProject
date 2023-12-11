@@ -92,8 +92,8 @@
                               <ul class="dropdown-menu dropdown-submenu-right">
                                 <li *ngFor="let subcategory of category.subcategories">
                                   <a class="dropdown-item" href="javascript:void(0);"
-                                     (click)="toggleSubcategorySelection(subcategory.id)">
-                                    {{ subcategory.name }}
+                                     (click)="toggleSubcategorySelection(subcategory.first)">
+                                    {{ subcategory.second }}
                                   </a>
                                 </li>
                               </ul>

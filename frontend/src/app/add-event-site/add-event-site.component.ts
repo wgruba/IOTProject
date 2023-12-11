@@ -94,9 +94,9 @@ export class AddEventSiteComponent {
   getSelectedSubcategoryNames(): string[] {
     return this.selectedSubcategoryIds.map(subcategoryId => {
       for (const category of this.categories) {
-        const subcategory = category.subcategories.find(sub => sub.id === subcategoryId);
+        const subcategory = category.subcategories.find(sub => sub.first === subcategoryId);
         if (subcategory) {
-          return subcategory.name;
+          return subcategory.second;
         }
       }
       return '';
@@ -110,9 +110,9 @@ export class AddEventSiteComponent {
   
   getSubcategoryByName(name: string): { categoryId: number, subcategoryId: number } | undefined {
     for (const category of this.categories) {
-      const subcategory = category.subcategories.find(sub => sub.name === name);
+      const subcategory = category.subcategories.find(sub => sub.second === name);
       if (subcategory) {
-        return { categoryId: category.id, subcategoryId: subcategory.id };
+        return { categoryId: category.id, subcategoryId: subcategory.first };
       }
     }
     return undefined;

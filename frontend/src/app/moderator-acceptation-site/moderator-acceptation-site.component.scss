@@ -10,6 +10,12 @@
     max-width: 250px; 
 }
 
+.empty-message {
+  text-align: center;
+  font-size: larger;
+  margin-top: 60px;
+}
+
 .event-list {
     padding: 20px;
     width: 100%; 
@@ -68,6 +74,7 @@
   background-color: #FFFFFF; 
   padding: 20px;
   align-items: flex-start; 
+  text-align: center;
 
   @media (max-width: 768px) {
     flex-direction: column;

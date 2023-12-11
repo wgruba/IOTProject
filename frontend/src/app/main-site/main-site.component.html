@@ -3,7 +3,7 @@
     <div class="row">
       <main class="col-12 px-0">
         <div class="swiper-card">
-          <h2 class="swiper-header"> Najbliższe wydarzenia w Polsce</h2>
+          <h2 class="swiper-header"> Polecane wydarzenia</h2>
             <swiper-container appSwiper #swiper [config]="swiperConfig" thumbs-swiper=".mySwiper2" (slidechange)="slideChange($event)">
               <swiper-slide *ngFor="let item of contents1; let i = index">
                 <div class="card" >
@@ -22,7 +22,7 @@
           </div>
 
           <div class="swiper-card">
-            <h2 class="swiper-header"> Najbliższe wydarzenia w Twojej okolicy</h2>
+            <h2 class="swiper-header"> Ostatnio Dodane </h2>
             <swiper-container appSwiper #swiper [config]="swiperConfig" thumbs-swiper=".mySwiper2" (slidechange)="slideChange($event)">
               <swiper-slide *ngFor="let item of contents2; let i = index">
                 <div class="card">
@@ -40,7 +40,7 @@
             </swiper-container>
           </div>
           <div class="swiper-card">
-            <h2 class="swiper-header"> Polecane wydarzenia </h2>
+            <h2 class="swiper-header"> Najbliższe wydarzenia w Polsce </h2>
             <swiper-container appSwiper #swiper [config]="swiperConfig" thumbs-swiper=".mySwiper3" (slidechange)="slideChange($event)">
               <swiper-slide *ngFor="let item of contents3 let i = index">
                 <div class="card">

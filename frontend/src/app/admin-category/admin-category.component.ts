@@ -36,6 +36,9 @@ export class AdminCategoryComponent {
       subcategories: [],
       parentId: null
     };
+    this.categoryService.addSubcategory(newCategory).subscribe(() => {
+      this.loadCategories();
+    });
   }
 
 
@@ -48,7 +51,7 @@ export class AdminCategoryComponent {
       subcategories: [],
       parentId: parentId
     };
-    this.categoryService.addCategory(newSubcategory).subscribe(() => {
+    this.categoryService.addSubcategory(newSubcategory).subscribe(() => {
       this.loadCategories();
     });
   }

@@ -34,7 +34,7 @@
     
     <div class="lower-section">
         <div class="search-content" [formGroup]="searchForm">            
-            <input type="text" placeholder="Wpisz nazwę ..." formControlName="searchQuery">
+            <input type="text" placeholder="Wpisz nazwę ..." formControlName="name">
             <div dropdown>
                 <button class="category-button" type="button" id="categoryDropdown"
                         data-bs-toggle="dropdown" aria-expanded="false">
@@ -49,8 +49,8 @@
                       <ul class="dropdown-menu dropdown-submenu-right">
                         <li *ngFor="let subcategory of category.subcategories">
                           <a class="dropdown-item" href="javascript:void(0);"
-                             (click)="toggleSelection(category.name, subcategory.name)">
-                            {{ subcategory.name }}
+                             (click)="toggleSelection(category.name, subcategory.second)">
+                            {{ subcategory.second }}
                           </a>
                         </li>
                       </ul>
@@ -103,8 +103,8 @@
 
 
             <div class="date-checker">
-                Od: <input  type="datetime-local" class="date-button"  formControlName="dateFrom" name="dataOd">
-                Do: <input  type="datetime-local" class="date-button"  formControlName="dateTo" name="dataDo">
+                Od: <input  type="datetime-local" class="date-button"  formControlName="startDate" name="dataOd">
+                Do: <input  type="datetime-local" class="date-button"  formControlName="endDate" name="dataDo">
             </div>
             <button class="search-button" (click)="onSearch()">Szukaj</button>
       </div>
