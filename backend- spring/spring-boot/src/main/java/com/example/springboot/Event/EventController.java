@@ -98,22 +98,17 @@ public class EventController {
         int min = 1;
         int max = getLastEventId();
         int size = 10;
+        int searchSize = 15;
 
-        for (int i = 0; i < size; i++) {
+        for (int i = 0; i < searchSize; i++) {
             int randomInt = random.nextInt((max - min) + 1) + min;
-            if (!randomIntList.contains(randomInt)) {
-                Optional<Event> existingEvent = eventRepository.findById(randomInt);
-                if (existingEvent.isPresent()) {
-                    if (existingEvent.get().getEventStatus() != EventStatus.TO_ACCEPTANCE)
-                        randomIntList.add(randomInt);
-                    else
-                        i--;
-                }
-            }
+            if (!randomIntList.contains(randomInt))
+                randomIntList.add(randomInt);
             else
                 i--;
         }
-        return ResponseEntity.ok(getEventsFromList(randomIntList));
+        List<Integer> firstTenElements = randomIntList.subList(0, Math.min(randomIntList.size(), size));
+        return ResponseEntity.ok(getEventsFromList(firstTenElements));
     }
 
 
