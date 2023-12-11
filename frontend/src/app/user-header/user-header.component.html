@@ -58,10 +58,10 @@
                 </ul>
               </div>
 
-            <!-- Trigger Button -->
-            <button class="show-selected-category-button" (click)="togglePopup()">Pokaż wybrane Kategorie</button>
+            <div *ngIf="selectedItems.length > 0">
+              <button class="show-selected-category-button" (click)="togglePopup()">Pokaż wybrane Kategorie ({{selectedItems.length}})</button>
+            </div>
 
-            <!-- Popup for Selected Categories -->
             <div class="popup" *ngIf="showPopup">
             <div class="popup-content">
                 <div class="popup-header">
@@ -77,7 +77,6 @@
             </div>
             </div>
 
-            <!-- <button class="location-button">Lokalizacja:</button> -->
             <div dropdown>
               <button class="category-button" type="button" id="localisationDropdown"
                       data-bs-toggle="dropdown" aria-expanded="false">
