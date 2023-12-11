@@ -52,8 +52,14 @@ export class EditEventComponent {
   }
   
   patchFormValues(): void {
-    this.selectedCategoryIds = this.event.categoryList;
-    this.eventForm.patchValue({
+    this.event.categoryList.forEach(categoryId => {
+      if (this.isSubcategory(categoryId)) {
+        this.selectedSubcategoryIds.push(categoryId);
+      } else {
+        this.selectedCategoryIds.push(categoryId);
+      }});    
+      
+      this.eventForm.patchValue({
       eventName: this.event.name,
       participants: this.event.size,
       isFree: this.event.isFree,
@@ -66,6 +72,10 @@ export class EditEventComponent {
       localisation: this.event.localisation,
       imageUrl: this.event.imageUrl
     });
+  }
+  
+  isSubcategory(categoryId: number): boolean {
+    return categoryId > 100;
   }
 
   validateStartTime(control: FormControl): {[key: string]: any} | null {

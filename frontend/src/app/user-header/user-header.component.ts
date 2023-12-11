@@ -280,8 +280,8 @@ export class UserHeaderComponent implements OnInit {
       ]
     }
   ];
-  
-  selectedItems: SelectedItem[] = [];
+  selectedCategoryIds: number[] = [];
+  selectedSubcategoryIds: number[] = [];  
   selectedLocalisation: SelectedLocation = { localisation: '', sublocalisation: ''}
   showPopup: boolean = false;
   searchForm: FormGroup;
@@ -321,27 +321,74 @@ export class UserHeaderComponent implements OnInit {
     });
   }
 
-  toggleSelection(categoryName: string, subcategoryName?: string): void {
-    const existingIndex = this.selectedItems.findIndex(item => 
-      item.category === categoryName && item.subcategory === subcategoryName
-    );
-
-    if (existingIndex > -1) {
-      this.selectedItems.splice(existingIndex, 1); // Remove if already selected
-      
-      if(subcategoryName != null) {
-        this._snackBar.open("Usunięto " + categoryName + " - " + subcategoryName, 'Zamknij', {duration: 5000})
-      } else {
-        this._snackBar.open("Usunięto " + categoryName, 'Zamknij', {duration: 5000})
-      }
+  toggleCategorySelection(categoryId: number): void {
+    const index = this.selectedCategoryIds.indexOf(categoryId);
+    if (index > -1) {
+      this.selectedCategoryIds.splice(index, 1);
     } else {
-      this.selectedItems.push({ category: categoryName, subcategory: subcategoryName });
-      if(subcategoryName != null) {
-        this._snackBar.open("Dodano " + categoryName + " - " + subcategoryName, 'Zamknij', {duration: 5000})
-      } else {
-        this._snackBar.open("Dodano " + categoryName, 'Zamknij', {duration: 5000})
-      }    }
+      this.selectedCategoryIds.push(categoryId);
+    }
   }
+
+  toggleSubcategorySelection(subcategoryId: number): void {
+    const index = this.selectedSubcategoryIds.indexOf(subcategoryId);
+    if (index > -1) {
+      this.selectedSubcategoryIds.splice(index, 1);
+    } else {
+      this.selectedSubcategoryIds.push(subcategoryId);
+    }
+  }
+
+
+  getSelectedCategoryNames(): string[] {
+    return this.selectedCategoryIds.map(categoryId => 
+      this.categories.find(category => category.id === categoryId)?.name || ''
+    );
+  }
+  
+  getSelectedSubcategoryNames(): string[] {
+    return this.selectedSubcategoryIds.map(subcategoryId => {
+      for (const category of this.categories) {
+        const subcategory = category.subcategories.find(sub => sub.first === subcategoryId);
+        if (subcategory) {
+          return subcategory.second;
+        }
+      }
+      return '';
+    });
+  }
+
+
+  getCategoryByName(name: string): Category | undefined {
+    return this.categories.find(category => category.name === name);
+  }
+  
+  getSubcategoryByName(name: string): { categoryId: number, subcategoryId: number } | undefined {
+    for (const category of this.categories) {
+      const subcategory = category.subcategories.find(sub => sub.second === name);
+      if (subcategory) {
+        return { categoryId: category.id, subcategoryId: subcategory.first };
+      }
+    }
+    return undefined;
+  }
+  
+  removeSelectedCategory(categoryName: string): void {
+    const category = this.getCategoryByName(categoryName);
+    if (category) {
+      this.selectedCategoryIds = this.selectedCategoryIds.filter(id => id !== category.id);
+      // Update UI or backend as necessary
+    }
+  }
+  
+  removeSelectedSubcategory(subcategoryName: string): void {
+    const subcategoryInfo = this.getSubcategoryByName(subcategoryName);
+    if (subcategoryInfo) {
+      this.selectedSubcategoryIds = this.selectedSubcategoryIds.filter(id => id !== subcategoryInfo.subcategoryId);
+      // Update UI or backend as necessary
+    }
+  }
+
 
   toggleLocation(localisation: string, sublocalisation?: string): void {
     if(localisation === this.selectedLocalisation.localisation && sublocalisation === this.selectedLocalisation.sublocalisation) {
@@ -355,13 +402,6 @@ export class UserHeaderComponent implements OnInit {
         this.viewLocation = localisation;
       }
     }
-  }
-
-  removeCategory(category: string, subcategory?: string): void {
-    this.selectedItems = this.selectedItems.filter(item => 
-      !(item.category === category && item.subcategory === subcategory)
-    );
-    
   }
 
   togglePopup(): void {
@@ -390,7 +430,6 @@ export class UserHeaderComponent implements OnInit {
     else {
       this.filterParsed = JSON.parse(filterData)
     }
-    const formData = {...this.searchForm.value, ...this.selectedLocalisation, ...this.selectedItems, ...this.filterParsed}
     let localistaion: string = '' ;
     if(this.selectedLocalisation.sublocalisation != null){
       localistaion = this.selectedLocalisation.sublocalisation;
@@ -398,13 +437,13 @@ export class UserHeaderComponent implements OnInit {
     else  {localistaion = this.selectedLocalisation.localisation }
     let filteredEventParameters: FilteredEventParameters = {
       name: this.searchForm.value.name,
-      categoryList: [],
+      categoryList: [...this.selectedCategoryIds, ...this.selectedSubcategoryIds],
       localisation: localistaion,
       startDate: this.searchForm.value.startDate,
       endDate: this.searchForm.value.endDate,
       isFinished: false,
-      reservation: 0,
-      isFree: 1,
+      reservation: 2,
+      isFree: 2,
       ageGroup: 'OVER16'  
     }
     this.filterSearchService.getFilteredEvents(filteredEventParameters).subscribe(response => {

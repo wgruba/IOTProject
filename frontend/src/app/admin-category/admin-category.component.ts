@@ -43,7 +43,7 @@ export class AdminCategoryComponent {
 
 
   public addSubcategory(parentId: number): void {
-    const newCategoryId = this.getNewCategoryId();
+    const newCategoryId = this.getNewSubcategoryId(parentId);
     const newSubcategory: CategoryToAdd = {
       id: newCategoryId,
       name: this.categoryForm.value.subcategoryName,
@@ -60,6 +60,18 @@ export class AdminCategoryComponent {
     const maxId = this.categories.reduce((max, category) => Math.max(max, category.id), 0);
     return maxId + 1;
   }
+
+  private getNewSubcategoryId(parentId: number): number {
+    const parentCategory = this.categories.find(category => category.id === parentId);
+    if (!parentCategory) {
+      return -1; // Zwróć -1, jeśli nie znaleziono kategorii nadrzędnej
+    }
+  
+    const subcategoriesCount = parentCategory.subcategories ? parentCategory.subcategories.length : 0;
+    return parseInt(`${parentId}0${subcategoriesCount + 1}`);
+  }
+  
+  
 
   constructor(private router: Router, private formBuilder: FormBuilder, private categoryService: CategoryService) {
     this.categoryForm = this.formBuilder.group({
