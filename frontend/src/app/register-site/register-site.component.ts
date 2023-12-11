@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { UserService } from '../user.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
+import { HttpErrorResponse } from '@angular/common/http';
 
 
 
@@ -58,7 +59,7 @@ export class RegisterSiteComponent {
   registerUser(event: Event) {
     if(this.isPasswordValid()){
       this.userService.getLastID().subscribe(response => {
-        this.id = response + 1
+        this.id = response + 1;
         event.preventDefault();
         const user = {
           id: this.id,
@@ -74,29 +75,34 @@ export class RegisterSiteComponent {
             this.snackBar.open("Zarejestrowano pomyślnie", 'Zamknij', {
               duration: 3000,
               horizontalPosition: 'right',
-              verticalPosition: 'top', });
+              verticalPosition: 'top',
+            });
             this.router.navigate(['/login-site']);
           },
-          error => {
-            if(error === "User with the same name or email already exists" ){
-              this.snackBar.open("Użytkownik o takiej nazwie lub mailu istnieje spróbuj ponownie", 'Zamknij', {
+          (error: HttpErrorResponse) => {
+            if(error.status === 409) {
+              const errorMessage = error.error?.message || "Użytkownik o takiej nazwie lub mailu istnieje spróbuj ponownie";
+              this.snackBar.open(errorMessage, 'Zamknij', {
                 duration: 3000,
                 horizontalPosition: 'right',
-                verticalPosition: 'top', });
-            }
-            else{
+                verticalPosition: 'top',
+              });
+            } else {
               this.snackBar.open("Coś poszło nie tak spróbuj ponownie", 'Zamknij', {
                 duration: 3000,
                 horizontalPosition: 'right',
-                verticalPosition: 'top', });
+                verticalPosition: 'top',
+              });
             }
             console.error('Error registering user', error);
           }
         );
-      }
-    );
+      });
+    } else {
+      this.updateWarning();
     }
   }
+  
   
   updateWarning() {
     const errors = this.validatePassword(this.password, this.password_repeated);
