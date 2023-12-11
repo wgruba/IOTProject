@@ -57,11 +57,13 @@ export class ChangingPasswordModalComponent {
   }
 
   onNoClick(): void {
-    this.dialogRef.close(false);
+    this.dialogRef.close(null);
   }
 
   onYesClick(): void {
-    this.dialogRef.close(true);
+    if (this.isPasswordValid()) {
+      this.dialogRef.close(this.password);
+    }
   }
 
 }

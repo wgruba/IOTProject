@@ -65,6 +65,13 @@ export class UserService {
     this.http.put(getUserUrl, params, {headers}).subscribe();
   }
 
+  updateUserPassword(id: number, password: string): void {
+    const getUserUrl = `http://localhost:8080/users/${id}/updatePassword`;
+    const params = password;
+    const headers = this.authenticationService.getHeadersWithToken()
+    this.http.put(getUserUrl, params, {headers}).subscribe();
+  }
+
 
   //Zarządzanie Subskrypcją
   

@@ -153,6 +153,17 @@ public class UserController {
         return null;
     }
 
+    @PutMapping("/users/{userId}/updatePassword")
+    public User updateUserPassword(@PathVariable Integer userId, @RequestBody String password) {
+        Optional<User> existingUser = userRepository.findById(userId);
+        if (existingUser.isPresent()) {
+            User tempUser = existingUser.get();
+            tempUser.setPassword(passwordEncoder.encode(password));
+            return userRepository.save(tempUser);
+        }
+        return null;
+    }
+
 
     // CRUD - Delete
     @DeleteMapping("/users/{userId}")
