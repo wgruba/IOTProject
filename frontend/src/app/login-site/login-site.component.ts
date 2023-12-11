@@ -44,9 +44,8 @@ login(response: User){
         this.subscribedEvents = response;
         const event_ids = this.subscribedEvents.map(event => event.id);
         data['subscribedEvents'] = event_ids
-
+        this.userService.setCurrentUser(data);
       });
-      this.userService.setCurrentUser(data);
       this.snackBar.open("Zalogowano pomyślnie", 'Zamknij', {
         duration: 3000,
         horizontalPosition: 'right',
