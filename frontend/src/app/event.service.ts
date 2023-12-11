@@ -11,8 +11,7 @@ import { UserService } from './user.service';
 })
 export class EventService {
   private currentEvent!: Event;
-  private eventsSubject = new BehaviorSubject<Event[]>([
-  ]);
+  private eventsSubject = new BehaviorSubject<Event[]>([]);
   private baseUrl = 'http://localhost:8080'
 
   constructor(private http: HttpClient, public authenticationService: AuthenticationService, public userService: UserService) { 

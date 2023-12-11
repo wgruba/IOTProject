@@ -12,6 +12,7 @@ import { Subscription } from 'rxjs';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmationDialogComponentComponent } from '../confirmation-dialog-component/confirmation-dialog-component.component';
 import { CategoryService } from '../category.service';
+import { FilteredEventParameters } from '../models/FilteredEventParameters.model';
 
 
 @Component({
@@ -280,9 +281,6 @@ export class UserHeaderComponent implements OnInit {
     }
   ];
   
-
-  private filterSub: Subscription;
-
   selectedItems: SelectedItem[] = [];
   selectedLocalisation: SelectedLocation = { localisation: '', sublocalisation: ''}
   showPopup: boolean = false;
@@ -294,9 +292,6 @@ export class UserHeaderComponent implements OnInit {
   filterParsed: any;
 
   constructor(private categoryService: CategoryService ,private router: Router, private formBuilder: FormBuilder,public authService: AuthenticationService, public userService: UserService, private _snackBar: MatSnackBar, private filterSearchService: FilterSearchService, public dialog: MatDialog) {
-    this.filterSub = this.filterSearchService.buttonClick$.subscribe(() => {
-      this.onSearch();
-    });
 
     this.searchForm = this.formBuilder.group({
       name: [''],
@@ -312,16 +307,19 @@ export class UserHeaderComponent implements OnInit {
       this.isUser = (!this.isAdmin)
     }
     this.roleClass = user.permissionLevel === 'VERIFIED_USER' ? 'admin-header' : 'user-header';
+    this.filterSearchService.filteredEvents$.subscribe(events => {
+      // Aktualizuj listę eventów na podstawie odpowiedzi
+      // Może to być wykorzystane do aktualizacji widoku w komponencie
+    });
 
+    this.filterSearchService.filterParameters$.subscribe(filters => {
+      // Aktualizuj stan filtrów na podstawie odpowiedzi
+      // Może to być wykorzystane do ustawienia domyślnych wartości w formularzach filtrów
+    });
     this.categoryService.getCategoriesFromDatabase().subscribe(response => {
       this.categories = response;
     });
   }
-  ngOnDestroy(): void {
-    this.filterSub.unsubscribe();
-  }
-
-
 
   toggleSelection(categoryName: string, subcategoryName?: string): void {
     const existingIndex = this.selectedItems.findIndex(item => 
@@ -385,9 +383,6 @@ export class UserHeaderComponent implements OnInit {
   }
 
   onSearch(): void {
-    console.log('Form Values:', this.searchForm.value);
-    console.log(this.selectedLocalisation)
-    console.log(this.selectedItems)
     const filterData = localStorage.getItem('filter')
     if(filterData == null){
       this.filterParsed = JSON.stringify({historyczne: false, rezerwacja: "0", koszt: "0", wiek: "0", miejscaMin: [null, [Validators.min(0)]], miejscaMax: [null, [Validators.min(0)]]})
@@ -396,8 +391,21 @@ export class UserHeaderComponent implements OnInit {
       this.filterParsed = JSON.parse(filterData)
     }
     const formData = {...this.searchForm.value, ...this.selectedLocalisation, ...this.selectedItems, ...this.filterParsed}
-    console.log(formData)
-    this.filterSearchService.getFillteredEvents(this.searchForm).subscribe(response => {});
-    this.router.navigate(['/event-searching']);
+    let filteredEventParameters: FilteredEventParameters = {
+      name: this.searchForm.value.name,
+      categoryList: [],
+      localisation: this.selectedLocalisation.localisation,
+      startDate: this.searchForm.value.startDate,
+      endDate: this.searchForm.value.endDate,
+      isFinished: false,
+      reservation: 0,
+      isFree: 1,
+      ageGroup: 'OVER16'  
+    }
+    this.filterSearchService.getFilteredEvents(filteredEventParameters).subscribe(response => {
+        this.filterSearchService.updateFilteredEvents(response);
+        this.filterSearchService.updateFilterParameters(filteredEventParameters);
+        this.router.navigate(['/event-searching']);
+    });
   }
 }

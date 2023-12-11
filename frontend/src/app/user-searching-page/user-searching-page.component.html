@@ -10,20 +10,16 @@
             Rezerwacja miejsc:<br>
             <input type="radio" class="sidebar-checkbox" name="rezerwacja" value=1 formControlName="rezerwacja">
             <label for="rezerwacja">Rezerwacja Wymagana</label><br>
-            <input type="radio" class="sidebar-checkbox" name="rezerwacja" value=2 formControlName="rezerwacja">
-            <label for="rezerwacja">Rezerwacja Niewymagana</label><br>
             <input type="radio" class="sidebar-checkbox" name="rezerwacja" value=0 formControlName="rezerwacja">
-            <label for="rezerwacja">Obojętnie</label><br>
+            <label for="rezerwacja">Rezerwacja Niewymagana</label><br>
           </div>          
           <!-- radiobuttony do kosztu-->
           <div>
             Koszt:<br>
-            <input type="radio" class="sidebar-checkbox" name="koszt" value=1 formControlName="koszt">
+            <input type="radio" class="sidebar-checkbox" name="koszt" value=0 formControlName="koszt">
             <label for="koszt">Darmowe</label><br>
-            <input type="radio" class="sidebar-checkbox" name="koszt" value=2 formControlName="koszt">
+            <input type="radio" class="sidebar-checkbox" name="koszt" value=1 formControlName="koszt">
             <label for="koszt">Płatne</label><br>
-            <input type="radio" class="sidebar-checkbox" name="koszt" value=0 formControlName="koszt" checked>
-            <label for="koszt">Obojętnie</label><br>
           </div>
           <!-- selector min wieku -->
           <div>
@@ -42,6 +38,7 @@
             <input type="number" class="sidebar-input" name="miejscaMax" min="0" formControlName="miejscaMax"><br>
           </div>
           <button (click)="applyFilters()">Filtruj</button>
+          <button (click)="resetFilters()">Resetuj filtry</button> <!-- Dodany przycisk resetujący -->
         </div>
       </aside>
 

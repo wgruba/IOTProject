@@ -267,7 +267,7 @@ public class EventController {
     }
 
 
-    @GetMapping("/events/filter")
+    @PostMapping("/events/filter")
     public ResponseEntity<List<Event>> getAllFilteredCategories(@RequestBody FilteredEventParameters filteredEventParameters)
     {
         String name = filteredEventParameters.getName();
