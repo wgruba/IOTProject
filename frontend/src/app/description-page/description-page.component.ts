@@ -16,6 +16,7 @@ export class DescriptionPageComponent implements OnInit{
   longitude!: number;
   isSubscribed = false;
   organizerName: Organizer = {name: ""};
+  isLogged = false;
 
   constructor(
     private route: ActivatedRoute, 
@@ -29,10 +30,13 @@ export class DescriptionPageComponent implements OnInit{
     const eventId = this.route.snapshot.params['id'];
     this.event = this.eventService.getCurrentEvent();
     const currentUser = this.userService.getCurrentUser();
-    if (currentUser && Array.isArray(currentUser.subscribedEvents)) {
-      this.isSubscribed = currentUser.subscribedEvents.includes(this.event.id);
-    } else {
-      this.isSubscribed = false;
+    if (currentUser.permissionLevel != 'None'){
+      this.isLogged = true;
+      if (Array.isArray(currentUser.subscribedEvents)) {
+        this.isSubscribed = currentUser.subscribedEvents.includes(this.event.id);
+      } else {
+        this.isSubscribed = false;
+      }
     }
     this.getOrganizerUsername();
   }

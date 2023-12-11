@@ -10,7 +10,7 @@ import { AuthenticationService } from './authentication.service';
   providedIn: 'root'
 })
 export class UserService {
-  private currentUser = new BehaviorSubject<User>(this.getCurrentUser());
+  private currentUser = new BehaviorSubject<User | null>(this.getCurrentUser());
   constructor(private http: HttpClient, public authenticationService: AuthenticationService) {}
   
   getUserFromDatabase(): Observable<any> {
@@ -45,6 +45,7 @@ export class UserService {
   }
 
   removeCurrentUser(): void {
+    this.currentUser.next(null);
     localStorage.removeItem('currentUser');
     localStorage.removeItem('userToken');
     localStorage.removeItem('username');
@@ -125,7 +126,7 @@ export class UserService {
     } catch (error) {
       console.error('Error parsing user data from localStorage', error);
     }
-    return {id:0, name: "Adam" , mail: "a@mail.com", permissionLevel: "None", token: "", subscribedEvents: []};
+    return {id:0, name: "Adam" , mail: "a@mail.com", permissionLevel: 'None', token: "", subscribedEvents: []};
   }
 
   private getUserToken(): string | null {
