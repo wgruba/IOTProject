@@ -391,10 +391,15 @@ export class UserHeaderComponent implements OnInit {
       this.filterParsed = JSON.parse(filterData)
     }
     const formData = {...this.searchForm.value, ...this.selectedLocalisation, ...this.selectedItems, ...this.filterParsed}
+    let localistaion: string = '' ;
+    if(this.selectedLocalisation.sublocalisation != null){
+      localistaion = this.selectedLocalisation.sublocalisation;
+    }
+    else  {localistaion = this.selectedLocalisation.localisation }
     let filteredEventParameters: FilteredEventParameters = {
       name: this.searchForm.value.name,
       categoryList: [],
-      localisation: this.selectedLocalisation.localisation,
+      localisation: localistaion,
       startDate: this.searchForm.value.startDate,
       endDate: this.searchForm.value.endDate,
       isFinished: false,
