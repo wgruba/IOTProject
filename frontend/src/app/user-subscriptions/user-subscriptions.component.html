@@ -13,7 +13,7 @@
                   <div>
                     <h3>{{ category.name }}</h3>
                   </div>
-                  <button class="remove-button" (click)="unsubscribeCategory(category.id)">
+                  <button class="remove-button" (click)="openUnsubscribeCategoryModal(category.id)">
                     <i class="fa fa-trash" aria-hidden="true"></i></button>   
                 </div>              
           </div>
@@ -28,7 +28,7 @@
                   <div>
                     <h3>{{ event.name }}</h3>
                   </div>
-                  <button class="remove-button" (click)="openUnsubscribeCategoryModal(event.id)">
+                  <button class="remove-button" (click)="openUnsubscribeEventModal(event.id)">
                     <i class="fa fa-trash" aria-hidden="true"></i></button>  
                 </div>              
           </div>

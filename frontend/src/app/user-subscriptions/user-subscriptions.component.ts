@@ -5,6 +5,8 @@ import { UserService } from '../user.service';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmationDialogComponentComponent } from '../confirmation-dialog-component/confirmation-dialog-component.component';
 import { AddingCategoriesModalComponent } from '../adding-categories-modal/adding-categories-modal.component';
+import { MatSnackBar } from '@angular/material/snack-bar';
+
 
 
 
@@ -17,7 +19,7 @@ export class UserSubscriptionsComponent implements OnInit {
   subscribedCategoriesList! : Category[];
   subscribedEventsList! : Event[];
 
-  constructor(private userService: UserService, public dialog: MatDialog) {
+  constructor(private userService: UserService, public dialog: MatDialog, private snackBar: MatSnackBar) {
 
   }
 
@@ -45,7 +47,7 @@ export class UserSubscriptionsComponent implements OnInit {
 
   unsubscribeCategory(categoryId: number){
     this.userService.unsubscribeCategory(categoryId).subscribe(response => {
-
+        window.location.reload();
     });
   }
 
@@ -58,13 +60,17 @@ export class UserSubscriptionsComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       if(result) {
         this.unsubscribeCategory(categoryId);
+        window.location.reload();
       }
     });
   }
 
   unsubscribeEvent(eventId: number){
     this.userService.unsubscribeEvent(eventId).subscribe(response => {
-
+      this.snackBar.open("Subskrybcja zotała usunięta", 'Zamknij', {
+        duration: 4000,
+        horizontalPosition: 'right',
+        verticalPosition: 'top', });
     });
   }
 
@@ -77,6 +83,7 @@ export class UserSubscriptionsComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       if(result) {
         this.unsubscribeEvent(eventId);
+        window.location.reload();
       }
     });
   }
