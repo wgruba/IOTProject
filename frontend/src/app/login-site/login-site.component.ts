@@ -6,6 +6,8 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { Event } from '../models/event.model';
 import { Observable } from 'rxjs';
 import { User } from '../models/user.model';
+import { MatDialog } from '@angular/material/dialog';
+import { ForgottenPasswordModalComponent } from '../forgotten-password-modal/forgotten-password-modal.component';
 
 
 @Component({
@@ -19,7 +21,13 @@ export class LoginSiteComponent {
   errorMessage: string = '';
   subscribedEvents!: Event[]
 
-  constructor(private authService: AuthenticationService, private router: Router, public userService: UserService, private snackBar: MatSnackBar) {}
+  constructor(private authService: AuthenticationService,
+    private router: Router,
+    public userService: UserService,
+    private snackBar: MatSnackBar,
+    public dialog: MatDialog,
+    private _snackBar: MatSnackBar,
+    ) {}
 
   onSubmit() {
     if (this.username && this.password) {
@@ -32,6 +40,23 @@ export class LoginSiteComponent {
         }
       });
   }
+}
+
+onForgot() {
+  const dialogRef = this.dialog.open(ForgottenPasswordModalComponent, {
+    width: '350px',
+    data: {title: 'Resetuj hasło', message: 'Podaj adres email powiązany z kontem'}
+  });
+  dialogRef.afterClosed().subscribe(result => {
+    if(result != null) {
+      if(result == 0) {
+        this._snackBar.open("Link do resetu hasła został wysłany na podany email", 'Zamknij', {duration: 5000})
+      }
+      else {
+        this._snackBar.open("Nie znaleziono użytkownika o podanym adresie email, bądź wystąpił problem.", 'Zamknij', {duration: 5000})
+      }
+    }
+  });
 }
 
 login(response: User){

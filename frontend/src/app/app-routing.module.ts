@@ -22,6 +22,7 @@ import { AdminProfileComponent } from './admin-profile/admin-profile.component';
 import { AdminEventsComponent } from './admin-events/admin-events.component';
 import { AdminSubsComponent } from './admin-subs/admin-subs.component';
 import { ModProfileComponent } from './mod-profile/mod-profile.component';
+import { PasswordResetComponent } from './password-reset/password-reset.component';
 
 
 const routes: Routes = [
@@ -46,6 +47,7 @@ const routes: Routes = [
   { path: 'admin-profile/:name', component: AdminProfileComponent, canActivate: [AuthGuard, RoleGuard],  data: { allowedRoles:  ['ADMIN'] } },
   { path: 'admin-events/:name', component: AdminEventsComponent, canActivate: [AuthGuard, RoleGuard],  data: { allowedRoles:  ['ADMIN'] } },
   { path: 'admin-subs/:name', component: AdminSubsComponent, canActivate: [AuthGuard, RoleGuard],  data: { allowedRoles:  ['ADMIN'] } },
+  { path: 'resetPassword/:token', component: PasswordResetComponent},
   
 ];
 

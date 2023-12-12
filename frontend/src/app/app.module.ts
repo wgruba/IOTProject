@@ -41,6 +41,8 @@ import { AdminProfileComponent } from './admin-profile/admin-profile.component';
 import { AdminEventsComponent } from './admin-events/admin-events.component';
 import { AdminSubsComponent } from './admin-subs/admin-subs.component';
 import { ModProfileComponent } from './mod-profile/mod-profile.component';
+import { ForgottenPasswordModalComponent } from './forgotten-password-modal/forgotten-password-modal.component';
+import { PasswordResetComponent } from './password-reset/password-reset.component';
 
 
 register();
@@ -77,6 +79,8 @@ register();
     AdminEventsComponent,
     AdminSubsComponent,
     ModProfileComponent,
+    ForgottenPasswordModalComponent,
+    PasswordResetComponent,
   ],
   imports: [
     BrowserModule,
