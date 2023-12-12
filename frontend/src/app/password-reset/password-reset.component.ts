@@ -1,32 +1,36 @@
-import { Component, Inject } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { Component } from '@angular/core';
+import { UserService } from '../user.service';
+import { ActivatedRoute } from '@angular/router';
+import { JwtHelperService } from '@auth0/angular-jwt';
+
 
 @Component({
-  selector: 'app-changing-password-modal',
-  templateUrl: './changing-password-modal.component.html',
-  styleUrls: ['./changing-password-modal.component.scss']
+  selector: 'app-password-reset',
+  templateUrl: './password-reset.component.html',
+  styleUrls: ['./password-reset.component.scss']
 })
-export class ChangingPasswordModalComponent {
+export class PasswordResetComponent {
+  warning: string = "";
   password: string = "";
   password_repeated: string = "";
-  warning: string = "";
-  login: string = "";
-  email: string = "";
-  id: number = 0;
-  message: string = "";
+  zmieniono: boolean = false;
+  token: string = "";
 
-  
   constructor(
-    public dialogRef: MatDialogRef<ChangingPasswordModalComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: DialogData
-  ) {}
+    private userService: UserService,
+    private activatedRoute: ActivatedRoute,
+    ) {
+      this.activatedRoute.params.subscribe(params => {
+        const t = params['token'];
+        this.token = t;
+      });
+      this.zmieniono = false;
+    }
 
   updateWarning() {
     const errors = this.validatePassword(this.password, this.password_repeated);
     this.warning = errors.join("\r\n");
   }
-
-  
   validatePassword(p: string, p2: string): string[] {
     const errors: string[] = [];
   
@@ -51,24 +55,16 @@ export class ChangingPasswordModalComponent {
 
     return errors;
   }
-
   isPasswordValid(): boolean {
     return this.validatePassword(this.password, this.password_repeated).length === 0;
   }
-
-  onNoClick(): void {
-    this.dialogRef.close(null);
-  }
-
   onYesClick(): void {
     if (this.isPasswordValid()) {
-      this.dialogRef.close(this.password);
+      this.userService.confirmRequestPasswordReset(this.token, this.password).subscribe(Response => {
+        if (Response) {
+          this.zmieniono = true;
+        }
+      });
     }
   }
-
-}
-
-export interface DialogData {
-  title: string;
-  message: string;
 }

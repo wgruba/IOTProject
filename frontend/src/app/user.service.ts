@@ -66,6 +66,21 @@ export class UserService {
     this.http.put(getUserUrl, params, {headers}).subscribe();
   }
 
+  updateUserPassword(id: number, password: string): void {
+    const getUserUrl = `http://localhost:8080/users/${id}/updatePassword`;
+    const params = password;
+    const headers = this.authenticationService.getHeadersWithToken()
+    this.http.put(getUserUrl, params, {headers}).subscribe();
+  }
+
+  requestPasswordReset(mail: string): Observable<number> {
+    return this.http.post<number>(`http://localhost:8080/sendResetToken`, mail);
+  }
+
+  confirmRequestPasswordReset(token: string, password: string): Observable<boolean> {
+    return this.http.put<boolean>(`http://localhost:8080/resetPasswordConfirm/${token}`, password);
+  }
+
 
   //Zarządzanie Subskrypcją
   
