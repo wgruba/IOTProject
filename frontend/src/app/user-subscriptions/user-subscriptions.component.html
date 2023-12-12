@@ -24,7 +24,7 @@
     <ng-container *ngIf="subscribedEventsList.length > 0; else noSubscriptions">
         <div class="event-list">
           <div  class="event" *ngFor="let event of subscribedEventsList">
-              <div class="card">
+              <div class="card"  (click)="showDetails(event)">
                   <div>
                     <h3>{{ event.name }}</h3>
                   </div>

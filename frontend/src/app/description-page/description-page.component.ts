@@ -3,6 +3,11 @@ import { EventService } from '../event.service';
 import { ActivatedRoute } from '@angular/router';
 import { Event } from '../models/event.model';
 import { UserService } from '../user.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { ConfirmationDialogComponentComponent } from '../confirmation-dialog-component/confirmation-dialog-component.component';
+import { MatDialog } from '@angular/material/dialog';
+
+
 
 
 @Component({
@@ -21,7 +26,9 @@ export class DescriptionPageComponent implements OnInit{
   constructor(
     private route: ActivatedRoute, 
     private eventService: EventService,
-    private userService: UserService
+    private userService: UserService,
+    public dialog: MatDialog,
+    private snackBar: MatSnackBar
   ) {
 
   }
@@ -74,6 +81,33 @@ export class DescriptionPageComponent implements OnInit{
       const user = this.userService.getCurrentUser();
       user.subscribedEvents.push(currentEventId)
       this.userService.setCurrentUser(user)
+    });
+  }
+
+  unsubscribeEvent(eventId: number){
+    this.userService.unsubscribeEvent(eventId).subscribe(response => {
+      this.snackBar.open("Subskrybcja zotała usunięta", 'Zamknij', {
+        duration: 4000,
+        horizontalPosition: 'right',
+        verticalPosition: 'top', });
+      });
+      const user = this.userService.getCurrentUser();
+      user.subscribedEvents = user.subscribedEvents.filter(subscribedEventId => subscribedEventId !== eventId);
+      this.userService.setCurrentUser(user);
+      this.isSubscribed = false;
+  }
+
+  openUnsubscribeEventModal(eventId: number) {
+    const dialogRef = this.dialog.open(ConfirmationDialogComponentComponent, {
+      width: '350px',
+      data: {title: 'Potwierdzenie', message: 'Czy na pewno chcesz anulować subskrybcję tego wydarzenia?'}
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if(result) {
+        this.unsubscribeEvent(eventId);
+        window.location.reload();
+      }
     });
   }
 }

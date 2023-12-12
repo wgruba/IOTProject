@@ -6,8 +6,8 @@ import { MatDialog } from '@angular/material/dialog';
 import { ConfirmationDialogComponentComponent } from '../confirmation-dialog-component/confirmation-dialog-component.component';
 import { AddingCategoriesModalComponent } from '../adding-categories-modal/adding-categories-modal.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
-
-
+import { EventService } from '../event.service';
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -19,7 +19,7 @@ export class UserSubscriptionsComponent implements OnInit {
   subscribedCategoriesList! : Category[];
   subscribedEventsList! : Event[];
 
-  constructor(private userService: UserService, public dialog: MatDialog, private snackBar: MatSnackBar) {
+  constructor(private router: Router, private userService: UserService, public dialog: MatDialog, private snackBar: MatSnackBar, private eventService: EventService) {
 
   }
 
@@ -86,5 +86,10 @@ export class UserSubscriptionsComponent implements OnInit {
         window.location.reload();
       }
     });
+  }
+
+  showDetails(card: Event): void {
+    this.eventService.setCurrentEvent(card);
+    this.router.navigate(['/event-details', card.id]);
   }
 }
