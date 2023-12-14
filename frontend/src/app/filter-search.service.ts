@@ -18,7 +18,7 @@ export class FilterSearchService {
 
   getFilteredEvents(filteredEventParameters: FilteredEventParameters): Observable<Event[]> {
     let baseUrl = `http://localhost:8080`;
-    return this.http.post<Event[]>(`${baseUrl}/events/filter`, filteredEventParameters);
+    return this.http.post<Event[]>(`${baseUrl}/unauthorized/events/filter`, filteredEventParameters);
   }
 
   getCurrentFilterParameters(): FilteredEventParameters | null {

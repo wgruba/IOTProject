@@ -52,11 +52,11 @@ export class UserService {
   }
 
   addUser(user: any): Observable<any> {
-    return this.http.post('http://localhost:8080/addUser', user);
+    return this.http.post('http://localhost:8080/unauthorized/addUser', user);
   }
 
   getLastID(): Observable<any> {
-    return this.http.get('http://localhost:8080/user/last');
+    return this.http.get('http://localhost:8080/unauthorized/user/last');
   }
 
   updateUserPermissions(id: number, permissionLevel: number): void {
@@ -74,11 +74,11 @@ export class UserService {
   }
 
   requestPasswordReset(mail: string): Observable<number> {
-    return this.http.post<number>(`http://localhost:8080/sendResetToken`, mail);
+    return this.http.post<number>(`http://localhost:8080/unauthorized/sendResetToken`, mail);
   }
 
   confirmRequestPasswordReset(token: string, password: string): Observable<boolean> {
-    return this.http.put<boolean>(`http://localhost:8080/resetPasswordConfirm/${token}`, password);
+    return this.http.put<boolean>(`http://localhost:8080/unauthorized/resetPasswordConfirm/${token}`, password);
   }
 
 

@@ -32,7 +32,7 @@ public class PasswordResetController {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    @PostMapping("/sendResetToken")
+    @PostMapping("/unauthorized/sendResetToken")
     public Integer sendResetToken(@RequestBody String mail) {
         try {
             Optional<User> existingUser = userRepository.getUserByMail(mail);
@@ -56,7 +56,7 @@ public class PasswordResetController {
         }
     }
 
-    @PutMapping("/resetPasswordConfirm/{token}")
+    @PutMapping("/unauthorized/resetPasswordConfirm/{token}")
     public Boolean resetPassword(@PathVariable String token, @RequestBody String password) {
         Date exp = jwtUtils.getExpirationDateFromToken(token);
         Date now = Calendar.getInstance().getTime();

@@ -70,19 +70,19 @@ export class EventService {
   }
 
   getAllEvents(): Observable<any> {
-    return this.http.get(`${this.baseUrl}/events`);
+    return this.http.get(`${this.baseUrl}/unauthorized/events`);
   }
 
   getRecomendedEvents(): Observable<any> {
-    return this.http.get(`${this.baseUrl}/events/getRandom`);
+    return this.http.get(`${this.baseUrl}/unauthorized/events/getRandom`);
   }
 
   getRecentEvents(): Observable<any> {
-    return this.http.get(`${this.baseUrl}/events/recent`);
+    return this.http.get(`${this.baseUrl}/unauthorized/events/recent`);
   }
 
   getOrganizerName(organizerId: number): Observable<any> {
-    return this.http.get(`${this.baseUrl}/users/${organizerId}/getName`, { responseType: 'text' });
+    return this.http.get(`${this.baseUrl}/unauthorized/users/${organizerId}/getName`, { responseType: 'text' });
   }
 
   addEvent(eventData: Event): Observable<any> {

@@ -23,8 +23,8 @@ public class SecurityConfig {
                 .cors(withDefaults())
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(authorize -> authorize
-//                        .requestMatchers("/events", "/events/name/*", "/login", "/addUser", "/users/last").permitAll()
-                        .anyRequest().permitAll()
+                        .requestMatchers("/unauthorized/**").permitAll()
+                        .anyRequest().authenticated()
                 )
                 .addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class)
                 .sessionManagement(session -> session

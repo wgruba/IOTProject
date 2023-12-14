@@ -15,7 +15,7 @@ export class CategoryService {
 
 
   getCategoriesFromDatabase(): Observable<any> {
-    const getUserUrl = `http://localhost:8080/categories/parentCategories`;
+    const getUserUrl = `http://localhost:8080/unauthorized/categories/parentCategories`;
     return this.http.get<User>(getUserUrl);
   }
 

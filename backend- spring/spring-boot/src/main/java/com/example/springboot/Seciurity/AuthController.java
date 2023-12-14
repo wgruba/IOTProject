@@ -19,7 +19,7 @@ public class AuthController {
     @Autowired
     private BCryptPasswordEncoder passwordEncoder;
 
-    @PostMapping("/login")
+    @PostMapping("/unauthorized/login")
     public ResponseEntity<?> authenticateUser(@RequestBody LoginRequest loginRequest) {
         Optional<User> user = userRepository.getUserByNameOrMail(loginRequest.getUsername());
         if(user.isPresent()) {

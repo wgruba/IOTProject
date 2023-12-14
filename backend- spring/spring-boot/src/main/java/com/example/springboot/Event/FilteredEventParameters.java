@@ -68,12 +68,12 @@ public class FilteredEventParameters {
         this.endDate = endDate;
     }
 
-    public Boolean getFinished() {
+    public Boolean getIsFinished() {
         return isFinished;
     }
 
-    public void setFinished(Boolean finished) {
-        isFinished = finished;
+    public void setFinished(Boolean isFinished) {
+        this.isFinished = isFinished;
     }
 
     public Integer getReservation() {

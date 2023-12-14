@@ -20,7 +20,7 @@ export class AuthenticationService {
 
 
   login(username: string, password: string): Observable<any> {
-    return this.http.post<any>('http://localhost:8080/login', { username, password });
+    return this.http.post<any>('http://localhost:8080/unauthorized/login', { username, password });
   }
 
   register(user: any): Observable<any> {

@@ -87,7 +87,7 @@ public class CategoryController {
                 .status(HttpStatus.NOT_FOUND)
                 .body("Cannot find category with given id");
     }
-    @GetMapping("/categories/parentCategories")
+    @GetMapping("/unauthorized/categories/parentCategories")
     public ResponseEntity<List<Category>> getParentCategories() {
         return ResponseEntity.ok(categoryRepository.getAllParentCategories());
     }

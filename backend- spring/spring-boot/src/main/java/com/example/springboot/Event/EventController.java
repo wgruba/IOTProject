@@ -28,7 +28,7 @@ public class EventController {
 
 
     // CRUD - Read
-    @GetMapping("/events")
+    @GetMapping("/unauthorized/events")
     public ResponseEntity<List<Event>> getAllEvents() {
         List<Event> events = eventRepository.findAll();
         return ResponseEntity.ok(events);
@@ -43,7 +43,7 @@ public class EventController {
                         .status(HttpStatus.NOT_FOUND)
                         .body("Cannot find event with given id");
     }
-    @GetMapping("/events/name/{name}")
+    @GetMapping("/unauthorized/events/name/{name}")
     public ResponseEntity<Event> getEventByName(@PathVariable String name) {
         Optional<Event> existingEvent = eventRepository.getEventByName(name);
         if (existingEvent.isPresent()) {
@@ -87,11 +87,11 @@ public class EventController {
         }
         return ResponseEntity.ok(getEventsFromList(tempEventList));
     }
-    @GetMapping("/events/recent")
+    @GetMapping("/unauthorized/events/recent")
     public ResponseEntity<List<Event>> getRecentEvents() {
         return ResponseEntity.ok(eventRepository.findTop10ByOrderByIdDesc());
     }
-    @GetMapping("/events/getRandom")
+    @GetMapping("/unauthorized/events/getRandom")
     public ResponseEntity<List<Event>> getRandomEvents() {
         List<Integer> randomIntList = new ArrayList<>();
         Random random = new Random();
@@ -262,7 +262,7 @@ public class EventController {
     }
 
 
-    @PostMapping("/events/filter")
+    @PostMapping("/unauthorized/events/filter")
     public ResponseEntity<List<Event>> getAllFilteredCategories(@RequestBody FilteredEventParameters filteredEventParameters)
     {
         String name = filteredEventParameters.getName();
@@ -270,7 +270,7 @@ public class EventController {
         String localisation = filteredEventParameters.getLocalisation();
         String startDate = filteredEventParameters.getStartDate();
         String endDate = filteredEventParameters.getEndDate();
-        Boolean isFinished = filteredEventParameters.getFinished();
+        Boolean isFinished = filteredEventParameters.getIsFinished();
         Integer reservation = filteredEventParameters.getReservation();
         Integer isFree = filteredEventParameters.getIsFree();
         AgeGroup ageGroup = filteredEventParameters.getAgeGroup();
@@ -307,13 +307,14 @@ public class EventController {
             if (event.getEventStatus() == EventStatus.ACCEPTED || event.getEventStatus() == EventStatus.EDITED)
                 if (event.getName().toLowerCase().contains(name.toLowerCase()))
                     if (event.getLocalisation().toLowerCase().contains(localisation.toLowerCase()))
-    //                    if (event.getEndDate().isAfter(LocalDateTime.now()) && !isFinished || event.getEndDate().isBefore(LocalDateTime.now()) && isFinished)
+                        if (event.getEndDate().isAfter(LocalDateTime.now()) && !isFinished || event.getEndDate().isBefore(LocalDateTime.now()) && isFinished)
                             if (reservation == 0 || (event.isReservationNecessary() && reservation == 1) || (!event.isReservationNecessary() && reservation == 2))
                                 if (isFree == 0 || (event.isFree() && isFree == 1) || (!event.isFree() && isFree == 2))
-                                    if (ageGroup == AgeGroup.FAMILY_FRIENDLY ||
-                                            ageGroup == AgeGroup.OVER12 && (event.getAgeGroup() == AgeGroup.OVER12 || event.getAgeGroup() == AgeGroup.OVER16 || event.getAgeGroup() == AgeGroup.OVER18) ||
-                                            ageGroup == AgeGroup.OVER16 && (event.getAgeGroup() == AgeGroup.OVER16 || event.getAgeGroup() == AgeGroup.OVER18) ||
-                                            ageGroup == AgeGroup.OVER18 && (event.getAgeGroup() == AgeGroup.OVER18))
+                                    if (ageGroup == AgeGroup.FAMILY_FRIENDLY && event.getAgeGroup() == AgeGroup.FAMILY_FRIENDLY ||
+                                            ageGroup == AgeGroup.OVER12 && (event.getAgeGroup() == AgeGroup.FAMILY_FRIENDLY || event.getAgeGroup() == AgeGroup.OVER12) ||
+                                            ageGroup == AgeGroup.OVER16 && (event.getAgeGroup() == AgeGroup.FAMILY_FRIENDLY || event.getAgeGroup() == AgeGroup.OVER12 || event.getAgeGroup() == AgeGroup.OVER16) ||
+                                            ageGroup == AgeGroup.OVER18 && (event.getAgeGroup() == AgeGroup.FAMILY_FRIENDLY || event.getAgeGroup() == AgeGroup.OVER12 || event.getAgeGroup() == AgeGroup.OVER16 || event.getAgeGroup() == AgeGroup.OVER18))
+
                                         if (!startDateRelevant || startDateTime.isBefore(event.getStartDate()))
                                             if (!endDateRelevant || endDateTime.isAfter(event.getEndDate()))
                                                 filteredEvents.add(event);

@@ -31,7 +31,7 @@ public class UserController {
 
 
     // CRUD - Create
-    @PostMapping("/addUser")
+    @PostMapping("/unauthorized/addUser")
     public ResponseEntity<?> addUser(@RequestBody User user) {
         Optional<User> existingUser = userRepository.getUserByNameOrMail(user.getName());
         Optional<User> existingUser2 = userRepository.getUserByNameOrMail(user.getMail());
@@ -110,7 +110,7 @@ public class UserController {
     public List<User> getUsersFromList(ArrayList<Integer> idList) {
         return userRepository.getUsersFromList(idList);
     }
-    @GetMapping("/user/last")
+    @GetMapping("/unauthorized/user/last")
     public int getLastUser() {
         return userRepository.findTopByOrderByIdDesc()
                 .map(User::getId)
@@ -207,7 +207,7 @@ public class UserController {
         return ResponseEntity.ok(true);});
         return ResponseEntity.ok(false);
     }
-    @GetMapping("/users/{userId}/getName")
+    @GetMapping("/unauthorized/users/{userId}/getName")
     public ResponseEntity<String> getUsersName(@PathVariable int userId) {
         Optional<User> existingUser = userRepository.getUserById(userId);
         if (existingUser.isPresent()) {
