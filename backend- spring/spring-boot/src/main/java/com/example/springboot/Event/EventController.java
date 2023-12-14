@@ -308,8 +308,8 @@ public class EventController {
                 if (event.getName().toLowerCase().contains(name.toLowerCase()))
                     if (event.getLocalisation().toLowerCase().contains(localisation.toLowerCase()))
                         if (event.getEndDate().isAfter(LocalDateTime.now()) && !isFinished || event.getEndDate().isBefore(LocalDateTime.now()) && isFinished)
-                            if (reservation == 0 || (event.isReservationNecessary() && reservation == 1) || (!event.isReservationNecessary() && reservation == 2))
-                                if (isFree == 0 || (event.isFree() && isFree == 1) || (!event.isFree() && isFree == 2))
+                            if (reservation == 2 || (event.isReservationNecessary() && reservation == 1) || (!event.isReservationNecessary() && reservation == 0))
+                                if (isFree == 2 || (event.isFree() && isFree == 1) || (!event.isFree() && isFree == 0))
                                     if (ageGroup == AgeGroup.FAMILY_FRIENDLY && event.getAgeGroup() == AgeGroup.FAMILY_FRIENDLY ||
                                             ageGroup == AgeGroup.OVER12 && (event.getAgeGroup() == AgeGroup.FAMILY_FRIENDLY || event.getAgeGroup() == AgeGroup.OVER12) ||
                                             ageGroup == AgeGroup.OVER16 && (event.getAgeGroup() == AgeGroup.FAMILY_FRIENDLY || event.getAgeGroup() == AgeGroup.OVER12 || event.getAgeGroup() == AgeGroup.OVER16) ||
