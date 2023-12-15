@@ -92,6 +92,6 @@ export class EventService {
 
   editEvent(eventData: Event): Observable<any>{
     const headers = this.authenticationService.getHeadersWithToken()
-    return this.http.patch(`${this.baseUrl}/users/${this.userService.getCurrentUser().id}/createEvent`, eventData, { headers });
+    return this.http.patch(`${this.baseUrl}/users/${this.userService.getCurrentUser().id}/createEvent`, eventData, this.authenticationService.getOptionsWithToken());
   }
 }
