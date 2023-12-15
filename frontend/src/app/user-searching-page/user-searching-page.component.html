@@ -42,26 +42,25 @@
             <input type="number" class="sidebar-input" name="miejscaMax" min="0" formControlName="miejscaMax"><br>
           </div>
           <br>
-          <button (click)="applyFilters()">Filtruj</button>
+          <button class="filterButton" (click)="applyFilters()">Filtruj</button>
           <br>
-          <button (click)="resetFilters()">Resetuj filtry</button> <!-- Dodany przycisk resetujący -->
+          <button class="filterButton" (click)="resetFilters()">Resetuj filtry</button> <!-- Dodany przycisk resetujący -->
         </div>
       </aside>
 
     <div class="event-list">
+      <div *ngIf="events.length > 0" class="event-list">
         <div *ngFor="let event of events">
-            <div class="card">
+            <div class="card" >
                 <img [src]="event.imageUrl" alt="Event image">
                 <div>
-                  <h3>{{ event.name }}</h3>
-                  <p>{{ event.description }}</p>
+                    <h3>{{ event.name }}</h3>
+                    <p>{{ event.startDate }} - {{event.endDate}}</p>
                 </div>
-                <button (click)="showDetails(event)">
-                <div *ngIf="isUser"> Pokaż </div>
-                <div *ngIf="isAdmin"> Sprawdź </div>
-                </button>
-              </div>              
+                <button (click)="showDetails(event)"> Sprawdź </button>
+            </div>              
         </div>
+    </div>  
       </div>  
 </div>
 </body>
