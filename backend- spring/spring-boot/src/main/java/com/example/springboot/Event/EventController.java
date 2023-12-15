@@ -91,7 +91,7 @@ public class EventController {
     }
     @GetMapping("/unauthorized/events/recent")
     public ResponseEntity<List<Event>> getRecentEvents() {
-        List<Event> tempList = eventRepository.findTop20ByOrderByIdDesc();
+        List<Event> tempList = eventRepository.findAllByOrderByIdDesc();
 
         List<Event> acceptedEvents = tempList.stream()
                 .filter(event -> EventStatus.ACCEPTED.equals(event.getEventStatus()))
