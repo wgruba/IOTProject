@@ -10,6 +10,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.Random;
+import java.util.stream.Collectors;
+
 
 
 @RestController
@@ -89,7 +91,14 @@ public class EventController {
     }
     @GetMapping("/unauthorized/events/recent")
     public ResponseEntity<List<Event>> getRecentEvents() {
-        return ResponseEntity.ok(eventRepository.findTop10ByOrderByIdDesc());
+        List<Event> tempList = eventRepository.findTop20ByOrderByIdDesc();
+
+        List<Event> acceptedEvents = tempList.stream()
+                .filter(event -> EventStatus.ACCEPTED.equals(event.getEventStatus()))
+                .limit(10)
+                .collect(Collectors.toList());
+
+        return ResponseEntity.ok(acceptedEvents);
     }
     @GetMapping("/unauthorized/events/getRandom")
     public ResponseEntity<List<Event>> getRandomEvents() {
