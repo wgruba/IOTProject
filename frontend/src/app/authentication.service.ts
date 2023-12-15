@@ -18,7 +18,6 @@ export class AuthenticationService {
     return this.isLoggedIn.asObservable();
   }
 
-
   login(username: string, password: string): Observable<any> {
     return this.http.post<any>('http://localhost:8080/unauthorized/login', { username, password });
   }
@@ -66,6 +65,15 @@ export class AuthenticationService {
 
   public getHeadersWithToken(): HttpHeaders {
     const token = localStorage.getItem('userToken');
+    console.log(token)
     return new HttpHeaders().set('Authorization', `Bearer ${token}`);
+  }
+
+  public getOptionsWithToken(){
+    const headers = this.getHeadersWithToken();
+    const options = {
+      headers: headers
+  };
+  return(options)
   }
 }

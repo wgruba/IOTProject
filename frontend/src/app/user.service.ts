@@ -5,7 +5,6 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { AuthenticationService } from './authentication.service';
 
 
-
 @Injectable({
   providedIn: 'root'
 })
@@ -86,27 +85,24 @@ export class UserService {
   
   subscribeEvent(eventId: number){
     const getUserUrl = `http://localhost:8080/users/${this.getCurrentUser().id}/subscribeEvent/${eventId}`;
-    const headers = this.authenticationService.getHeadersWithToken()
-    return this.http.patch(getUserUrl, {headers});
+    return this.http.patch(getUserUrl, null, this.authenticationService.getOptionsWithToken());
   }
+
 
   unsubscribeEvent(eventId: number){
     const getUserUrl = `http://localhost:8080/users/${this.getCurrentUser().id}/unsubscribeEvent/${eventId}`;
-    const headers = this.authenticationService.getHeadersWithToken()
-    return this.http.patch(getUserUrl, {headers});
+    return this.http.patch(getUserUrl, null, this.authenticationService.getOptionsWithToken());
   }
 
 
   subscribeCategory(eventId: number[]){
     const getUserUrl = `http://localhost:8080/users/${this.getCurrentUser().id}/subscribeCategories`;
-    const headers = this.authenticationService.getHeadersWithToken()
-    return this.http.patch(getUserUrl, eventId, {headers});
+    return this.http.patch(getUserUrl, eventId, this.authenticationService.getOptionsWithToken());
   }
 
   unsubscribeCategory(categoryId: number){
     const getUserUrl = `http://localhost:8080/users/${this.getCurrentUser().id}/unsubscribeCategory/${categoryId}`;
-    const headers = this.authenticationService.getHeadersWithToken()
-    return this.http.patch(getUserUrl, {headers});
+    return this.http.patch(getUserUrl,  null, this.authenticationService.getOptionsWithToken());
   }
 
   getSubscribedCategories(): Observable<any> {
