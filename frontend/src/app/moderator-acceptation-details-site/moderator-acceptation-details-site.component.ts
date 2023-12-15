@@ -7,6 +7,9 @@ import { ConfirmationDialogComponentComponent } from '../confirmation-dialog-com
 import { AdminService } from '../admin.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
+import { Category } from '../models/Category.model';
+import { CategoryService } from '../category.service';
+
 
 
 
@@ -20,6 +23,7 @@ export class ModeratorAcceptationDetailsSiteComponent {
   event !: Event;
   latitude!: number;
   longitude!: number;
+  categories! : Category[];
 
   constructor(
     private route: ActivatedRoute, 
@@ -27,7 +31,8 @@ export class ModeratorAcceptationDetailsSiteComponent {
     public dialog: MatDialog,
     private adminService: AdminService,
     private snackBar: MatSnackBar,
-    private router: Router
+    private router: Router,
+    public categoryService: CategoryService
   ) {
   }
 
@@ -38,7 +43,43 @@ export class ModeratorAcceptationDetailsSiteComponent {
     if (this.event.id !== parseInt(eventId, 10)) {
       // Handle the mismatch, possibly fetch the event by ID from a backend
     }
+    this.categoryService.getCategoriesFromDatabase().subscribe(response => {
+      this.categories = response;
+    });
   }
+
+  getSelectedCategoryNames(): string[] {
+    if (!this.event || !this.event.categoryList || !this.categories) {
+      return []; // Return an empty array if the data is not yet loaded
+    }
+  
+    return this.event.categoryList.map(categoryId => 
+      this.categories.find(category => category.id === categoryId)?.name || ''
+    );
+  }
+  
+  getSelectedSubcategoryNames(): string[] {
+    if (!this.event || !this.event.categoryList || !this.categories) {
+      return []; // Return an empty array if the data is not yet loaded
+    }
+  
+    return this.event.categoryList.map(subcategoryId => {
+      for (const category of this.categories) {
+        const subcategory = category.subcategories?.find(sub => sub.first === subcategoryId);
+        if (subcategory) {
+          return subcategory.second;
+        }
+      }
+      return '';
+    });
+  }
+  
+  
+
+  getNames(): string[]{
+    return [...this.getSelectedCategoryNames(), ...this.getSelectedSubcategoryNames()] 
+  }
+
 
   acceptEvent(){
     const dialogRef = this.dialog.open(ConfirmationDialogComponentComponent, {
