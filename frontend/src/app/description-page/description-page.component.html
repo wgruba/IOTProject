@@ -16,6 +16,15 @@
                 <p class="event-organizer">Utworzone przez: {{ organizerName.name }} </p>
                 <p class="event-participants">{{event.ageGroup}} </p>
 
+                <div *ngIf="getNames().length > 0">
+                    <h3>Kategorie Wydarzenia:</h3>
+                    <ul  *ngFor="let category of getNames()">
+                        <div *ngIf="category !== ''">
+                      <li>{{ category }}</li>
+                    </div>
+                    </ul>
+                </div>
+                
             </div>
 
             <div class="event-actions">

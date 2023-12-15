@@ -6,6 +6,8 @@ import { UserService } from '../user.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ConfirmationDialogComponentComponent } from '../confirmation-dialog-component/confirmation-dialog-component.component';
 import { MatDialog } from '@angular/material/dialog';
+import { Category } from '../models/Category.model';
+import { CategoryService } from '../category.service';
 
 
 
@@ -20,6 +22,7 @@ export class DescriptionPageComponent implements OnInit{
   latitude!: number;
   longitude!: number;
   isSubscribed = false;
+  categories! : Category[];
   organizerName: Organizer = {name: ""};
   isLogged = false;
 
@@ -28,7 +31,8 @@ export class DescriptionPageComponent implements OnInit{
     private eventService: EventService,
     private userService: UserService,
     public dialog: MatDialog,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
+    public categoryService: CategoryService
   ) {
 
   }
@@ -46,6 +50,9 @@ export class DescriptionPageComponent implements OnInit{
       }
     }
     this.getOrganizerUsername();
+    this.categoryService.getCategoriesFromDatabase().subscribe(response => {
+      this.categories = response;
+    });
   }
 
   getGoogleCalendarUrl(event: Event): string {
@@ -82,6 +89,44 @@ export class DescriptionPageComponent implements OnInit{
       user.subscribedEvents.push(currentEventId)
       this.userService.setCurrentUser(user)
     });
+  }
+
+  getCategoriesNames(): string[] {
+    for (let category of this.event.categoryList){
+    }
+    return [];
+  }
+
+  getSelectedCategoryNames(): string[] {
+    if (!this.event || !this.event.categoryList || !this.categories) {
+      return []; // Return an empty array if the data is not yet loaded
+    }
+  
+    return this.event.categoryList.map(categoryId => 
+      this.categories.find(category => category.id === categoryId)?.name || ''
+    );
+  }
+  
+  getSelectedSubcategoryNames(): string[] {
+    if (!this.event || !this.event.categoryList || !this.categories) {
+      return []; // Return an empty array if the data is not yet loaded
+    }
+  
+    return this.event.categoryList.map(subcategoryId => {
+      for (const category of this.categories) {
+        const subcategory = category.subcategories?.find(sub => sub.first === subcategoryId);
+        if (subcategory) {
+          return subcategory.second;
+        }
+      }
+      return '';
+    });
+  }
+  
+  
+
+  getNames(): string[]{
+    return [...this.getSelectedCategoryNames(), ...this.getSelectedSubcategoryNames()] 
   }
 
   unsubscribeEvent(eventId: number){
