@@ -22,6 +22,15 @@
             </div>
         </div>
 
+        <div *ngIf="getNames().length > 0">
+            <h3>Kategorie Wydarzenia:</h3>
+            <ul  *ngFor="let category of getNames()">
+                <div *ngIf="category !== ''">
+              <li>{{ category }}</li>
+            </div>
+            </ul>
+        </div>
+
         <div class="event-details-body">
             <h2>{{event.name}}</h2>
             <p class="event-description">{{event.description}}</p>
