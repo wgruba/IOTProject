@@ -23,12 +23,15 @@ import { AdminEventsComponent } from './admin-events/admin-events.component';
 import { AdminSubsComponent } from './admin-subs/admin-subs.component';
 import { ModProfileComponent } from './mod-profile/mod-profile.component';
 import { PasswordResetComponent } from './password-reset/password-reset.component';
+import { MfaComponent } from './mfa/mfa.component';
+
 
 
 const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full'},
   { path: 'home', component: MainSiteComponent,  data: { allowedRoles:  ['VERIFIED_USER', 'UNVERIFIED_USER'] }},
   { path: 'login-site', component:LoginSiteComponent},
+  { path: 'mfa', component: MfaComponent },
   { path: 'register-site', component:RegisterSiteComponent},
   { path: 'event-details/:id', component: DescriptionPageComponent},
   { path: 'o-nas', component:AboutUsComponent},

@@ -43,6 +43,7 @@ import { AdminSubsComponent } from './admin-subs/admin-subs.component';
 import { ModProfileComponent } from './mod-profile/mod-profile.component';
 import { ForgottenPasswordModalComponent } from './forgotten-password-modal/forgotten-password-modal.component';
 import { PasswordResetComponent } from './password-reset/password-reset.component';
+import { MfaComponent } from './mfa/mfa.component';
 
 
 register();
@@ -81,6 +82,7 @@ register();
     ModProfileComponent,
     ForgottenPasswordModalComponent,
     PasswordResetComponent,
+    MfaComponent,
   ],
   imports: [
     BrowserModule,

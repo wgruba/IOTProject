@@ -1,35 +1,34 @@
 <!DOCTYPE html>
 <html lang="pl">
-
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Strona logowania</title>
-
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
-<body>
-    
-
-    <a routerLink="/"><img class="logo" src="assets/Logo.png" alt="Logo Strony"></a>
-
-    <div class="login">
-    <form (submit)="onSubmit()">
-      <div class="login-input">
-        <input type="text" id="username" [(ngModel)]="username" name="username" placeholder="Nazwa Użytkownika">
-      </div>
-      <div>
-        <input type="password" id="password" [(ngModel)]="password" name="password" placeholder="Hasło">
-      </div>
-      <div class="error-message">
-        {{errorMessage}}
-      </div>
-      <button type="submit">Login</button>
-  </form>
-
-  <button class="forgot" (click)="onForgot()">Nie pamiętam hasła</button>
-</div>
-
-
+<body class="bg-light">
+    <div class="container d-flex justify-content-center align-items-center min-vh-100">
+        <div class="card p-4 shadow-lg w-100" style="max-width: 400px;">
+            <div class="text-center mb-4">
+                <a routerLink="/"><img class="logo mb-3" src="assets/Logo.png" alt="Logo Strony"></a>
+                <h3>Login</h3>
+            </div>
+            <form (submit)="onSubmit()">
+                <div class="form-group">
+                    <label for="username">Nazwa Użytkownika</label>
+                    <input type="text" class="form-control" id="username" [(ngModel)]="username" name="username" placeholder="Nazwa Użytkownika" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">Hasło</label>
+                    <input type="password" class="form-control" id="password" [(ngModel)]="password" name="password" placeholder="Hasło" required>
+                </div>
+                <div class="text-danger mb-3">
+                    {{errorMessage}}
+                </div>
+                <button type="submit" class="btn btn-primary btn-block">Login</button>
+            </form>
+            <button class="btn btn-link mt-3" (click)="onForgot()">Nie pamiętam hasła</button>
+        </div>
+    </div>
 </body>
 </html>

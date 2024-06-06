@@ -1,36 +1,39 @@
-<body>  
-    <a routerLink="/"><img class="logo" src="assets/Logo.png" alt="Logo Strony"></a>
-
-    <div class="login">
-        <form action="login.php" method="post" (submit)="registerUser($event)">
-            <div class="login-input">
-                Nazwa Użytkownika
-                <br>
-                <input type="text" name="login" [(ngModel)]="login">
-                <br>
-                <br>
-                Email
-                <br>
-                <input type="email" name="email" [(ngModel)]="email">
-                <br>
-                <br>
-                Hasło
-                <br>
-                <input type="password" name="password" id="password" [(ngModel)]="password" (input)="updateWarning()">
-                <br>
-                <br>
-                Powtórz Hasło
-                <br>
-                <input type="password" name="password_repeated" id="password-repeat" [(ngModel)]="password_repeated" (input)="updateWarning()">
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rejestracja</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body class="bg-light">
+    <div class="container d-flex justify-content-center align-items-center min-vh-100">
+        <div class="card p-4 shadow-lg w-100" style="max-width: 400px;">
+            <div class="text-center mb-4">
+                <a routerLink="/"><img class="logo mb-3" src="assets/Logo.png" alt="Logo Strony"></a>
+                <h3>Rejestracja</h3>
             </div>
-            <p class="password-warning">{{warning}}</p>
-            <br>
-            <br>
-            <br>
-            <br>
-            <div class="login-button">
-                <input type="submit" value="Zarejestruj">
-            </div>
-        </form>
+            <form (submit)="registerUser($event)">
+                <div class="form-group">
+                    <label for="login">Nazwa Użytkownika</label>
+                    <input type="text" class="form-control" id="login" name="login" [(ngModel)]="login" placeholder="Nazwa Użytkownika" required>
+                </div>
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" class="form-control" id="email" name="email" [(ngModel)]="email" placeholder="Email" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">Hasło</label>
+                    <input type="password" class="form-control" id="password" name="password" [(ngModel)]="password" (input)="updateWarning()" placeholder="Hasło" required>
+                </div>
+                <div class="form-group">
+                    <label for="password-repeat">Powtórz Hasło</label>
+                    <input type="password" class="form-control" id="password-repeat" name="password_repeated" [(ngModel)]="password_repeated" (input)="updateWarning()" placeholder="Powtórz Hasło" required>
+                </div>
+                <p class="text-danger">{{warning}}</p>
+                <button type="submit" class="btn btn-primary btn-block">Zarejestruj</button>
+            </form>
+        </div>
     </div>
 </body>
+</html>

@@ -4,7 +4,6 @@ import { AuthenticationService } from '../authentication.service';
 import { UserService } from '../user.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Event } from '../models/event.model';
-import { Observable } from 'rxjs';
 import { User } from '../models/user.model';
 import { MatDialog } from '@angular/material/dialog';
 import { ForgottenPasswordModalComponent } from '../forgotten-password-modal/forgotten-password-modal.component';
@@ -29,18 +28,20 @@ export class LoginSiteComponent {
     private _snackBar: MatSnackBar,
     ) {}
 
-  onSubmit() {
-    if (this.username && this.password) {
-      this.authService.login(this.username, this.password).subscribe({
-        next: (response) => {
-          this.login(response)
-        },
-        error: (error) => {
-          this.errorMessage = 'Niepoprawna Nazwa użytkownika lub hasło';
-        }
-      });
-  }
-}
+    onSubmit() {
+      if (this.username && this.password) {
+        this.authService.login(this.username, this.password).subscribe({
+          next: (response) => {
+            localStorage.setItem('token', response.jwt);
+            this.router.navigate(['/mfa'], { queryParams: { username: this.username } });
+          },
+          error: (error) => {
+            this.errorMessage = 'Niepoprawna Nazwa użytkownika lub hasło';
+          }
+        });
+      }
+    }
+
 
 onForgot() {
   const dialogRef = this.dialog.open(ForgottenPasswordModalComponent, {
