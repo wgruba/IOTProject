@@ -12,7 +12,7 @@ import { UserService } from './user.service';
 export class EventService {
   private currentEvent!: Event;
   private eventsSubject = new BehaviorSubject<Event[]>([]);
-  private baseUrl = 'http://localhost:8080'
+  private baseUrl = 'https://localhost:8443'
 
   constructor(private http: HttpClient, public authenticationService: AuthenticationService, public userService: UserService) { 
   }
@@ -51,7 +51,7 @@ export class EventService {
 
   getLastID(): Observable<any> {
     const headers = this.authenticationService.getHeadersWithToken()
-    return this.http.get('http://localhost:8080/events/last', { headers });
+    return this.http.get(this.baseUrl + '/events/last', { headers });
   }
 
   

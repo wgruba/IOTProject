@@ -1,30 +1,19 @@
 package com.example.springboot.Seciurity;
 
-public class AuthenticationResponse {
-    private String jwt;
+class AuthenticationResponse {
+    private String token;
     private String message;
 
-    public AuthenticationResponse() {
-    }
-
-    public AuthenticationResponse(String jwt, String message) {
-        this.jwt = jwt;
+    public AuthenticationResponse(String token, String message) {
+        this.token = token;
         this.message = message;
     }
 
-    public String getJwt() {
-        return jwt;
-    }
-
-    public void setJwt(String jwt) {
-        this.jwt = jwt;
+    public String getToken() {
+        return token;
     }
 
     public String getMessage() {
         return message;
-    }
-
-    public void setMessage(String message) {
-        this.message = message;
     }
 }

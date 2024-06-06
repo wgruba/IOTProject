@@ -68,6 +68,12 @@
         },
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
+          "options": {
+            "proxyConfig": "src/proxy.conf.json",
+            "ssl": true,
+            "sslCert": "C:/nginx/certs/localhost.crt",
+            "sslKey": "C:/nginx/certs/localhost.key"
+          },
           "configurations": {
             "production": {
               "browserTarget": "frontend:build:production"
