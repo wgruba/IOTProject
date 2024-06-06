@@ -83,6 +83,12 @@ http {
     }
 }
 
+W cmd tam gdzie masz nginx
+start nginx
+nginx -s stop
+start nginx
+
+
 Otwórz certyfikat localhost.crt.
 Kliknij "Zainstaluj certyfikat".
 Wybierz "Lokalna maszyna" i "Zaufane główne urzędy certyfikacji".
