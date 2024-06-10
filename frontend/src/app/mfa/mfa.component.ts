@@ -29,10 +29,10 @@ export class MfaComponent {
   }
 
   verifyCode() {
-    this.http.post<any>('https://localhost:8080/unauthorized/verify', { username: this.username, code: this.code })
+    this.http.post<any>('http://localhost:8080/unauthorized/verify', { username: this.username, code: this.code })
       .subscribe({
         next: (response) => {
-          if (response.token) {
+          if (response) {
             this.login(response);
           } else {
             alert('Invalid verification code');
