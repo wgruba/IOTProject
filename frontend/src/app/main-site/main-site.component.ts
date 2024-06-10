@@ -22,6 +22,7 @@ export class MainSiteComponent implements OnInit{
   constructor(private router: Router, private eventService: EventService,private http: HttpClient) {
   }
 
+
   ngOnInit(){
     this.eventService.getRecomendedEvents().subscribe(data => {
       this.contents1 = data;

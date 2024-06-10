@@ -17,9 +17,9 @@ export class AuthGuard implements CanActivate {
     return this.authService.isLoggedIn$.pipe(
       map(isLoggedIn => {
         if (isLoggedIn) {
-          return true; // User is logged in, allow access to route
+          return true;
         } else {
-          return this.router.createUrlTree(['/login-site']); // Change '/login-site' to your login route
+          return this.router.createUrlTree(['/login-site']);
         }
       })
     );

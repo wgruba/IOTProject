@@ -1,7 +1,9 @@
 package com.example.springboot.Seciurity;
 
 import jakarta.servlet.http.HttpServletResponse;
+import org.apache.catalina.filters.RateLimitFilter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -16,6 +18,8 @@ import org.springframework.security.web.authentication.AuthenticationFailureHand
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+import java.util.Arrays;
+
 import static org.springframework.security.config.Customizer.withDefaults;
 
 @Configuration
@@ -29,10 +33,8 @@ public class SecurityConfig {
                 .cors(withDefaults())
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers("/unauthorized/**").permitAll()
-                        .anyRequest().authenticated()
+                        .anyRequest().permitAll()
                 )
-                .addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class)
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS));
         return http.build();
@@ -44,6 +46,14 @@ public class SecurityConfig {
             response.setStatus(HttpServletResponse.SC_OK);
             response.getWriter().write("{\"success\": true}");
         };
+    }
+
+    @Bean
+    public FilterRegistrationBean rateLimitingFilter() {
+        RateLimitFilter filter = new RateLimitFilter();
+        FilterRegistrationBean<RateLimitFilter> registrationBean = new FilterRegistrationBean<>(filter);
+        registrationBean.setUrlPatterns(Arrays.asList("/`"));
+        return registrationBean;
     }
 
     @Bean

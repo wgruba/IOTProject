@@ -19,8 +19,6 @@ public class AuthController {
     @Autowired
     private UserRepository userRepository;
     @Autowired
-    private JwtUtils jwtUtils;
-    @Autowired
     private EmailService emailService;
     @Autowired
     private BCryptPasswordEncoder passwordEncoder;
@@ -53,8 +51,7 @@ public class AuthController {
             Optional<User> userDetails = userRepository.getUserByNameOrMail(verificationRequest.getUsername());
             if (userDetails.isPresent()) {
                 User user = userDetails.get();
-                final String jwt = jwtUtils.generateJwtToken(user);
-                return ResponseEntity.ok(new AuthResponse(jwt));
+                return ResponseEntity.ok("ok");
             }
         }
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid verification code");

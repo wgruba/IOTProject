@@ -8,10 +8,10 @@ import { jwtDecode } from "jwt-decode";
 })
 export class AuthenticationService {
   private isLoggedIn = new BehaviorSubject<boolean>(false);
-  baseUrl = 'https://localhost:8443';
+  baseUrl = 'http://localhost:8080';
 
   constructor(private http: HttpClient) {
-    this.checkTokenValidity();
+    // this.checkTokenValidity();
   }
 
   get isLoggedIn$(): Observable<boolean> {
@@ -38,31 +38,31 @@ export class AuthenticationService {
   }
 
   private isTokenExpired(token: string): boolean {
-    if (!token) {
-      return true;
-    }
+    // if (!token) {
+    //   return true;
+    // }
 
-    try {
-      const { exp } = jwtDecode(token);
-      if (!exp) {
-        return false;
-      }
-      return Date.now() >= exp * 1000;
-    } catch (error) {
-      console.error('Error decoding token:', error);
+    // try {
+    //   const { exp } = jwtDecode(token);
+    //   if (!exp) {
+    //     return false;
+    //   }
+    //   return Date.now() >= exp * 1000;
+    // } catch (error) {
+    //   console.error('Error decoding token:', error);
       return false;
-    }
+    // }
   }
 
   private checkTokenValidity(): void {
-    const token = localStorage.getItem('userToken');
-    if (token) {
-      const isExpired = this.isTokenExpired(token);
-      this.isLoggedIn.next(!isExpired);
-      if (isExpired) {
-        this.logout();
-      }
-    }
+    // const token = localStorage.getItem('userToken');
+    // if (token) {
+    //   const isExpired = this.isTokenExpired(token);
+    //   this.isLoggedIn.next(!isExpired);
+    //   if (isExpired) {
+    //     this.logout();
+    //   }
+    // }
   }
 
   public getHeadersWithToken(): HttpHeaders {
