@@ -11,9 +11,6 @@ import { Category } from '../models/Category.model';
 import { CategoryService } from '../category.service';
 
 
-
-
-
 @Component({
   selector: 'app-moderator-acceptation-details-site',
   templateUrl: './moderator-acceptation-details-site.component.html',
