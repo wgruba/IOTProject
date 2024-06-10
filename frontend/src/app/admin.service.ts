@@ -17,13 +17,13 @@ export class AdminService {
   }
 
   denyEvent(eventId: number): Observable<any> {
-    const getUserUrl = this.baseUrl +'/events/${eventId}';
+    const getUserUrl = this.baseUrl +'/events/' + eventId;
     const headers = this.authenticationService.getHeadersWithToken()
     return this.http.delete(getUserUrl, { headers });
-  } 
+  }
 
   acceptEvent(eventId: number): Observable<any>{
-    const getUserUrl = this.baseUrl+ '/events/accept/${eventId}';
+    const getUserUrl = this.baseUrl+ '/events/accept/' + eventId;
     const headers = this.authenticationService.getHeadersWithToken()
     return this.http.get(getUserUrl, { headers });
   }
