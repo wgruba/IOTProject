@@ -8,7 +8,7 @@ import { AuthenticationService } from './authentication.service';
   providedIn: 'root'
 })
 export class UserService {
-  private baseUrl = 'https://localhost:8443';
+  private baseUrl = 'http://localhost:8080';
   private currentUser = new BehaviorSubject<User | null>(this.getCurrentUser());
   
   constructor(private http: HttpClient, public authenticationService: AuthenticationService) {}

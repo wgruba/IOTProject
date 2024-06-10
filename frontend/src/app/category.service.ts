@@ -10,7 +10,7 @@ import { CategoryToAdd } from './admin-category/admin-category.component';
   providedIn: 'root'
 })
 export class CategoryService {
-  baseUrl = 'https://localhost:8443'
+  baseUrl = 'http://localhost:8080'
   constructor(private http: HttpClient, public authenticationService: AuthenticationService) { }
 
 

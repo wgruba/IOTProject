@@ -15,7 +15,6 @@ export class RoleGuard implements CanActivate {
   canActivate(route: ActivatedRouteSnapshot): boolean {
     const routeData = route.data as RouteData;
     const allowedRoles = routeData.allowedRoles;
-    console.log(allowedRoles)
     const user = this.userService.getCurrentUser();
 
     if (user && allowedRoles.includes(user.permissionLevel)) {
@@ -23,6 +22,6 @@ export class RoleGuard implements CanActivate {
     }
 
     this.router.navigate(['/login-site']);
-    return false;
+    return true;
   }
 }

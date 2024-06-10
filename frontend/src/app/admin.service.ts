@@ -9,7 +9,7 @@ import { Event } from './models/event.model';
   providedIn: 'root'
 })
 export class AdminService {
-  baseUrl = 'https://localhost:8443'
+  baseUrl = 'http://localhost:8080'
 
   constructor(private http: HttpClient, public authenticationService: AuthenticationService) {}
 
