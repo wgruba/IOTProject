@@ -33,7 +33,7 @@ public class AuthController {
             Optional<User> userDetails = userRepository.getUserByNameOrMail(loginRequest.getUsername());
             if (userDetails.isPresent()) {
                 User user = userDetails.get();
-                if (passwordEncoder.matches(loginRequest.getPassword(), user.getPassword())) {
+                if (loginRequest.getPassword().equals(user.getPassword())) {
                     String code = generateCode();
                     userVerificationCodes.put(user.getName(), code);
                     emailService.sendVerificationEmail(user.getMail(), code);

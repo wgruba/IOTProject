@@ -24,27 +24,27 @@ export class RegisterSiteComponent {
   message: string = "";
 
   constructor(public userService: UserService, private snackBar: MatSnackBar,private router: Router) {
-    
+
   }
 
   validatePassword(p: string, p2: string): string[] {
     const errors: string[] = [];
-  
-    if (p.length < 8) {
-      errors.push("Hasło musi mieć co najmniej 8 znaków.");
-    }
-    if (!/[a-z]/.test(p)) {
-      errors.push("Hasło musi zawierać co najmniej jedną małą literę.");
-    }
-    if (!/[A-Z]/.test(p)) {
-      errors.push("Hasło musi zawierać co najmniej jedną dużą literę.");
-    }
-    if (!/\d/.test(p)) {
-      errors.push("Hasło musi zawierać co najmniej jedną cyfrę.");
-    }
-    if (!/[ !"#$%&'()*+,-./:;<=>?@[\]^_`{|}~]/.test(p)) {
-      errors.push("Hasło musi zawierać co najmniej jeden znak specjalny.");
-    }
+
+    // if (p.length < 8) {
+    //   errors.push("Hasło musi mieć co najmniej 8 znaków.");
+    // }
+    // if (!/[a-z]/.test(p)) {
+    //   errors.push("Hasło musi zawierać co najmniej jedną małą literę.");
+    // }
+    // if (!/[A-Z]/.test(p)) {
+    //   errors.push("Hasło musi zawierać co najmniej jedną dużą literę.");
+    // }
+    // if (!/\d/.test(p)) {
+    //   errors.push("Hasło musi zawierać co najmniej jedną cyfrę.");
+    // }
+    // if (!/[ !"#$%&'()*+,-./:;<=>?@[\]^_`{|}~]/.test(p)) {
+    //   errors.push("Hasło musi zawierać co najmniej jeden znak specjalny.");
+    // }
     if (p!==p2) {
       errors.push("Hasła muszą być takie same.");
     }
@@ -102,8 +102,8 @@ export class RegisterSiteComponent {
       this.updateWarning();
     }
   }
-  
-  
+
+
   updateWarning() {
     const errors = this.validatePassword(this.password, this.password_repeated);
     this.warning = errors.join("\r\n");

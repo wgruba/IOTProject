@@ -40,7 +40,7 @@ public class UserController {
                     .status(HttpStatus.CONFLICT)
                     .body("User with the same name or email already exists");
         }
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        user.setPassword(user.getPassword());
         return ResponseEntity.ok(userRepository.save(user));
     }
 
